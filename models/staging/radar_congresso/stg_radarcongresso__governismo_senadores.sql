@@ -1,17 +1,15 @@
 WITH source AS (
     SELECT *
-    FROM {{ source('radar','radarcongresso__governismo_deputados_raw')}}
+    FROM {{ source('radar','radar_governismo_senadores_raw')}}
 ),
 
 renamed AS (
     SELECT
-        id::int AS id,
+        id::int AS id_parlamentar_radar,
         afavor::int AS total_votos_favor_governo,
         n::int AS total_votos_contra_governo,
         total::int AS perc_governismo,
-        date_trunc(
-            'quarter', to_date(trimestre, 'YYYY-MM-DD')
-        )::date AS trimestre,
+        to_date(trimestre, 'YYYY-MM-DD') AS data_trimestre,
         perc_governismo::int AS perc_governismo_trimestre,
         data_carga
     FROM source

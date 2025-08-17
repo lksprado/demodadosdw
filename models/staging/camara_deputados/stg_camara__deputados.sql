@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 WITH source AS (
-    SELECT * FROM {{ source('camara','camara__deputados_raw') }}
+    SELECT * FROM {{ source('camara','parlamento_deputados_raw') }}
 ),
 
 renamed AS (
@@ -20,7 +20,7 @@ renamed AS (
         ultimostatus_nomeeleitoral AS nome_eleitoral_atual,
         ultimostatus_gabinete_nome AS numero_gabinete_sala_atual,
         ultimostatus_gabinete_predio AS numero_gabinete_predio_atual,
-        ultimostatus_gabinete_andar AS numero_gabinete_andar_atual,
+        nullif(ultimostatus_gabinete_andar,'NONE') AS numero_gabinete_andar_atual,
         ultimostatus_gabinete_telefone AS telefone_gabinete_atual,
         ultimostatus_gabinete_email AS email_gabinete_atual,
         ultimostatus_situacao AS situacao_atual,
@@ -34,7 +34,17 @@ renamed AS (
         replace(replace(replace(redesocial, '[', ''), ']', ''), '''', '')
         AS redesociais,
         to_date(datanascimento, 'YYYY-MM-DD') AS data_nascimento,
-        to_date(datafalecimento, 'YYYY-MM-DD') AS data_falecimento
+        to_date(datafalecimento, 'YYYY-MM-DD') AS data_falecimento,
+        case
+            when datanascimento is null then null
+            when (datanascimento)::date between date '1928-01-01' and date '1945-12-31' then 'Silenciosa'
+            when (datanascimento)::date between date '1946-01-01' and date '1964-12-31' then 'Baby Boomer'
+            when (datanascimento)::date between date '1965-01-01' and date '1980-12-31' then 'Gen X'
+            when (datanascimento)::date between date '1981-01-01' and date '1996-12-31' then 'Millennial'
+            when (datanascimento)::date between date '1997-01-01' and date '2012-12-31' then 'Gen Z'
+            when (datanascimento)::date >=  date '2013-01-01' then 'Gen Alpha'
+            else 'OUTRA'
+        end as geracao
     FROM source
 ),
 
@@ -93,6 +103,7 @@ SELECT
     t1.cpf,
     t1.sexo,
     t1.data_nascimento,
+    t1.geracao,
     t1.data_falecimento,
     t1.uf_nascimento,
     t1.municipio_nascimento,

@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: camara__deputados_raw
+  - name: stg_camara__deputados
     description: "Modelo bronze que carrega e padroniza os dados brutos da API da Câmara"
     columns:
       - name: id
@@ -10,5 +10,3 @@ models:
         tests:
           - not_null
           - unique
-      - name: nomecivil
-        description: "Nome do deputado"

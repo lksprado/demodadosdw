@@ -6,5 +6,5 @@ sources:
     database: demodados
     schema: raw
     tables:
-    - name: camara__deputados_raw
-      description: "Dimensao para deputados"
+    - name: parlamento_deputados_raw
+      description: "Detalhes dos deputados obtidos da API da camara. Script em local_setup/src/pipelines/legislativo/parlamento_deputados.py"

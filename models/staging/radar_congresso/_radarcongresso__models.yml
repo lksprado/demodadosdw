@@ -2,21 +2,30 @@
 version: 2
 
 models:
-  - name: radarcongresso__governismo_deputados_raw
-    description: "Modelo bronze que calcula porcentual de governismo total e trimestral de deputados"
+  - name: stg_radarcongresso__governismo_deputados
+    description: "Base para fato de governismo - deputados"
     columns:
-      - name: id
-        description: "Identificador único do deputado"
+      - name: id_parlamentar_radar
+        description: "Identificador único do parlamentar no radar congresso"
         tests:
           - not_null
-  - name: radarcongresso__deputados_raw
-    description: "Modelo bronze que tem detalhes de cada deputado"
+  - name: stg_radarcongresso__governismo_senadores
+    description: "Base para fato de governismo - senadores"
     columns:
-      - name: id_parlamentar
-        description: "Identificador único do deputado com api original da camara"
+      - name: id_parlamentar_radar
+        description: "Identificador único do parlamentar no radar congresso"
         tests:
           - not_null
-      - name: id_parlamentar_voz
-        description: "Identificador único do deputado no radar congresso"
+  - name: stg_radarcongresso__parlamentares
+    description: "Modelo contem detalhes de deputados e senadores"
+    columns:
+      - name: id_parlamentar_congresso
+        description: "Identificador único do parlamentar com api original da camara / senado"
         tests:
           - not_null
+          - unique
+      - name: id_parlamentar_radar
+        description: "Identificador único do parlamentar no radar congresso"
+        tests:
+          - not_null
+          - unique

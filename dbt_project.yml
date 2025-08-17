@@ -21,12 +21,12 @@ clean-targets:
 
 models:
   demodadosdw:
-    bronze:
+    staging:
       +schema: staging
       +materialized: view
-    silver:
+    intermediate:
       +schema: intermediate
       +materialized: table
-    gold:
+    marts:
       +schema: marts
       +materialized: view
