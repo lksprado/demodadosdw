@@ -1,0 +1,32 @@
+name: 'demodadosdw'
+version: '1.0.0'
+
+profile: 'demodadosdw'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+vars:
+    "dbt_date:time_zone": "America/Sao_Paulo"
+
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+
+models:
+  demodadosdw:
+    bronze:
+      +schema: staging
+      +materialized: view
+    silver:
+      +schema: intermediate
+      +materialized: table
+    gold:
+      +schema: marts
+      +materialized: view
