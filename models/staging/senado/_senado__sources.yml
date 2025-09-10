@@ -1,0 +1,10 @@
+
+version: 2
+
+sources:
+  - name: senado
+    database: demodados
+    schema: raw
+    tables:
+    - name: parlamento_senadores_raw
+      description: "Fato para deputados governismo"

@@ -8,7 +8,7 @@
 
 WITH
 deputados_camara AS (
-    SELECT * FROM {{ ref('stg_camara__deputados')}}
+    SELECT * FROM {{ ref('stg_senado__senadores')}}
 ),
 deputado_radar AS (
     SELECT * FROM {{ ref('stg_radarcongresso__parlamentares')}}

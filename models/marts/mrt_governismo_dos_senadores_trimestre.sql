@@ -1,10 +1,10 @@
 WITH
 dim_dep AS (
-    SELECT * FROM {{ ref('int_dim_deputados')}}
+    SELECT * FROM {{ ref('int_dim_senadores')}}
 ),
 
 fct_gov_total AS (
-    SELECT * FROM {{ ref('int_fct_governismo_deputados_trimestre')}}
+    SELECT * FROM {{ ref('int_fct_governismo_senadores_trimestre')}}
 ),
 
 tab AS (
