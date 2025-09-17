@@ -10,3 +10,11 @@ models:
         tests:
           - not_null
           - unique
+  - name: stg_senado__senadores_2
+    description: "Modelo bronze que carrega e padroniza os dados brutos da API do Senado"
+    columns:
+      - name: id
+        description: "Identificador único do senador"
+        tests:
+          - not_null
+          - unique
