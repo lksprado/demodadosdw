@@ -1,6 +1,6 @@
 WITH source AS (
     SELECT *
-    FROM {{ source('radar','radar_governismo_deputados_raw')}}
+    FROM {{ source('radar','raw_radar_governismo_deputados')}}
 ),
 
 renamed AS (

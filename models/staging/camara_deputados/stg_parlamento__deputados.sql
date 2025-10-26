@@ -1,30 +1,30 @@
 {{ config(materialized='view') }}
 
 WITH source AS (
-    SELECT * FROM {{ source('camara','parlamento_deputados_raw') }}
+    SELECT * FROM {{ source('camara','raw_parlamento_deputados') }}
 ),
 
 renamed AS (
     SELECT
         id,
-        nomecivil AS nome_civil,
+        nomecivil AS nome,
         sexo,
         ufnascimento AS uf_nascimento,
         municipionascimento AS municipio_nascimento,
         escolaridade,
-        ultimostatus_siglapartido AS partido_atual,
-        ultimostatus_siglauf AS uf_atual,
-        ultimostatus_idlegislatura AS id_legislatura_atual,
-        ultimostatus_urlfoto AS foto_atual,
-        ultimostatus_data AS posse_data,
-        ultimostatus_nomeeleitoral AS nome_eleitoral_atual,
-        ultimostatus_gabinete_nome AS numero_gabinete_sala_atual,
-        ultimostatus_gabinete_predio AS numero_gabinete_predio_atual,
-        nullif(ultimostatus_gabinete_andar,'NONE') AS numero_gabinete_andar_atual,
-        ultimostatus_gabinete_telefone AS telefone_gabinete_atual,
-        ultimostatus_gabinete_email AS email_gabinete_atual,
+        ultimostatus_siglapartido AS partido,
+        ultimostatus_siglauf AS uf_representacao,
+        ultimostatus_idlegislatura AS id_legislatura,
+        ultimostatus_urlfoto AS link_foto,
+        ultimostatus_data AS data_posse,
+        ultimostatus_nomeeleitoral AS nome_eleitoral,
+        ultimostatus_gabinete_sala AS num_gabinete_sala,
+        ultimostatus_gabinete_predio AS num_gabinete_predio,
+        nullif(ultimostatus_gabinete_andar,'NONE') AS num_gabinete_andar,
+        ultimostatus_gabinete_telefone AS telefone,
+        ultimostatus_gabinete_email AS email,
         ultimostatus_situacao AS situacao_atual,
-        ultimostatus_condicaoeleitoral AS condicao_eleitoral_atual,
+        ultimostatus_condicaoeleitoral AS condicao_eleitoral,
         data_carga,
         CASE
             WHEN length((cpf::TEXT)) = 9 THEN '00' || (cpf::TEXT)
@@ -34,15 +34,15 @@ renamed AS (
         replace(replace(replace(redesocial, '[', ''), ']', ''), '''', '')
         AS redesociais,
         to_date(datanascimento, 'YYYY-MM-DD') AS data_nascimento,
-        to_date(datafalecimento, 'YYYY-MM-DD') AS data_falecimento,
+        to_date(cast(datafalecimento as text), 'YYYY-MM-DD') AS data_falecimento,
         case
             when datanascimento is null then null
             when (datanascimento)::date between date '1928-01-01' and date '1945-12-31' then 'Silenciosa'
             when (datanascimento)::date between date '1946-01-01' and date '1964-12-31' then 'Baby Boomer'
-            when (datanascimento)::date between date '1965-01-01' and date '1980-12-31' then 'Gen X'
+            when (datanascimento)::date between date '1965-01-01' and date '1980-12-31' then 'X'
             when (datanascimento)::date between date '1981-01-01' and date '1996-12-31' then 'Millennial'
-            when (datanascimento)::date between date '1997-01-01' and date '2012-12-31' then 'Gen Z'
-            when (datanascimento)::date >=  date '2013-01-01' then 'Gen Alpha'
+            when (datanascimento)::date between date '1997-01-01' and date '2012-12-31' then 'Z'
+            when (datanascimento)::date >=  date '2013-01-01' then 'Alpha'
             else 'OUTRA'
         end as geracao
     FROM source
@@ -90,33 +90,31 @@ redesocial_tratamento_2 AS (
 
 SELECT
     t1.id,
-    t1.nome_civil,
-    t1.nome_eleitoral_atual,
-    t1.partido_atual,
-    t1.email_gabinete_atual,
+    t1.nome,
+    t1.nome_eleitoral,
+    t1.partido,
+    t1.email,
     t2.redesocial_x_twitter,
     t2.redesocial_instagram,
     t2.redesocial_facebook,
     t2.redesocial_youtube,
-    t1.redesociais,
-    t1.telefone_gabinete_atual,
-    t1.cpf,
+    t1.telefone,
     t1.sexo,
     t1.data_nascimento,
     t1.geracao,
     t1.data_falecimento,
     t1.uf_nascimento,
     t1.municipio_nascimento,
-    t1.uf_atual,
+    t1.uf_representacao,
     t1.escolaridade,
-    t1.id_legislatura_atual,
-    t1.posse_data,
-    t1.numero_gabinete_predio_atual,
-    t1.numero_gabinete_andar_atual,
-    t1.numero_gabinete_sala_atual,
+    t1.id_legislatura,
+    t1.data_posse,
+    t1.num_gabinete_predio,
+    t1.num_gabinete_andar,
+    t1.num_gabinete_sala,
     t1.situacao_atual,
-    t1.condicao_eleitoral_atual,
-    t1.foto_atual,
+    t1.condicao_eleitoral,
+    t1.link_foto,
     t1.data_carga
 FROM renamed AS t1
 INNER JOIN redesocial_tratamento_2 AS t2

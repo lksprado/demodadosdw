@@ -2,15 +2,7 @@
 version: 2
 
 models:
-  - name: stg_senado__senadores
-    description: "Modelo bronze que carrega e padroniza os dados brutos da API do Senado"
-    columns:
-      - name: id
-        description: "Identificador único do senador"
-        tests:
-          - not_null
-          - unique
-  - name: stg_senado__senadores_2
+  - name: stg_parlamento__senadores
     description: "Modelo bronze que carrega e padroniza os dados brutos da API do Senado"
     columns:
       - name: id

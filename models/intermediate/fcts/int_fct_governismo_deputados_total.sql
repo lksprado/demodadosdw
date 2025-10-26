@@ -1,9 +1,8 @@
 WITH
-dim as (
+de_para as (
     select 
-    sk_parlamentar,
-    fk_id_parlamentar_radar
-    from {{ ref('int_dim_deputados')}}
+    *
+    from {{ ref('int_map_parlamentares')}}
 ),
 fato as (
     select 
@@ -14,8 +13,8 @@ fato as (
     t1.data_carga
     from {{ ref("stg_radarcongresso__governismo_deputados") }} t1
     inner join 
-    dim t2
-    on t1.id_parlamentar_radar = t2.fk_id_parlamentar_radar
+    de_para t2
+    on t1.id_parlamentar_radar = t2.id_parlamentar_radar
     group by 
     t2.sk_parlamentar,
     t1.total_votos_favor_governo,

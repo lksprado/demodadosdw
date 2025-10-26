@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: int_dim_deputados
+    description: Dimensão SCD1 de deputados com chave substituta estável por id da Câmara.
+    columns:
+      - name: sk_parlamentar
+        tests:
+          - not_null
+          - unique
+      - name: id_camara_deputado_nk
+        description: Chave de negócio (id da Câmara)
+        tests:
+          - not_null
+          - unique
+
+  - name: int_dim_senadores
+    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    columns:
+      - name: sk_parlamentar
+        tests:
+          - not_null
+          - unique
+      - name: id_parlamentar_congresso
+        description: Chave de negócio (id do Senado)
+        tests:
+          - not_null
+          - unique
+      - name: fk_id_parlamentar_radar
+        description: Chave de referência ao id do Radar (pode ser nula se não houver mapeamento)

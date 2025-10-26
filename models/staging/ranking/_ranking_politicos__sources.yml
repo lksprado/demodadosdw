@@ -1,0 +1,10 @@
+
+version: 2
+
+sources:
+  - name: ranking
+    database: demodados
+    schema: raw
+    tables:
+    - name: raw_ranking_parlamentares
+      description: "Detalhes dos parlamentares"

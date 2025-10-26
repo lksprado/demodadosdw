@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
 WITH source AS (
-    SELECT * FROM {{ source('senado','parlamento_senadores_raw') }}
+    SELECT * FROM {{ source('senado','raw_parlamento_senadores') }}
 ),
 renamed AS (
     SELECT
@@ -32,7 +32,7 @@ renamed AS (
     identificacaoparlamentar_ufparlamentar as uf_atual,
     null as escolaridade,
     mandato_primeiralegislaturadomandato_numerolegislatura as id_legislatura_atual,
-    to_date(mandato_primeiralegislaturadomandato_datainicio,'YYYYMMDD') as posse_data,
+    to_date(cast(mandato_primeiralegislaturadomandato_datainicio AS text),'YYYYMMDD') as posse_data,
     null as numero_gabinete_predio_atual,
     null as numero_gabinete_andar_atual,
     null as numero_gabinete_sala_atual,
@@ -62,7 +62,7 @@ renamed AS (
     END AS nome_titular_mandato,
     --identificacaoparlamentar_urlpaginaparticular
     identificacaoparlamentar_urlfotoparlamentar as foto_atual,
-    arquivo_origem
+    arquivo_origem,
     data_carga
     FROM source
 )

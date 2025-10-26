@@ -1,0 +1,41 @@
+
+version: 2
+
+models:
+  - name: stg_ranking__parlamentares
+    description: "Modelo bronze que carrega e padroniza os dados brutos da API do Ranking Politicos"
+    columns:
+      - name: id_parlamentar_ranking
+        description: "Identificador único do deputado no site"
+        tests:
+          - not_null
+          - unique
+      - name: id_parlamentar_congresso
+        description: "FK único do deputado na API da câmara"
+        tests:
+          - not_null
+          - unique
+      - name: cargo
+        description: "Senador ou Deputado"
+      - name: score_total
+        description: "Pontuacao total no Ranking dos Politicos"
+      - name: score_antiprivilegio
+        description: "Pontuacao referente a rejeicao de privilegios"
+      - name: score_antidesperdicio
+        description: "Pontuacao referente presencas e desperdicios"
+      - name: pctg_economia
+        description: "Porcentual de economia de verbas de gabinete"
+      - name: score_processos
+        description: "Possui processo judicial em andamento"
+      - name: ranking_por_cargo
+        description: "Posicao no Ranking por Cargo de Deputado ou Senador"
+      - name: ranking_por_estado
+        description: "Posicao no Ranking por Estado de Deputado ou Senador"
+      - name: cnt_parlamentares_estado
+        description: "Contagem total de parlamentares Deputado e Senadores"
+      - name: cnt_cargo_por_estado
+        description: "Contagem total de parlamentares Deputados OU Senadores"
+      - name: is_ativo
+        description: "Booleano se parlamentar esta ativo ou nao"
+      - name: link
+        description: "Link da pagina para o deputado no Ranking Politicos"

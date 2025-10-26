@@ -2,7 +2,7 @@
 version: 2
 
 models:
-  - name: stg_camara__deputados
+  - name: stg_parlamento__deputados
     description: "Modelo bronze que carrega e padroniza os dados brutos da API da Câmara"
     columns:
       - name: id

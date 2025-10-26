@@ -6,5 +6,5 @@ sources:
     database: demodados
     schema: raw
     tables:
-    - name: parlamento_senadores_raw
+    - name: raw_parlamento_senadores
       description: "Fato para deputados governismo"

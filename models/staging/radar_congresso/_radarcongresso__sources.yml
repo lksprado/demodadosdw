@@ -6,11 +6,11 @@ sources:
     database: demodados
     schema: raw
     tables:
-    - name: radar_governismo_deputados_raw
+    - name: raw_radar_governismo_deputados
       description: "Fato para deputados governismo"
 
-    - name: radar_governismo_senadores_raw
+    - name: raw_radar_governismo_senadores
       description: "Fato para senadores governismo"
 
-    - name: radar_parlamentares_raw
+    - name: raw_radar_parlamentares
       description: "Tabela que serve de de-para entre ID da API da camara e do radarcongresso. Contém também Senadores"

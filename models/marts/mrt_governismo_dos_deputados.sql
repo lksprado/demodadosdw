@@ -10,9 +10,9 @@ fct_gov_total AS (
 tab AS (
     SELECT
         t1.sk_parlamentar,
-        t1.nome_eleitoral_atual,
-        t1.partido_atual,
-        t1.uf_atual,
+        t1.nome_eleitoral,
+        t1.partido,
+        t1.uf_representacao,
         t2.perc_governismo
     FROM dim_dep AS t1
     INNER JOIN fct_gov_total AS t2

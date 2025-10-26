@@ -6,12 +6,12 @@ dim_dep AS (
 fct_gov_total AS (
     SELECT * FROM {{ ref('int_fct_governismo_deputados_trimestre')}}
 ),
-
 tab AS (
     SELECT
         t1.sk_parlamentar,
-        t1.nome_eleitoral_atual,
-        t1.partido_atual,
+        t1.nome_eleitoral,
+        t1.partido,
+        t1.uf_representacao,
         t2.data_trimestre,
         t2.perc_governismo_trimestre
     FROM dim_dep AS t1
