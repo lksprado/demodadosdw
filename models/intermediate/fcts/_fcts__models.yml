@@ -1,28 +1,28 @@
 version: 2
 
 models:
-  - name: int_dim_deputados
+  - name: int_fct_governismo_deputados_total
     description: Dimensão SCD1 de deputados com chave substituta estável por id da Câmara.
     columns:
       - name: sk_parlamentar
         tests:
           - not_null
           - unique
-  - name: int_dim_senadores
+  - name: int_fct_governismo_senadores_total
     description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
     columns:
       - name: sk_parlamentar
         tests:
           - not_null
           - unique
-  - name: int_dim_parlamentares
+  - name: int_fct_ranking_deputados_total
     description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
     columns:
       - name: sk_parlamentar
         tests:
           - not_null
           - unique
-  - name: int_map_parlamentares
+  - name: int_fct_ranking_senadores_total
     description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
     columns:
       - name: sk_parlamentar

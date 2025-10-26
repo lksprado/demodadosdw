@@ -1,9 +1,7 @@
 {{ config(materialized='view') }}
-
 WITH source AS (
     SELECT * FROM {{ source('camara','raw_parlamento_deputados') }}
 ),
-
 renamed AS (
     SELECT
         id,
@@ -12,11 +10,13 @@ renamed AS (
         ufnascimento AS uf_nascimento,
         municipionascimento AS municipio_nascimento,
         escolaridade,
-        ultimostatus_siglapartido AS partido,
+        CASE WHEN ultimostatus_siglapartido LIKE '%PODE%' then 'PODEMOS'
+        ELSE ultimostatus_siglapartido 
+        END AS partido,
         ultimostatus_siglauf AS uf_representacao,
         ultimostatus_idlegislatura AS id_legislatura,
         ultimostatus_urlfoto AS link_foto,
-        ultimostatus_data AS data_posse,
+        ultimostatus_data::date AS data_posse,
         ultimostatus_nomeeleitoral AS nome_eleitoral,
         ultimostatus_gabinete_sala AS num_gabinete_sala,
         ultimostatus_gabinete_predio AS num_gabinete_predio,
@@ -25,7 +25,6 @@ renamed AS (
         ultimostatus_gabinete_email AS email,
         ultimostatus_situacao AS situacao_atual,
         ultimostatus_condicaoeleitoral AS condicao_eleitoral,
-        data_carga,
         CASE
             WHEN length((cpf::TEXT)) = 9 THEN '00' || (cpf::TEXT)
             WHEN length((cpf::TEXT)) = 10 THEN '0' || (cpf::TEXT)
@@ -44,10 +43,11 @@ renamed AS (
             when (datanascimento)::date between date '1997-01-01' and date '2012-12-31' then 'Z'
             when (datanascimento)::date >=  date '2013-01-01' then 'Alpha'
             else 'OUTRA'
-        end as geracao
+        end as geracao,
+        uri as link_api_oficial,
+        data_carga
     FROM source
 ),
-
 redesocial_tratamento AS (
     SELECT
         id,
@@ -57,7 +57,6 @@ redesocial_tratamento AS (
         trim(split_part(redesociais, ',', 4)) AS rede_4
     FROM renamed
 ),
-
 redesocial_tratamento_2 AS (
     SELECT
         id,
@@ -87,7 +86,6 @@ redesocial_tratamento_2 AS (
         END AS redesocial_youtube
     FROM redesocial_tratamento
 )
-
 SELECT
     t1.id,
     t1.nome,
@@ -102,7 +100,6 @@ SELECT
     t1.sexo,
     t1.data_nascimento,
     t1.geracao,
-    t1.data_falecimento,
     t1.uf_nascimento,
     t1.municipio_nascimento,
     t1.uf_representacao,
@@ -115,6 +112,7 @@ SELECT
     t1.situacao_atual,
     t1.condicao_eleitoral,
     t1.link_foto,
+    t1.link_api_oficial,
     t1.data_carga
 FROM renamed AS t1
 INNER JOIN redesocial_tratamento_2 AS t2

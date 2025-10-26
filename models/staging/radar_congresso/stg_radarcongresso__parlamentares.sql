@@ -2,7 +2,6 @@ WITH source AS (
     SELECT * 
     FROM {{ source('radar','raw_radar_parlamentares')}}
 ),
-
 renamed AS (
     SELECT
         idparlamentarvoz::int AS id_parlamentar_radar,
@@ -20,5 +19,4 @@ renamed AS (
         data_carga
     FROM source
 )
-
 SELECT * FROM renamed

@@ -3,7 +3,7 @@ de_para as (
     select 
     *
     from {{ ref('int_map_parlamentares')}}
-    where casa = 'camara'
+    where casa = 'senado'
 ),
 fato as (
     select 
