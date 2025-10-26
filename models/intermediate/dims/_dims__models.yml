@@ -2,30 +2,204 @@ version: 2
 
 models:
   - name: int_dim_deputados
-    description: Dimensão SCD1 de deputados com chave substituta estável por id da Câmara.
+    description: Dimensão conformada de deputados com atributos pessoais, de contato e de mandato. Usa chave substituta estável e enriquecimento do Ranking.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
         tests:
           - not_null
           - unique
+      - name: nome
+        description: Nome completo do parlamentar conforme cadastro oficial.
+      - name: partido
+        description: Sigla do partido no momento mais recente da carga.
+      - name: casa
+        description: Casa legislativa do registro (camara).
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato do gabinete ou institucional.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento do parlamentar.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: Unidade federativa de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: uf_representacao
+        description: Unidade federativa representada no mandato.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: id_legislatura
+        description: Identificador da legislatura na qual o mandato está inserido.
+      - name: data_posse
+        description: Data de posse no mandato atual.
+      - name: num_gabinete_predio
+        description: Identificação do prédio do gabinete.
+      - name: num_gabinete_andar
+        description: Andar do gabinete.
+      - name: num_gabinete_sala
+        description: Número da sala do gabinete.
+      - name: situacao_atual
+        description: Situação atual do mandato (em exercício, afastado, etc.).
+      - name: condicao_eleitoral
+        description: Condição eleitoral mais recente (titular, suplente, etc.).
+      - name: link_api_oficial
+        description: URL para a página/detalhe oficial do parlamentar na API de origem.
+      - name: link_foto
+        description: URL da foto oficial do parlamentar.
+      - name: data_carga
+        description: Data/hora de carga do registro na camada de staging.
   - name: int_dim_senadores
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Dimensão conformada de senadores com atributos pessoais, de contato e de mandato. Usa chave substituta estável e enriquecimento do Ranking.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
         tests:
           - not_null
           - unique
+      - name: nome
+        description: Nome completo do parlamentar conforme cadastro oficial.
+      - name: partido
+        description: Sigla do partido no momento mais recente da carga.
+      - name: casa
+        description: Casa legislativa do registro (senado).
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato do gabinete ou institucional.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento do parlamentar.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: Unidade federativa de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: uf_representacao
+        description: Unidade federativa representada no mandato.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: id_legislatura
+        description: Identificador da legislatura na qual o mandato está inserido.
+      - name: data_posse
+        description: Data de posse no mandato atual.
+      - name: num_gabinete_predio
+        description: Identificação do prédio do gabinete.
+      - name: num_gabinete_andar
+        description: Andar do gabinete.
+      - name: num_gabinete_sala
+        description: Número da sala do gabinete.
+      - name: situacao_atual
+        description: Situação atual do mandato (em exercício, afastado, etc.).
+      - name: condicao_eleitoral
+        description: Condição eleitoral mais recente (titular, suplente, etc.).
+      - name: link_api_oficial
+        description: URL para a página/detalhe oficial do parlamentar na API de origem.
+      - name: link_foto
+        description: URL da foto oficial do parlamentar.
+      - name: data_carga
+        description: Data/hora de carga do registro na camada de staging.
   - name: int_dim_parlamentares
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Dimensão conformada unificada de parlamentares (senadores e deputados). União das dimensões específicas com o mesmo conjunto de atributos.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
         tests:
           - not_null
           - unique
+      - name: nome
+        description: Nome completo do parlamentar.
+      - name: partido
+        description: Sigla do partido.
+      - name: casa
+        description: Casa legislativa (camara/senado).
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: UF de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: uf_representacao
+        description: UF representada no mandato.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: id_legislatura
+        description: Identificador da legislatura.
+      - name: data_posse
+        description: Data de posse no mandato.
+      - name: num_gabinete_predio
+        description: Identificação do prédio do gabinete.
+      - name: num_gabinete_andar
+        description: Andar do gabinete.
+      - name: num_gabinete_sala
+        description: Número da sala do gabinete.
+      - name: situacao_atual
+        description: Situação atual do mandato.
+      - name: condicao_eleitoral
+        description: Condição eleitoral (titular, suplente, etc.).
+      - name: link_api_oficial
+        description: URL oficial do parlamentar.
+      - name: link_foto
+        description: URL da foto oficial.
+      - name: data_carga
+        description: Data/hora de carga do registro de origem.
   - name: int_map_parlamentares
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Mapa de chaves entre ids oficiais das casas (Câmara/Senado) e identificadores das fontes (Radar Congresso e Ranking Políticos), gerando a chave substituta `sk_parlamentar`.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar gerada a partir do id da casa e tipo da casa.
         tests:
           - not_null
           - unique
+      - name: casa
+        description: Casa legislativa do id natural (camara/senado).
+      - name: id_nk
+        description: Identificador natural (id) do parlamentar na casa de origem.
+      - name: id_parlamentar_radar
+        description: Identificador do parlamentar na base do Radar Congresso.
+      - name: id_parlamentar_ranking
+        description: Identificador do parlamentar na base do Ranking dos Políticos.

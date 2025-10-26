@@ -2,23 +2,176 @@ version: 2
 
 models:
   - name: mrt_governismo_dos_deputados
-    description: Dimensão SCD1 de deputados com chave substituta estável por id da Câmara.
+    description: Mart de apresentação com percentual de governismo de deputados, unindo a dimensão de deputados à fato consolidada de governismo.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
         tests:
           - not_null
           - unique
+      - name: nome_eleitoral
+        description: Nome eleitoral do deputado.
+      - name: partido
+        description: Sigla do partido no momento mais recente.
+      - name: uf_representacao
+        description: UF representada pelo parlamentar.
+      - name: perc_governismo
+        description: Percentual de alinhamento ao governo. Confirmar escala (0–1 ou 0–100).
   - name: mrt_governismo_dos_senadores
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Mart de apresentação com percentual de governismo de senadores, unindo a dimensão de senadores à fato consolidada de governismo.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
         tests:
           - not_null
           - unique
+      - name: nome_eleitoral
+        description: Nome eleitoral do senador.
+      - name: partido
+        description: Sigla do partido no momento mais recente.
+      - name: uf_representacao
+        description: UF representada pelo parlamentar.
+      - name: perc_governismo
+        description: Percentual de alinhamento ao governo. Confirmar escala (0–1 ou 0–100).
+  - name: mrt_governismo_dos_deputados_trimestre
+    description: Mart de apresentação do governismo trimestral de deputados, unindo a dimensão e a fato trimestral.
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+      - name: nome_eleitoral
+        description: Nome eleitoral do deputado.
+      - name: partido
+        description: Sigla do partido no momento mais recente.
+      - name: uf_representacao
+        description: UF representada pelo parlamentar.
+      - name: data_trimestre
+        description: Data representativa do trimestre de referência.
+      - name: perc_governismo_trimestre
+        description: Percentual de alinhamento ao governo no trimestre. Confirmar escala (0–1 ou 0–100).
+  - name: mrt_governismo_dos_senadores_trimestre
+    description: Mart de apresentação do governismo trimestral de senadores, unindo a dimensão e a fato trimestral.
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+      - name: nome_eleitoral
+        description: Nome eleitoral do senador.
+      - name: partido
+        description: Sigla do partido no momento mais recente.
+      - name: uf_representacao
+        description: UF representada pelo parlamentar.
+      - name: data_trimestre
+        description: Data representativa do trimestre de referência.
+      - name: perc_governismo_trimestre
+        description: Percentual de alinhamento ao governo no trimestre. Confirmar escala (0–1 ou 0–100).
   - name: mrt_obt_parlamentares
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Mart “wide” de parlamentares unificado (deputados e senadores) com atributos pessoais/mandato e métricas de governismo e ranking.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
         tests:
           - not_null
           - unique
+      - name: nome
+        description: Nome completo do parlamentar.
+      - name: partido
+        description: Sigla do partido no momento mais recente.
+      - name: casa
+        description: Casa legislativa (camara/senado).
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato do gabinete ou institucional.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento do parlamentar.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: UF de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: uf_representacao
+        description: UF representada no mandato.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: id_legislatura
+        description: Identificador da legislatura.
+      - name: data_posse
+        description: Data de posse no mandato.
+      - name: num_gabinete_predio
+        description: Identificação do prédio do gabinete.
+      - name: num_gabinete_andar
+        description: Andar do gabinete.
+      - name: num_gabinete_sala
+        description: Número da sala do gabinete.
+      - name: situacao_atual
+        description: Situação atual do mandato.
+      - name: condicao_eleitoral
+        description: Condição eleitoral (titular, suplente, etc.).
+      - name: link_api_oficial
+        description: URL oficial do parlamentar.
+      - name: link_foto
+        description: URL da foto oficial do parlamentar.
+      - name: total_votos_favor_governo
+        description: Quantidade total de votos alinhados ao governo.
+      - name: total_votos_contra_governo
+        description: Quantidade total de votos contrários ao governo.
+      - name: perc_governismo
+        description: Percentual de alinhamento ao governo. Confirmar escala (0–1 ou 0–100).
+      - name: score_total
+        description: Pontuação total atribuída pelo Ranking dos Políticos.
+      - name: score_antiprivilegio
+        description: Subpontuação de antiprivilégios.
+      - name: score_antidesperdicio
+        description: Subpontuação de combate a desperdícios.
+      - name: score_processos
+        description: Subpontuação relacionada a processos.
+      - name: score_outros
+        description: Subpontuação residual do Ranking.
+      - name: ranking_por_cargo
+        description: Posição no ranking considerando o cargo do parlamentar.
+      - name: ranking_por_estado
+        description: Posição no ranking dentro do estado do parlamentar.
+      - name: cnt_parlamentares_estado
+        description: Quantidade total de parlamentares do estado (conforme fonte).
+      - name: cnt_cargo_por_estado
+        description: Quantidade total de parlamentares do mesmo cargo no estado.
+      - name: total_parlamentares
+        description: Total de parlamentares considerados na base do Ranking.
+      - name: total_parlamentar_por_casa
+        description: Total de parlamentares no mesmo cargo/casa.
+      - name: pctg_economia
+        description: Percentual de economia de verbas (verificar escala). Observação: pode estar nomeado como perc_economia nas `int_fct_*`.
+      - name: vlr_mandato_disponivel_total
+        description: Valor total disponível no mandato (R$).
+      - name: vlr_mandato_gasto_total
+        description: Valor total gasto no mandato (R$).
+      - name: vlr_mandato_economizado_total
+        description: Valor total economizado no mandato (R$).
+      - name: vlr_cota_parlamentar_disponivel_subtotal
+        description: Valor disponível referente à cota parlamentar (R$).
+      - name: vlr_cota_parlamentar_gasto_subtotal
+        description: Valor gasto referente à cota parlamentar (R$).
+      - name: vlr_cota_parlamentar_economizado_subtotal
+        description: Valor economizado referente à cota parlamentar (R$).
+      - name: vlr_verba_gabinete_disponivel_subtotal
+        description: Valor disponível referente à verba de gabinete (R$).
+      - name: vlr_verba_gabinete_gasto_subtotal
+        description: Valor gasto referente à verba de gabinete (R$).
+      - name: vlr_verba_gabinete_economizado_subtotal
+        description: Valor economizado referente à verba de gabinete (R$).

@@ -2,30 +2,164 @@ version: 2
 
 models:
   - name: int_fct_governismo_deputados_total
-    description: Dimensão SCD1 de deputados com chave substituta estável por id da Câmara.
+    description: Fato consolidado de governismo para deputados (nível de parlamentar). Agrega total de votos a favor/contra o governo e percentual de alinhamento.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
         tests:
           - not_null
           - unique
+      - name: total_votos_favor_governo
+        description: Quantidade total de votos do parlamentar alinhados ao governo.
+      - name: total_votos_contra_governo
+        description: Quantidade total de votos do parlamentar contrários ao governo.
+      - name: perc_governismo
+        description: Percentual de alinhamento ao governo. Confirmar escala (0–1 ou 0–100) e padronizar na camada de apresentação.
+      - name: data_carga
+        description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
   - name: int_fct_governismo_senadores_total
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Fato consolidado de governismo para senadores (nível de parlamentar). Agrega total de votos a favor/contra o governo e percentual de alinhamento.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
         tests:
           - not_null
           - unique
+      - name: total_votos_favor_governo
+        description: Quantidade total de votos do parlamentar alinhados ao governo.
+      - name: total_votos_contra_governo
+        description: Quantidade total de votos do parlamentar contrários ao governo.
+      - name: perc_governismo
+        description: Percentual de alinhamento ao governo. Confirmar escala (0–1 ou 0–100) e padronizar na camada de apresentação.
+      - name: data_carga
+        description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
   - name: int_fct_ranking_deputados_total
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Fato de ranking dos políticos para deputados (nível de parlamentar) com pontuações, posições e métricas financeiras.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
         tests:
           - not_null
           - unique
+      - name: score_total
+        description: Pontuação total atribuída pelo Ranking dos Políticos ao parlamentar.
+      - name: score_antiprivilegio
+        description: Subpontuação relacionada a postura antiprivilegios.
+      - name: score_antidesperdicio
+        description: Subpontuação relacionada a assiduidade e combate a desperdícios.
+      - name: score_processos
+        description: Subpontuação relacionada à existência/gravidade de processos.
+      - name: score_outros
+        description: Subpontuação residual (outros critérios) do Ranking.
+      - name: ranking_por_cargo
+        description: Posição do parlamentar no ranking considerando apenas o cargo (Deputado).
+      - name: ranking_por_estado
+        description: Posição do parlamentar no ranking dentro do seu estado.
+      - name: cnt_parlamentares_estado
+        description: Quantidade total de parlamentares (deputados e/ou senadores) do estado, conforme definição da fonte.
+      - name: cnt_cargo_por_estado
+        description: Quantidade total de parlamentares do mesmo cargo no estado.
+      - name: total_parlamentares
+        description: Quantidade total de parlamentares na base do Ranking (todas as casas), quando informado.
+      - name: total_parlamentar_por_casa
+        description: Quantidade total de parlamentares no mesmo cargo/casa, quando informado.
+      - name: perc_economia
+        description: Percentual de economia de verbas ao longo do mandato/corte considerado. Confirmar escala (0–1 ou 0–100).
+      - name: vlr_mandato_disponivel_total
+        description: Valor total disponível no mandato (soma de cotas/verb as) segundo a fonte.
+      - name: vlr_mandato_gasto_total
+        description: Valor total gasto no mandato.
+      - name: vlr_mandato_economizado_total
+        description: Valor total economizado no mandato.
+      - name: vlr_cota_parlamentar_disponivel_subtotal
+        description: Valor disponível referente à cota parlamentar.
+      - name: vlr_cota_parlamentar_gasto_subtotal
+        description: Valor gasto referente à cota parlamentar.
+      - name: vlr_cota_parlamentar_economizado_subtotal
+        description: Valor economizado referente à cota parlamentar.
+      - name: vlr_verba_gabinete_disponivel_subtotal
+        description: Valor disponível referente à verba de gabinete.
+      - name: vlr_verba_gabinete_gasto_subtotal
+        description: Valor gasto referente à verba de gabinete.
+      - name: vlr_verba_gabinete_economizado_subtotal
+        description: Valor economizado referente à verba de gabinete.
   - name: int_fct_ranking_senadores_total
-    description: Dimensão SCD1 de senadores com chave substituta estável por id do Senado e mapeamento ao Radar.
+    description: Fato de ranking dos políticos para senadores (nível de parlamentar) com pontuações, posições e métricas financeiras.
     columns:
       - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
         tests:
           - not_null
           - unique
+      - name: score_total
+        description: Pontuação total atribuída pelo Ranking dos Políticos ao parlamentar.
+      - name: score_antiprivilegio
+        description: Subpontuação relacionada a postura antiprivilegios.
+      - name: score_antidesperdicio
+        description: Subpontuação relacionada a assiduidade e combate a desperdícios.
+      - name: score_processos
+        description: Subpontuação relacionada à existência/gravidade de processos.
+      - name: score_outros
+        description: Subpontuação residual (outros critérios) do Ranking.
+      - name: ranking_por_cargo
+        description: Posição do parlamentar no ranking considerando apenas o cargo (Senador).
+      - name: ranking_por_estado
+        description: Posição do parlamentar no ranking dentro do seu estado.
+      - name: cnt_parlamentares_estado
+        description: Quantidade total de parlamentares (deputados e/ou senadores) do estado, conforme definição da fonte.
+      - name: cnt_cargo_por_estado
+        description: Quantidade total de parlamentares do mesmo cargo no estado.
+      - name: total_parlamentares
+        description: Quantidade total de parlamentares na base do Ranking (todas as casas), quando informado.
+      - name: total_parlamentar_por_casa
+        description: Quantidade total de parlamentares no mesmo cargo/casa, quando informado.
+      - name: perc_economia
+        description: Percentual de economia de verbas ao longo do mandato/corte considerado. Confirmar escala (0–1 ou 0–100).
+      - name: vlr_mandato_disponivel_total
+        description: Valor total disponível no mandato (soma de cotas/verb as) segundo a fonte.
+      - name: vlr_mandato_gasto_total
+        description: Valor total gasto no mandato.
+      - name: vlr_mandato_economizado_total
+        description: Valor total economizado no mandato.
+      - name: vlr_cota_parlamentar_disponivel_subtotal
+        description: Valor disponível referente à cota parlamentar.
+      - name: vlr_cota_parlamentar_gasto_subtotal
+        description: Valor gasto referente à cota parlamentar.
+      - name: vlr_cota_parlamentar_economizado_subtotal
+        description: Valor economizado referente à cota parlamentar.
+      - name: vlr_verba_gabinete_disponivel_subtotal
+        description: Valor disponível referente à verba de gabinete.
+      - name: vlr_verba_gabinete_gasto_subtotal
+        description: Valor gasto referente à verba de gabinete.
+      - name: vlr_verba_gabinete_economizado_subtotal
+        description: Valor economizado referente à verba de gabinete.
+  - name: int_fct_governismo_deputados_trimestre
+    description: Fato de governismo trimestral para deputados (nível de parlamentar por trimestre).
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+      - name: casa
+        description: Casa legislativa do parlamentar no período (camara/senado).
+      - name: data_trimestre
+        description: Data representativa do trimestre de referência (normalizada para início do trimestre em casos específicos).
+      - name: perc_governismo_trimestre
+        description: Percentual de alinhamento ao governo no trimestre. Confirmar escala (0–1 ou 0–100).
+      - name: data_carga
+        description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
+  - name: int_fct_governismo_senadores_trimestre
+    description: Fato de governismo trimestral para senadores (nível de parlamentar por trimestre).
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+      - name: casa
+        description: Casa legislativa do parlamentar no período (camara/senado).
+      - name: data_trimestre
+        description: Data representativa do trimestre de referência (normalizada para início do trimestre em casos específicos).
+      - name: perc_governismo_trimestre
+        description: Percentual de alinhamento ao governo no trimestre. Confirmar escala (0–1 ou 0–100).
+      - name: data_carga
+        description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
