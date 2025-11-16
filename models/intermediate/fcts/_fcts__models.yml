@@ -163,3 +163,5 @@ models:
         description: Percentual de alinhamento ao governo no trimestre. Confirmar escala (0–1 ou 0–100).
       - name: data_carga
         description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
+  - name: int_fct_ecidadania_bignumbers
+  - name: int_fct_ecidadania_proposicoes

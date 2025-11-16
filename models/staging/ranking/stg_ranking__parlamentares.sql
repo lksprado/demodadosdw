@@ -1,4 +1,7 @@
-{{ config(materialized='view') }}
+{{ config(
+    tags=["stg","ranking", "parlamentar"]
+) }}
+
 
 WITH source AS (
     SELECT * FROM {{ source('ranking','raw_ranking_parlamentares') }}

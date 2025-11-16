@@ -1,3 +1,7 @@
+{{ config(
+    tags=["dim","parlamentar","senado"]
+) }}
+
 WITH
 de_para as (
     select

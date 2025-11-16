@@ -1,0 +1,22 @@
+
+version: 2
+
+models:
+  - name: stg_ecidadania__bignumbers
+    description: "Numero total de Votacoes e Votantes"
+  - name: stg_ecidadania__mais_votados
+    description: "Base tipo Fato Proposicoes legislativascom tramitacao em andamento e encerradas em destaque"
+    columns:
+      - name: sk_proposicao
+        description: "Identificador único da proposicao"
+        tests:
+          - not_null
+          - unique
+  - name: stg_ecidadania__paginas
+    description: "Base tipo Fato Proposicoes legislativascom tramitacao em andamento e encerradas"
+    columns:
+      - name: sk_proposicao
+        description: "Identificador único da proposicao"
+        tests:
+          - not_null
+          - unique

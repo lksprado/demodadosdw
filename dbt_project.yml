@@ -23,10 +23,13 @@ models:
   demodadosdw:
     staging:
       +schema: staging
-      +materialized: view
+      +materialized: table
     intermediate:
       +schema: intermediate
-      +materialized: table
+      +materialized: view
     marts:
       +schema: marts
-      +materialized: view
+      +materialized: table
+seeds:
+  demodadosdw:
+    +schema: raw

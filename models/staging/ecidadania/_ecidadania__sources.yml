@@ -1,0 +1,16 @@
+
+version: 2
+
+sources:
+  - name: ecidadania
+    database: demodados
+    schema: raw
+    tables:
+    - name: raw_ecidadania_mais_votados
+      description: "Igual raw_ecidadania_paginas mas para os projetos mais votados no dia"
+
+    - name: raw_ecidadania_paginas
+      description: "Votacoes das proposicoes"
+
+    - name: raw_ecidadania_bignumbers
+      description: "Big numbers sobre votacoes e votantes no total do e-cidadnia"

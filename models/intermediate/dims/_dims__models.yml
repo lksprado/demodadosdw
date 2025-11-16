@@ -203,3 +203,4 @@ models:
         description: Identificador do parlamentar na base do Radar Congresso.
       - name: id_parlamentar_ranking
         description: Identificador do parlamentar na base do Ranking dos Políticos.
+  - name: int_dim_proposicoes

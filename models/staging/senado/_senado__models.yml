@@ -3,10 +3,22 @@ version: 2
 
 models:
   - name: stg_parlamento__senadores
-    description: "Modelo bronze que carrega e padroniza os dados brutos da API do Senado"
+    description: "Modelo bronze com atributos dos Senadores"
     columns:
       - name: id
         description: "Identificador único do senador"
         tests:
           - not_null
           - unique
+  - name: stg_senado__status
+    description: "Modelo bronze com status das propostas de lei"
+    columns:
+      - name: sk_proposicao
+        description: "Identificador único da proposicao"
+        tests:
+          - not_null
+          - unique
+  - name: stg_senado__tipos_decisao
+    description: "Modelo bronze auxiliar com descritivo dos tipos de deliberacoes de proposicoes"
+  - name: stg_senado__tipos_entes
+    description: "Modelo bronze auxiliar com o descritivo do tipo de ente vinculado a proposicao"

@@ -1,3 +1,7 @@
+{{ config(
+    tags=["mrt","radar","parlamentar"]
+) }}
+
 WITH
 dim_dep AS (
     SELECT * FROM {{ ref('int_dim_deputados')}}

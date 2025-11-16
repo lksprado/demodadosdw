@@ -1,3 +1,8 @@
+{{ config(
+    tags=["fct","radar","parlamentar"]
+) }}
+
+
 WITH
 de_para as (
     select 

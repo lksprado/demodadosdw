@@ -8,3 +8,9 @@ sources:
     tables:
     - name: raw_parlamento_senadores
       description: "Fato para deputados governismo"
+    - name: raw_senado_status
+      description: "Dimensao para status das proposicoes"
+    - name: raw_senado_tipos_decisao
+      description: "Detalhes para tipo de decisao no status das proposicoes"
+    - name: raw_senado_tipos_entes
+      description: "Detalhes para tipo entes"

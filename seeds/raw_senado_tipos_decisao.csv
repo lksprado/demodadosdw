@@ -1,0 +1,37 @@
+sigla,descricao
+APROVADA_EM_COMISSAO_TERMINATIVA,Aprovada por Comissão em decisão terminativa
+APROVADA_NO_PLENARIO,Aprovada pelo Plenário
+APROVADA_PARCIALMENTE,Aprovada parcialmente pelo Plenário
+APROVADO_CDIR,Aprovada pela Comissão Diretora
+APROVADO_NA_INTEGRA,Aprovada na íntegra
+APROVADO_PLV,Aprovada na forma de Projeto de Lei de Conversão
+APROVADO_PLV_COM_EMENDAS,"Aprovada na forma de Projeto de Lei de Conversão, com emendas"
+ARQUIVADO_FIM_LEGISLATURA,Arquivada ao final da Legislatura (art. 332 do RISF)
+CONHECIDA,Conhecida
+DEFERIDO_CDIR,Deferida pela Comissão Diretora
+DEFERIDO_PRESIDENCIA_ART_101_RISF,"Deferida pela Presidência (art. 101, inc. I, do RISF)"
+DEFERIDO_PRESIDENCIA_ART_214_RISF,"Deferida pela Presidência (art. 214, parágrafo único, III, do RISF)"
+DEFERIDO_PRESIDENCIA_ART_215_RISF,"Deferida pela Presidência (art. 215, inc. II, e art. 256, § 2, inc. I, do RISF)"
+DEFERIDO_PRESIDENCIA_ART_41_RISF,Deferida pela Presidência (art. 41 do RISF)
+DEVOLVIDO_CD_ACAO_JUD,Devolvido à Câmara dos Deputados em virtude de decisão judicial
+IMPUGNADO_PRESIDENCIA,"Impugnada pela Presidência (art. 48, inc. XI, do RISF)"
+INADIMITIDA_URGENCIA,Inadmitida quanto aos pressupostos constitucionais de relevância e urgência
+PARA_PUBLICACAO,À publicação para que produza efeitos
+PERDA_EFICACIA,"Perda de eficácia, em decorrência do término do prazo para sua votação no Congresso"
+PREJUDICADO,Prejudicada
+PUBLICADO,Publicada
+REAUTUADO,Reautuada
+REEDITADA,Reeditada
+REJEITADO_COMISSAO_NAO_TERM,Rejeitada por Comissão em decisão não terminativa (art. 254 do RISF)
+REJEITADO_COMISSAO_TERM,"Rejeitada por Comissão em decisão terminativa (art. 91, § 5º, do RISF)"
+REJEITADO_INCONSTICIONALIDADE_CCJ,"Rejeitada pela CCJ por inconstitucionalidade (art. 101, § 1º, do RISF)"
+REJEITADO_PLENARIO,Rejeitada pelo Plenário
+REJEITADO_PLENARIO_CD,Rejeitada pelo Plenário da Câmara dos Deputados
+RETIRADA_DE_ASSINATURA,Retirada de assinaturas (art. 244 do RISF)
+RETIRADO_PELO_AUTOR,Retirada pelo autor
+REVOGADO,Revogada
+SEM_EFICACIA,"Sem eficácia (art. 48, II e XI, do RISF)"
+TRANSF_IND,Transformada em Indicação
+TRANSF_PROJ_LEI_SEN,Transformada em Projeto de Lei do Senado
+TRANSF_PROJ_RES_SEN,Transformada em Projeto de Resolução do Senado
+TRANSF_PROPOSTA_DE_EC,Transformada em Proposta de Emenda à Constituição

@@ -1,3 +1,8 @@
+{{ config(
+    tags=["stg","radar","senado"]
+) }}
+
+
 WITH source AS (
     SELECT *
     FROM {{ source('radar','raw_radar_governismo_senadores')}}

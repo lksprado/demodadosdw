@@ -1,6 +1,6 @@
 {{ config(
     unique_key = 'sk_parlamentar',
-    tags = ['intermediate', 'mapping']
+    tags = ['dim', 'parlamentar']
 ) }}
 with 
 camara as (

@@ -1,3 +1,7 @@
+{{ config(
+    tags=["dim","parlamentar"]
+) }}
+
 WITH
 senadores as (
     select * from {{ ref('int_dim_senadores')}}

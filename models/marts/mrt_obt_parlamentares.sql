@@ -1,3 +1,8 @@
+{{ config(
+    tags=["mrt","parlamentar"]
+) }}
+
+
 WITH
 parlamentares AS (
     SELECT * FROM {{ ref('int_dim_parlamentares')}}

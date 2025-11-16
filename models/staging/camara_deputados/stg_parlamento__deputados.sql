@@ -1,4 +1,9 @@
-{{ config(materialized='view') }}
+{{ config(
+    tags=["stg","congresso","parlamentar"]
+) }}
+
+
+
 WITH source AS (
     SELECT * FROM {{ source('camara','raw_parlamento_deputados') }}
 ),
