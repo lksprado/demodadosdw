@@ -14,3 +14,7 @@ sources:
       description: "Detalhes para tipo de decisao no status das proposicoes"
     - name: raw_senado_tipos_entes
       description: "Detalhes para tipo entes"
+    - name: raw_senado_tipos_projetos
+      description: "Detalhes para tipo de proposicoes legislativas"
+    - name: stg_senado__tipos_projetos
+      description: "Siglas e descricao dos tipos de proposicao"

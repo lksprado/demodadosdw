@@ -40,6 +40,7 @@ linha_representativa as (
 select 
 t1.data_extracao,
 split_part(upper(t1.id_proposicao), '/', 2)::int as ano_proposicao,
+split_part(upper(t1.id_proposicao), ' ', 1) as sigla_proposicao,
 t1.sk_proposicao,
 t1.id_proposicao,
 t1.ementa,

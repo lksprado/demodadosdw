@@ -16,15 +16,21 @@ tab_join as (
     select 
     t1.sk_proposicao,
     t1.id_proposicao,
+    t1.sigla_proposicao,
     t1.apelido,
     t1.ementa,
     t1.tramitando,
     t1.codigo_casa,
     t1.casa,
     t1.codigo_ente,
-    t3.nome_ente,
-    t3.tipo_ente,
-    t1.tipo_conteudo,
+    CASE 
+        WHEN t1.codigo_ente = 'PLEN' AND t1.codigo_casa = 'CN' THEN 'Plenário do Congresso Nacional'
+        ELSE t3.nome_ente
+    END AS nome_ente,
+    CASE 
+        WHEN t1.codigo_ente = 'PLEN' AND t1.codigo_casa = 'CN' THEN 'PLENARIO'
+        ELSE t3.tipo_ente
+    END AS tipo_ente,
     t1.tipo_proposicao,
     t1.data_apresentacao,
     t1.autoria,

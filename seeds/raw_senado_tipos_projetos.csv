@@ -1,0 +1,185 @@
+sigla,descricao,dataInicio,dataFim
+ACE,Aviso da Comissão de Educação,2017-01-01T00:00:00,2024-09-18T00:00:00
+ACL,Ato Conjunto Legislativo,2023-01-01T00:00:00,
+ADF,Anteprojeto de Lei do DF,1940-01-01T00:00:00,2005-05-24T00:00:00
+ADL,Anteprojeto de Decreto Legislativo,1970-01-01T00:00:00,1990-07-27T00:00:00
+ADV,Advertencia,1946-01-01T00:00:00,
+AFC,"Aviso da Comissão de Transparência, Governança, Fiscalização e Controle e Defesa do Consumidor",2017-01-01T00:00:00,2024-09-18T00:00:00
+AFS,Afastamento do Exercício do Mandato,2008-01-01T00:00:00,
+AJECN,Ajuste de emenda orçamentária,2015-01-01T00:00:00,
+AMA,"Aviso da Comissão de Meio Ambiente, Defesa do Cons. e Fisc. e Controle",2012-02-13T00:00:00,2024-09-18T00:00:00
+AP.,Anteprojeto,1946-01-01T00:00:00,
+APR,Anteprojeto de Resolução do Senado,1970-01-01T00:00:00,2005-05-24T00:00:00
+ATC,Ato Convocatório,2003-12-15T00:00:00,2024-09-27T00:00:00
+ATCN,Ato do Presidente da Mesa do Congresso Nacional,2016-01-01T00:00:00,
+ATD,Ato da Comissão Diretora,2015-08-18T00:00:00,
+ATM,Ato do Presidente da Mesa do Congresso Nacional,2007-11-01T00:00:00,2022-12-21T00:00:00
+ATN,Ato Conjunto dos Presidentes do Senado e da Câmara,2003-01-01T00:00:00,2022-12-21T00:00:00
+ATS,Ato do Presidente do Senado Federal,2005-01-03T00:00:00,
+AUT,Escolha de Autoridade para o Conselho da República,1946-01-01T00:00:00,2024-09-27T00:00:00
+AV.,Aviso,1900-01-01T00:00:00,
+AVE,Aviso da Comissão de Assuntos Econômicos,2015-03-18T00:00:00,2024-09-18T00:00:00
+AVN,Aviso (CN),2000-05-11T00:00:00,
+AVS, Aviso,1999-08-11T00:00:00,
+CAR,Carta,1946-01-01T00:00:00,1970-01-01T00:00:00
+CCC,Consulta do Conselho de Comunicação Social,2004-08-04T00:00:00,
+CCN,Consulta do Congresso Nacional,2005-01-01T00:00:00,
+CCS,Conselho Comunicação Social (SF),1946-01-01T00:00:00,
+CEN,Censura,1946-01-01T00:00:00,
+CEP,Conselho de Ética e Decoro Parlamentar (SF),1946-01-01T00:00:00,
+COM,Comunicação,1946-01-01T00:00:00,1970-01-01T00:00:00
+CON,Consulta (SF),1900-01-01T00:00:00,
+COP,Corregedoria Parlamentar (SF),1970-01-01T00:00:00,
+DAI,Denúncia perante a CCAI,2013-01-01T00:00:00,
+DAS,Denúncia da Comissão de Assuntos Sociais,1997-11-11T00:00:00,2023-05-23T00:00:00
+DCR,Diversos Comissão Representativa,1999-07-26T00:00:00,
+DEN,Denúncia,1946-01-01T00:00:00,
+DIV,Diversos,1946-01-01T00:00:00,2024-09-18T00:00:00
+DLG,Decreto Legislativo,1946-01-01T00:00:00,
+DTQ,Destaque,2020-08-13T00:00:00,2024-06-03T00:00:00
+DVN,Diversos (CN),1970-01-01T00:00:00,2024-09-18T00:00:00
+ECD,Emenda(s) da Câmara dos Deputados a Projeto de Lei do Senado,1988-10-05T00:00:00,2018-12-31T00:00:00
+ECR,Emenda Constitucional de Revisão,1946-01-01T00:00:00,
+EDS,Emenda(s) da Câmara dos Deputados a Projeto de Decreto Legislativo,2011-05-11T00:00:00,2018-12-31T00:00:00
+EMENDA,Emenda a Projeto de Lei ,1946-01-01T00:00:00,
+ESC,Estudo do Conselho de Comunicação Social,2004-08-04T00:00:00,
+GTJ,Grupo de Trabalho,2007-01-01T00:00:00,
+IAN,Indicação Assembleia Constituinte,1946-01-01T00:00:00,
+IED,Indicação do Cons. de Ética e Decoro Parlamentar,2001-09-13T00:00:00,2005-05-24T00:00:00
+INA,Indicação de Autoridade,1970-01-01T00:00:00,2005-05-24T00:00:00
+INC,Indicação (CD),1900-01-01T00:00:00,1968-06-21T00:00:00
+INQ,Inquerito (SF),1946-01-01T00:00:00,
+INS,Indicação,1900-01-01T00:00:00,
+MCN,Mensagem (CN),1900-01-01T00:00:00,
+MCR,Mensagem da Comissão Representativa do Congresso Nacional,2010-01-21T00:00:00,
+MDF,Mensagem do Distrito Federal,1900-01-01T00:00:00,1990-12-12T00:00:00
+MEM,Memorial,1946-01-01T00:00:00,1970-01-01T00:00:00
+MOS,Moção do Senado Federal,2001-09-18T00:00:00,
+MPCN,Mensagem do Presidente do CN,2017-01-01T00:00:00,
+MPSF,Mensagem do Presidente do SF,2017-01-01T00:00:00,
+MPV,Medida Provisória,1900-01-01T00:00:00,
+MSC,Mensagem (CD),1900-01-01T00:00:00,2024-09-27T00:00:00
+MSF,Mensagem (SF),1900-01-01T00:00:00,
+MSG,Mensagem,1900-01-01T00:00:00,
+OCS,Ofício da Comissão de Assuntos Sociais,2012-04-10T00:00:00,2019-06-27T00:00:00
+OF,Ofício SF (Interno),1900-01-01T00:00:00,
+OF.,Ofício (Externo),1900-01-01T00:00:00,
+OFC,Ofício (CD),1900-01-01T00:00:00,1999-01-31T00:00:00
+OFCN,Ofício expedido pelo CN,2017-01-01T00:00:00,
+OFE,Ofício da Comissão de Assuntos Econômicos,2002-10-01T00:00:00,2019-06-27T00:00:00
+OFICIO,Ofício,2018-05-16T00:00:00,2024-09-18T00:00:00
+OFJ,"Ofício da Comissão de Constituição, Justiça e Cidadania",2002-10-01T00:00:00,2019-06-27T00:00:00
+OFN,Ofício (CN),1970-01-01T00:00:00,
+OFS,"Ofício ""S""",1900-01-01T00:00:00,
+OFSF,Ofício expedido pelo SF,2017-01-01T00:00:00,
+OFTFC,"Ofício da Comissão de Transparência, Fiscalização, Controle e Defesa do Consumidor",2017-01-01T00:00:00,2019-06-27T00:00:00
+P.C,Parecer (CD),1900-01-01T00:00:00,1984-03-16T00:00:00
+P.S,Parecer (SF),1900-01-01T00:00:00,
+PAC,Parecer do Conselho de Comunicação Social,1946-01-01T00:00:00,
+PAR,Parecer (CN),1900-01-01T00:00:00,
+PCA,Parecer da Assembleia Constituinte,1900-01-01T00:00:00,1999-01-31T00:00:00
+PCE,Petição do Conselho de Ética e Decoro Parlamentar (SF),2006-04-01T00:00:00,
+PCJ,"Petição Comissão de Constituição, Justiça e Cidadania",2007-01-01T00:00:00,
+PCS,Parecer do Conselho de Comunicação Social,2012-09-11T00:00:00,
+PDA,Projeto de Decisão da Assembleia,1946-01-01T00:00:00,
+PDC,Projeto de Decreto Legislativo (CD),1900-01-01T00:00:00,2018-12-31T00:00:00
+PDF,Projeto de Lei do DF,1900-01-01T00:00:00,1990-11-21T00:00:00
+PDG,Proposta Delegação Legisl. (CN),1900-01-01T00:00:00,1985-06-11T00:00:00
+PDH,Petição da Comissão de Direitos Humanos e Legislação Participativa,2007-03-26T00:00:00,
+PDL,Projeto de Decreto Legislativo,2018-08-02T00:00:00,
+PDN,Projeto de Decreto Legislativo (CN),1900-01-01T00:00:00,
+PDR,Projeto de Decreto Legislativo (CR - CN),2001-01-16T00:00:00,
+PDS,Projeto de Decreto Legislativo (SF),1900-01-01T00:00:00,2018-12-31T00:00:00
+PEC,Proposta de Emenda à Constituição,1900-01-01T00:00:00,
+PER,Proposta de Emenda Revisional,1946-01-01T00:00:00,
+PET,Petição (SF),1940-08-14T00:00:00,
+PFC,Proposta de Fiscalização e Controle(CD),1946-01-01T00:00:00,2024-09-27T00:00:00
+PFS,Proposta de Fiscalização e Controle,1900-01-01T00:00:00,
+PL,Projeto de Lei,1900-01-01T00:00:00,
+PL.,PL-CR (Comissão Representativa-CN),1900-01-01T00:00:00,2005-05-24T00:00:00
+PLC,Projeto de Lei da Câmara,1900-01-01T00:00:00,2018-12-31T00:00:00
+PLCNC,Projeto de Lei do Congresso - Complementar (1946 - 1970),1946-01-01T00:00:00,1970-01-01T00:00:00
+PLD,Projeto de Lei Delegada,1946-01-01T00:00:00,
+PLN,Projeto de Lei do Congresso Nacional,1900-01-01T00:00:00,
+PLP,Projeto de Lei Complementar,1900-01-01T00:00:00,
+PLS,Projeto de Lei do Senado,1900-01-01T00:00:00,2018-12-31T00:00:00
+PLV,Projeto de Lei de Conversão (CN),1900-01-01T00:00:00,
+POR,Portaria,2005-08-16T00:00:00,2018-12-21T00:00:00
+PR,PR-CR (Comissão Representativa-CN),1900-01-01T00:00:00,1992-01-16T00:00:00
+PR.,Projeto Resolução (Conselho de Etica e Decoro Parlamentar),1946-01-01T00:00:00,2018-12-21T00:00:00
+PRA,Projeto de Resolução da Assembleia Constituinte,1946-01-01T00:00:00,2018-12-21T00:00:00
+PRC,Projeto de Resolução (CD),1900-01-01T00:00:00,1999-01-31T00:00:00
+PRF,Projeto de Resolução do SF,1946-01-01T00:00:00,2018-12-21T00:00:00
+PRFC,Projeto de Reforma Constitucional,1946-01-01T00:00:00,1970-01-01T00:00:00
+PRM,Premiação,2017-01-01T00:00:00,
+PRN,Projeto de Resolução do Congresso Nacional,1900-01-01T00:00:00,
+PROJ,Projeto (1946 - 1970),1946-01-01T00:00:00,1970-01-01T00:00:00
+PROP,Proposição (1946-1970),1946-01-01T00:00:00,1970-01-01T00:00:00
+PRP,Procuradoria Parlamentar (SF),1946-01-01T00:00:00,
+PRR,Projeto de Resolução de Revisão Constitucional,1900-01-01T00:00:00,1994-05-26T00:00:00
+PRS,Projeto de Resolução do Senado,1900-01-01T00:00:00,
+PTN,Petição (CN),2001-12-05T00:00:00,
+QCN,Questão de Ordem do Congresso Nacional,2000-01-26T00:00:00,
+QED,Questão de Ordem do Conselho de Ética,2001-09-24T00:00:00,
+QSF,Questão de Ordem do Senado Federal,2000-01-26T00:00:00,
+R.C,Recurso (Congresso Nacional),1900-01-01T00:00:00,
+R.S,Recurso (SF),1900-01-01T00:00:00,
+RAE,Representação da Comissão de Assuntos Econômicos,2002-03-13T00:00:00,2018-12-21T00:00:00
+RAI,Requerimento da Comissão de Atividades de Inteligência,2000-11-21T00:00:00,2018-12-31T00:00:00
+RAN,Resolução da Assembleia Nacional,1946-01-01T00:00:00,2018-12-21T00:00:00
+RAS,Requerimento da Comissão de Assuntos Sociais,2003-03-13T00:00:00,2018-12-31T00:00:00
+RCD,Resolução (CD),1946-01-01T00:00:00,2018-12-21T00:00:00
+RCE,Requerimento da Comissão de Educação,2001-08-29T00:00:00,2018-12-31T00:00:00
+RCJ,Representação Comissão Constituição e Justiça,2002-05-08T00:00:00,2018-12-21T00:00:00
+RCM,Requerimento de Comissão Mista,1946-01-01T00:00:00,2018-12-31T00:00:00
+RCN,Resolução do Congresso Nacional,1900-01-01T00:00:00,1990-04-20T00:00:00
+RCP,Requerimento da Comissão Parlamentar,1946-01-01T00:00:00,2018-12-31T00:00:00
+RCS,Requerimento do Conselho de Comunicação Social,2001-07-11T00:00:00,2018-12-31T00:00:00
+RCT,"Requerimento da Comissão de Ciência, Tec., Inov., Com. e Informática",2007-04-04T00:00:00,2018-12-31T00:00:00
+RDH,Requerimento Comissão de Direitos Humanos e Legislação Participativa,2005-03-10T00:00:00,2018-12-31T00:00:00
+RDR,Requerimento da Comissão de Desenvolvimento Regional e Turismo,2009-03-30T00:00:00,2018-12-31T00:00:00
+REC,Recurso (CD),1946-01-01T00:00:00,2018-12-21T00:00:00
+RED,Requerimento do Conselho de Ética e Decoro Parlamentar,2000-12-12T00:00:00,2018-12-31T00:00:00
+RELA,Relatório,1946-01-01T00:00:00,2018-12-21T00:00:00
+RELA*,Relatório,1946-01-01T00:00:00,1970-01-01T00:00:00
+RELAT,Relatório,1946-01-01T00:00:00,2018-12-21T00:00:00
+REN,Renúncia,2000-12-14T00:00:00,2018-12-21T00:00:00
+REP,Representação,1900-01-01T00:00:00,
+REQ,Requerimento,1946-01-01T00:00:00,
+RFF,Requerimento da Comissão Senado do Futuro,2013-10-01T00:00:00,2018-12-31T00:00:00
+RIC,Requerimento de  Informação (CD),1946-01-01T00:00:00,2018-12-21T00:00:00
+RMA,Requerimento da Comissão de Meio Ambiente,2005-02-23T00:00:00,2018-12-31T00:00:00
+RMC,Comissão Mista Permanente sobre Mudanças Climáticas,2009-04-07T00:00:00,2018-12-31T00:00:00
+RPD,Ressalva ao Primeiro PND (CN),1900-01-01T00:00:00,1972-04-02T00:00:00
+RPF,Requerimento da Comissão para o Aprimoramento do Pacto Federativo,2016-02-02T00:00:00,2018-12-31T00:00:00
+RQA,Requerimento Assembleia Nacional,1946-01-01T00:00:00,2018-12-21T00:00:00
+RQC,Requerimento (CD),1900-01-01T00:00:00,1999-01-31T00:00:00
+RQD,Requerimento da Comissão Diretora,2016-01-01T00:00:00,2018-12-31T00:00:00
+RQE,Requerimento da Comissão de Assuntos Econômicos,2000-10-04T00:00:00,2018-12-31T00:00:00
+RQF,Requerimento da Comissão de Fiscal. e Controle,2001-04-18T00:00:00,2005-02-23T00:00:00
+RQI,Requerimento da Comissão de Serviços de Infraestrutura,2000-11-07T00:00:00,2018-12-31T00:00:00
+RQJ,"Requerimento  da Comissão de Constituição, Justiça e Cidadania",1999-12-15T00:00:00,2018-12-31T00:00:00
+RQM,Requerimento da Mesa do Senado,1900-01-01T00:00:00,2018-12-31T00:00:00
+RQN,Requerimento (CN),1900-01-01T00:00:00,
+RQR,Requerimento da Comissão Representativa,1900-01-01T00:00:00,2018-12-31T00:00:00
+RQS,Requerimento,1900-01-01T00:00:00,
+RRA,Requerimento da Comissão de Agricultura e Reforma Agrária,2007-01-01T00:00:00,2018-12-31T00:00:00
+RRC,Recomendação do Conselho de Comunicação Social,2004-08-04T00:00:00,
+RRE,Requerimento da Comissão de Relações Exteriores e Defesa Nacional,2001-10-03T00:00:00,2018-12-31T00:00:00
+RSF,Resolução (SF),1900-01-01T00:00:00,1992-12-31T00:00:00
+RSJ,Requerimento da Subcomissão do Judiciário - CCJ,2000-09-01T00:00:00,2001-12-31T00:00:00
+RTG,"Requerimento da Comissão de Transparência, Governança, Fiscalização e Controle e Defesa do Consumidor",2015-09-22T00:00:00,2018-12-31T00:00:00
+RVM,Requerimento da Comissão Mista de Combate à Violência contra a Mulher,2015-03-23T00:00:00,2018-12-31T00:00:00
+SCD,Substitutivo da Câmara dos Deputados a Projeto de Lei do Senado,1999-02-16T00:00:00,2018-12-31T00:00:00
+SDS,Substitutivo da Câmara dos Deputados a Projeto de Decreto Legislativo,2011-05-11T00:00:00,2018-12-31T00:00:00
+SIN,Sindicância,1900-01-01T00:00:00,2018-12-21T00:00:00
+SIT,Solicitação de Informação ao TCU (CD),1946-01-01T00:00:00,2018-12-21T00:00:00
+SOL,Solenidade de Entrega das Propostas de Reformas Constitucionais,2003-01-01T00:00:00,2018-12-21T00:00:00
+SUBEMENDA,Subemenda,1946-01-01T00:00:00,
+SUG,Sugestão,1900-01-01T00:00:00,
+TEL,Telex,1900-01-01T00:00:00,1986-08-13T00:00:00
+TELG,Telegrama,1946-01-01T00:00:00,1970-01-01T00:00:00
+TLX,Telex,1946-01-01T00:00:00,2018-12-21T00:00:00
+TVR,Ato de Concessão e Renovação de Concessão de Emissora de Rádio e Televisão,1948-01-01T00:00:00,
+VET,Veto,1901-01-01T00:00:00,
+VETDF,Veto do Prefeito do Distrito Federal,1948-01-01T00:00:00,1960-12-31T00:00:00
