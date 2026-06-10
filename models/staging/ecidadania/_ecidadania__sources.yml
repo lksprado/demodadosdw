@@ -5,12 +5,21 @@ sources:
   - name: ecidadania
     database: demodados
     schema: raw
+    loaded_at_field: data_carga
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
     tables:
-    - name: raw_ecidadania_mais_votados
-      description: "Igual raw_ecidadania_paginas mas para os projetos mais votados no dia"
+      - name: raw_ecidadania_mais_votados
+        description: "Proposições legislativas em destaque (mais votadas no dia) na plataforma e-Cidadania"
 
-    - name: raw_ecidadania_paginas
-      description: "Votacoes das proposicoes"
+      - name: raw_ecidadania_paginas
+        description: "Todas as proposições legislativas (em andamento e encerradas) na plataforma e-Cidadania"
+        columns:
+          - name: sk_proposicao
+            tests:
+              - unique
+              - not_null
 
-    - name: raw_ecidadania_bignumbers
-      description: "Big numbers sobre votacoes e votantes no total do e-cidadnia"
+      - name: raw_ecidadania_bignumbers
+        description: "Totais agregados de votações e votantes na plataforma e-Cidadania"

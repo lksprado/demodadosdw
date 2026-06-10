@@ -2,8 +2,9 @@
     tags=["dim","senado"]
 ) }}
 
-with 
-tipos_proposicoes as (
-    select * from {{ ref('stg_senado__tipos_projetos')}}
+WITH
+tipos_proposicoes AS (
+    SELECT * FROM {{ ref('stg_senado_tipos_projetos') }}
 )
-select * from tipos_proposicoes
+
+SELECT * FROM tipos_proposicoes

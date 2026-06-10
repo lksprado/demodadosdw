@@ -1,41 +1,90 @@
-
 version: 2
 
 models:
-  - name: stg_ranking__parlamentares
-    description: "Modelo bronze que carrega e padroniza os dados brutos da API do Ranking Politicos"
+  - name: stg_ranking_parlamentares
+    description: "Modelo staging com dados de desempenho e financeiros dos parlamentares extraídos do Ranking dos Políticos"
     columns:
       - name: id_parlamentar_ranking
-        description: "Identificador único do deputado no site"
+        description: "Identificador único do parlamentar no site Ranking dos Políticos"
         tests:
           - not_null
           - unique
       - name: id_parlamentar_congresso
-        description: "FK único do deputado na API da câmara"
+        description: "FK do parlamentar na API oficial da Câmara ou Senado"
         tests:
           - not_null
           - unique
       - name: cargo
-        description: "Senador ou Deputado"
+        description: "Cargo do parlamentar (Senador, Deputado Federal)"
       - name: score_total
-        description: "Pontuacao total no Ranking dos Politicos"
+        description: "Pontuação total no Ranking dos Políticos"
       - name: score_antiprivilegio
-        description: "Pontuacao referente a rejeicao de privilegios"
+        description: "Subpontuação referente à rejeição de privilégios"
       - name: score_antidesperdicio
-        description: "Pontuacao referente presencas e desperdicios"
-      - name: pctg_economia
-        description: "Porcentual de economia de verbas de gabinete"
+        description: "Subpontuação referente a presenças e combate a desperdícios"
+      - name: perc_economia
+        description: "Percentual de economia de verbas de mandato"
       - name: score_processos
-        description: "Possui processo judicial em andamento"
+        description: "Subpontuação relacionada a processos judiciais em andamento"
+      - name: score_outros
+        description: "Subpontuação residual (outros critérios) do Ranking"
       - name: ranking_por_cargo
-        description: "Posicao no Ranking por Cargo de Deputado ou Senador"
+        description: "Posição no Ranking considerando apenas o cargo (Deputado ou Senador)"
       - name: ranking_por_estado
-        description: "Posicao no Ranking por Estado de Deputado ou Senador"
+        description: "Posição no Ranking dentro do estado do parlamentar"
       - name: cnt_parlamentares_estado
-        description: "Contagem total de parlamentares Deputado e Senadores"
+        description: "Quantidade total de parlamentares (deputados e senadores) do estado"
       - name: cnt_cargo_por_estado
-        description: "Contagem total de parlamentares Deputados OU Senadores"
+        description: "Quantidade total de parlamentares do mesmo cargo no estado"
+      - name: total_parlamentares
+        description: "Quantidade total de parlamentares considerados na base do Ranking"
+      - name: total_parlamentar_por_casa
+        description: "Quantidade total de parlamentares no mesmo cargo/casa"
+      - name: vlr_mandato_disponivel_total
+        description: "Valor total disponível no mandato (cota parlamentar + verba de gabinete) em R$"
+      - name: vlr_mandato_gasto_total
+        description: "Valor total gasto no mandato em R$"
+      - name: vlr_mandato_economizado_total
+        description: "Valor total economizado no mandato em R$"
+      - name: vlr_cota_parlamentar_disponivel_subtotal
+        description: "Valor disponível referente à cota parlamentar em R$"
+      - name: vlr_cota_parlamentar_gasto_subtotal
+        description: "Valor gasto referente à cota parlamentar em R$"
+      - name: vlr_cota_parlamentar_economizado_subtotal
+        description: "Valor economizado referente à cota parlamentar em R$"
+      - name: vlr_verba_gabinete_disponivel_subtotal
+        description: "Valor disponível referente à verba de gabinete em R$"
+      - name: vlr_verba_gabinete_gasto_subtotal
+        description: "Valor gasto referente à verba de gabinete em R$"
+      - name: vlr_verba_gabinete_economizado_subtotal
+        description: "Valor economizado referente à verba de gabinete em R$"
+      - name: nome
+        description: "Nome completo do parlamentar conforme o Ranking dos Políticos"
+      - name: email
+        description: "E-mail institucional do parlamentar"
+      - name: link_api_oficial
+        description: "URL para o detalhe oficial do parlamentar na API de origem"
+      - name: profissao
+        description: "Profissão declarada pelo parlamentar"
+      - name: escolaridade
+        description: "Grau de escolaridade informado"
+      - name: uf_representacao
+        description: "Unidade federativa representada no mandato"
+      - name: telefone_gabinete_atual
+        description: "Telefone do gabinete atual do parlamentar"
+      - name: redesocial_instagram
+        description: "URL do perfil no Instagram"
+      - name: redesocial_x_twitter
+        description: "URL do perfil no X/Twitter"
+      - name: redesocial_facebook
+        description: "URL da página/perfil no Facebook"
+      - name: redesocial_youtube
+        description: "URL do canal no YouTube"
+      - name: data_nascimento
+        description: "Data de nascimento do parlamentar"
       - name: is_ativo
-        description: "Booleano se parlamentar esta ativo ou nao"
-      - name: link
-        description: "Link da pagina para o deputado no Ranking Politicos"
+        description: "Booleano indicando se o parlamentar está em exercício"
+      - name: link_parlamentar
+        description: "URL da página do parlamentar no site Ranking dos Políticos"
+      - name: data_carga
+        description: "Data/hora de ingestão do registro na camada raw"

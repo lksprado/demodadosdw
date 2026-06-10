@@ -1,16 +1,17 @@
 {{ config(
+    enabled=false,
     tags=["dim","senado"]
 ) }}
 
 with 
 status_proposicoes as (
-    select * from {{ ref('stg_senado__status')}}
+    select * from {{ ref('stg_senado_status')}}
 ),
 tipos_decisao as (
-    select * from {{ ref('stg_senado__tipos_decisao')}}
+    select * from {{ ref('stg_senado_tipos_decisao')}}
 ),
 tipos_entes as (
-    select * from {{ ref('stg_senado__tipos_entes')}}
+    select * from {{ ref('stg_senado_tipos_entes')}}
 ),
 tab_join as (
     select 

@@ -1,5 +1,6 @@
 {{ config(
-    tags=["mrt","ecidadania","senado"]
+    enabled=false,
+    tags=["mrt","ecidadania"]
 ) }}
 
 WITH

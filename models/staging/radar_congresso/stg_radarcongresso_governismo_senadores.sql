@@ -1,4 +1,5 @@
 {{ config(
+    enabled=false,
     tags=["stg","radar","senado"]
 ) }}
 

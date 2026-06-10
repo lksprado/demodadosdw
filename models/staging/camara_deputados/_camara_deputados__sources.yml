@@ -5,6 +5,28 @@ sources:
   - name: camara
     database: demodados
     schema: raw
+    loaded_at_field: data_carga
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
     tables:
-    - name: raw_parlamento_deputados
-      description: "Detalhes dos deputados obtidos da API da camara. Script em local_setup/src/pipelines/legislativo/parlamento_deputados.py"
+      - name: raw_camara_deputados
+        description: "Detalhes dos deputados obtidos da API da Câmara dos Deputados"
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: raw_camara_legislaturas
+        description: "Mapeamento de deputados por legislatura"
+      - name: raw_camara_votacoes
+        description: "Sessões de votação da Câmara"
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: raw_camara_votos_deputados
+        description: "Votos individuais por deputado por votação"
+      - name: raw_camara_votacoes_orientacao
+        description: "Orientação de voto por partido/liderança por votação"

@@ -2,44 +2,40 @@
     unique_key = 'sk_parlamentar',
     tags = ['dim', 'parlamentar']
 ) }}
-with 
-camara as (
-    select 
-    id,
-    'camara' as casa 
-    from {{ ref('stg_parlamento__deputados') }}
+WITH
+camara AS (
+    SELECT
+        id,
+        'camara' AS casa
+    FROM {{ ref('stg_camara_deputados') }}
 ),
-senado as (
-    select 
-    id,
-    'senado' as casa
-    from {{ ref('stg_parlamento__senadores') }}
+
+senado AS (
+    SELECT
+        id,
+        'senado' AS casa
+    FROM {{ ref('stg_senado_senadores') }}
 ),
-parlamento as (
-    select * from camara
-    union all 
-    select * from senado
+
+parlamento AS (
+    SELECT * FROM camara
+    UNION ALL
+    SELECT * FROM senado
 ),
-radar as (
-    select 
-    id_parlamentar_radar,
-    id_parlamentar_congresso
-    from {{ ref('stg_radarcongresso__parlamentares') }}
-),
-ranking as (
-    select 
-    id_parlamentar_ranking,
-    id_parlamentar_congresso
-    from {{ ref('stg_ranking__parlamentares') }}
+
+ranking AS (
+    SELECT
+        id_parlamentar_ranking,
+        id_parlamentar_congresso
+    FROM {{ ref('stg_ranking_parlamentares') }}
 )
-select 
-{{ dbt_utils.generate_surrogate_key(['id', 'casa']) }} as sk_parlamentar,
-casa,
-id as id_nk,
-t2.id_parlamentar_radar,
-t3.id_parlamentar_ranking
-from parlamento t1 
-left join radar t2 
-on t1.id = t2.id_parlamentar_congresso
-left join ranking t3
-on t1.id = t3.id_parlamentar_congresso
+
+SELECT
+    {{ dbt_utils.generate_surrogate_key(['id', 'casa']) }} AS sk_parlamentar,
+    casa,
+    id AS id_nk,
+    NULL::INT AS id_parlamentar_radar,
+    t2.id_parlamentar_ranking
+FROM parlamento AS t1
+LEFT JOIN ranking AS t2
+    ON t1.id = t2.id_parlamentar_congresso

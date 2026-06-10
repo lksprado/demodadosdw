@@ -1,4 +1,5 @@
 {{ config(
+    enabled=false,
     tags=["mrt","parlamentar"]
 ) }}
 
@@ -9,14 +10,10 @@ parlamentares AS (
 ),
 
 fct_gov_total AS (
-    SELECT * FROM {{ ref('int_fct_governismo_senadores_total')}}
-    UNION ALL 
-    SELECT * FROM {{ ref('int_fct_governismo_deputados_total')}}
+    SELECT * FROM {{ ref('int_fct_governismo_parlamentares_total')}}
 ),
 fct_ranking_total AS (
-    SELECT * FROM {{ ref('int_fct_ranking_senadores_total')}}
-    UNION ALL 
-    SELECT * FROM {{ ref('int_fct_ranking_deputados_total')}}
+    SELECT * FROM {{ ref('int_fct_ranking_parlamentares_total')}}
 ),
 tab AS (
     SELECT

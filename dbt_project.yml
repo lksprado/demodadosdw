@@ -24,6 +24,8 @@ models:
     staging:
       +schema: staging
       +materialized: table
+      radar_congresso:
+        +enabled: false
     intermediate:
       +schema: intermediate
       +materialized: view

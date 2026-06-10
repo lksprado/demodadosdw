@@ -1,9 +1,10 @@
 {{ config(
-    tags=["fct","senado"]
+    tags=["fct","ecidadania"]
 ) }}
 
 WITH
 bignumbers AS (
-    SELECT * FROM {{ ref('stg_ecidadania__bignumbers')}}
+    SELECT * FROM {{ ref('stg_ecidadania_bignumbers') }}
 )
-select * from bignumbers
+
+SELECT * FROM bignumbers

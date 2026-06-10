@@ -1,24 +1,147 @@
-
 version: 2
 
 models:
-  - name: stg_parlamento__senadores
-    description: "Modelo bronze com atributos dos Senadores"
+  - name: stg_senado_senadores
+    description: "Modelo staging com atributos dos Senadores obtidos da API do Senado Federal"
     columns:
       - name: id
-        description: "Identificador único do senador"
+        description: "Identificador único do senador na API do Senado"
         tests:
           - not_null
           - unique
-  - name: stg_senado__status
-    description: "Modelo bronze com status das propostas de lei"
+      - name: nome
+        description: "Nome civil completo do senador"
+      - name: nome_eleitoral
+        description: "Nome eleitoral como exibido ao público"
+      - name: partido
+        description: "Sigla do partido no momento mais recente da carga"
+      - name: email
+        description: "E-mail institucional do senador"
+      - name: redesocial_x_twitter
+        description: "URL do perfil no X/Twitter (nulo nesta fonte — enriquecido via Ranking)"
+      - name: redesocial_instagram
+        description: "URL do perfil no Instagram (nulo nesta fonte — enriquecido via Ranking)"
+      - name: redesocial_facebook
+        description: "URL da página/perfil no Facebook (nulo nesta fonte — enriquecido via Ranking)"
+      - name: redesocial_youtube
+        description: "URL do canal no YouTube (nulo nesta fonte — enriquecido via Ranking)"
+      - name: telefone
+        description: "Número de telefone do gabinete"
+      - name: sexo
+        description: "Sexo informado no cadastro (M/F)"
+      - name: data_nascimento
+        description: "Data de nascimento (nulo nesta fonte — enriquecido via Ranking)"
+      - name: geracao
+        description: "Faixa geracional derivada da data de nascimento (nulo nesta fonte — enriquecido via Ranking)"
+      - name: uf_nascimento
+        description: "Unidade federativa de nascimento (nulo nesta fonte)"
+      - name: municipio_nascimento
+        description: "Município de nascimento (nulo nesta fonte)"
+      - name: uf_representacao
+        description: "Unidade federativa representada no mandato"
+      - name: escolaridade
+        description: "Grau de escolaridade informado (nulo nesta fonte — enriquecido via Ranking)"
+      - name: id_legislatura
+        description: "Identificador da legislatura na qual o mandato está inserido"
+      - name: data_posse
+        description: "Data de início do mandato"
+      - name: num_gabinete_sala
+        description: "Número da sala do gabinete (nulo nesta fonte)"
+      - name: num_gabinete_predio
+        description: "Identificação do prédio do gabinete (nulo nesta fonte)"
+      - name: num_gabinete_andar
+        description: "Andar do gabinete (nulo nesta fonte)"
+      - name: situacao_atual
+        description: "Situação atual do mandato (fixado como EXERCICIO para senadores ativos)"
+      - name: condicao_eleitoral
+        description: "Condição eleitoral (TITULAR ou SUPLENTE)"
+      - name: link_foto
+        description: "URL da foto oficial do senador"
+      - name: data_carga
+        description: "Data/hora de ingestão do registro na camada raw"
+
+  - name: stg_senado_status
+    description: "Modelo staging com o status e tramitação das proposições legislativas do Senado"
     columns:
       - name: sk_proposicao
-        description: "Identificador único da proposicao"
+        description: "Chave substituta da proposição"
         tests:
           - not_null
           - unique
-  - name: stg_senado__tipos_decisao
-    description: "Modelo bronze auxiliar com descritivo dos tipos de deliberacoes de proposicoes"
-  - name: stg_senado__tipos_entes
-    description: "Modelo bronze auxiliar com o descritivo do tipo de ente vinculado a proposicao"
+      - name: id_proposicao
+        description: "Identificador numérico da proposição na API do Senado"
+      - name: sigla_proposicao
+        description: "Sigla do tipo de proposição (ex: PL, PEC, MPV)"
+      - name: apelido
+        description: "Apelido ou nome popular da proposição"
+      - name: codigo_casa
+        description: "Código numérico da casa legislativa"
+      - name: casa
+        description: "Casa legislativa de origem (SF, CD)"
+      - name: codigo_ente
+        description: "Código do ente vinculado à proposição"
+      - name: ementa
+        description: "Ementa descritiva da proposição"
+      - name: tipo_proposicao
+        description: "Descrição do tipo de proposição"
+      - name: data_apresentacao
+        description: "Data de apresentação da proposição"
+      - name: autoria
+        description: "Autoria da proposição (parlamentar, comissão, poder executivo)"
+      - name: tramitando
+        description: "Indica se a proposição está em tramitação ativa"
+      - name: data_deliberacao
+        description: "Data da deliberação/votação mais recente"
+      - name: codigo_deliberacao
+        description: "Código da deliberação realizada"
+      - name: link_documento
+        description: "URL para o documento oficial da proposição"
+      - name: objetivo
+        description: "Objetivo declarado da proposição"
+      - name: norma_gerada
+        description: "Norma jurídica gerada pela proposição, se aprovada"
+      - name: ultima_informacao_atualizada
+        description: "Data da última atualização do status da proposição"
+
+  - name: stg_senado_tipos_decisao
+    description: "Modelo staging auxiliar com o descritivo dos tipos de deliberações de proposições"
+    columns:
+      - name: codigo_deliberacao
+        description: "Código identificador do tipo de deliberação"
+        tests:
+          - not_null
+          - unique
+      - name: descricao_deliberacao
+        description: "Descrição textual do tipo de deliberação"
+      - name: tipo_deliberacao
+        description: "Categoria do tipo de deliberação"
+
+  - name: stg_senado_tipos_entes
+    description: "Modelo staging auxiliar com o descritivo dos tipos de entes vinculados às proposições"
+    columns:
+      - name: codigo_ente
+        description: "Código identificador do ente"
+        tests:
+          - not_null
+          - unique
+      - name: nome_ente
+        description: "Nome do ente (ex: Senado Federal, Câmara dos Deputados)"
+      - name: tipo_ente
+        description: "Categoria do ente"
+      - name: codigo_casa
+        description: "Código da casa legislativa à qual o ente pertence"
+
+  - name: stg_senado_tipos_projetos
+    description: "Modelo staging auxiliar com siglas e descrições dos tipos de proposições legislativas"
+    columns:
+      - name: sigla_proposicao
+        description: "Sigla do tipo de proposição (ex: PL, PEC, MPV)"
+        tests:
+          - not_null
+          - unique
+      - name: descricao_proposicao
+        description: "Descrição completa do tipo de proposição"
+      - name: data_inicio
+        description: "Data de início de vigência do tipo de proposição"
+      - name: data_fim
+        description: "Data de encerramento de vigência do tipo de proposição (nulo se ainda ativo)"

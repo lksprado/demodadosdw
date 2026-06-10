@@ -1,31 +1,72 @@
-
 version: 2
 
 models:
-  - name: stg_radarcongresso__governismo_deputados
-    description: "Base para fato de governismo - deputados"
+  - name: stg_radarcongresso_governismo_deputados
+    description: "Modelo staging com métricas de alinhamento ao governo para deputados (Radar Congresso)"
     columns:
       - name: id_parlamentar_radar
-        description: "Identificador único do parlamentar no radar congresso"
+        description: "Identificador único do parlamentar no Radar Congresso"
         tests:
           - not_null
-  - name: stg_radarcongresso__governismo_senadores
-    description: "Base para fato de governismo - senadores"
+      - name: total_votos_favor_governo
+        description: "Quantidade total de votos do deputado alinhados ao governo"
+      - name: total_votos_contra_governo
+        description: "Quantidade total de votos do deputado contrários ao governo"
+      - name: perc_governismo
+        description: "Percentual de alinhamento total ao governo"
+      - name: data_trimestre
+        description: "Data representativa do trimestre de referência"
+      - name: perc_governismo_trimestre
+        description: "Percentual de alinhamento ao governo no trimestre"
+      - name: data_carga
+        description: "Data/hora de ingestão do registro na camada raw"
+
+  - name: stg_radarcongresso_governismo_senadores
+    description: "Modelo staging com métricas de alinhamento ao governo para senadores (Radar Congresso)"
     columns:
       - name: id_parlamentar_radar
-        description: "Identificador único do parlamentar no radar congresso"
+        description: "Identificador único do parlamentar no Radar Congresso"
         tests:
           - not_null
-  - name: stg_radarcongresso__parlamentares
-    description: "Modelo contem detalhes de deputados e senadores"
+      - name: total_votos_favor_governo
+        description: "Quantidade total de votos do senador alinhados ao governo"
+      - name: total_votos_contra_governo
+        description: "Quantidade total de votos do senador contrários ao governo"
+      - name: perc_governismo
+        description: "Percentual de alinhamento total ao governo"
+      - name: data_trimestre
+        description: "Data representativa do trimestre de referência"
+      - name: perc_governismo_trimestre
+        description: "Percentual de alinhamento ao governo no trimestre"
+      - name: data_carga
+        description: "Data/hora de ingestão do registro na camada raw"
+
+  - name: stg_radarcongresso_parlamentares
+    description: "Modelo staging com tabela de-para entre IDs da API oficial (Câmara/Senado) e IDs do Radar Congresso"
     columns:
+      - name: id_parlamentar_radar
+        description: "Identificador único do parlamentar no Radar Congresso"
+        tests:
+          - not_null
+          - unique
       - name: id_parlamentar_congresso
-        description: "Identificador único do parlamentar com api original da camara / senado"
+        description: "Identificador único do parlamentar na API oficial da Câmara ou do Senado"
         tests:
           - not_null
           - unique
-      - name: id_parlamentar_radar
-        description: "Identificador único do parlamentar no radar congresso"
-        tests:
-          - not_null
-          - unique
+      - name: nome_eleitoral
+        description: "Nome eleitoral do parlamentar conforme o Radar Congresso"
+      - name: uf
+        description: "Unidade federativa representada"
+      - name: is_ativo
+        description: "Booleano indicando se o parlamentar está em exercício"
+      - name: tipo_mandato
+        description: "Tipo do mandato (DEPUTADO, SENADOR)"
+      - name: partido_dict
+        description: "Dicionário/objeto com dados do partido do parlamentar"
+      - name: nome_completo
+        description: "Nome completo do parlamentar"
+      - name: arquivo_origem
+        description: "Identificador do arquivo de origem da extração"
+      - name: data_carga
+        description: "Data/hora de ingestão do registro na camada raw"

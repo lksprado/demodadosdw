@@ -1,12 +1,12 @@
 {{ config(
-    tags=["mrt","ecidadania","senado"]
+    tags=["mrt","ecidadania"]
 ) }}
 
 
 WITH
 tab AS (
-    SELECT * FROM {{ ref('int_fct_ecidadania_bignumbers')}}
+    SELECT * FROM {{ ref('int_fct_ecidadania_bignumbers') }}
 )
-select 
-*
-from tab
+
+SELECT *
+FROM tab

@@ -1,12 +1,13 @@
 {{ config(
-    tags=["stg","congresso","parlamentar"]
+    tags=["stg","camara","parlamentar"]
 ) }}
 
 
 
 WITH source AS (
-    SELECT * FROM {{ source('camara','raw_parlamento_deputados') }}
+    SELECT * FROM {{ source('camara','raw_camara_deputados') }}
 ),
+
 renamed AS (
     SELECT
         id,
@@ -15,53 +16,92 @@ renamed AS (
         ufnascimento AS uf_nascimento,
         municipionascimento AS municipio_nascimento,
         escolaridade,
-        CASE WHEN ultimostatus_siglapartido LIKE '%PODE%' then 'PODEMOS'
-        ELSE ultimostatus_siglapartido 
-        END AS partido,
         ultimostatus_siglauf AS uf_representacao,
         ultimostatus_idlegislatura AS id_legislatura,
         ultimostatus_urlfoto AS link_foto,
-        ultimostatus_data::date AS data_posse,
+        ultimostatus_data::DATE AS data_posse,
         ultimostatus_nomeeleitoral AS nome_eleitoral,
-        ultimostatus_gabinete_sala AS num_gabinete_sala,
-        ultimostatus_gabinete_predio AS num_gabinete_predio,
-        nullif(ultimostatus_gabinete_andar,'NONE') AS num_gabinete_andar,
         ultimostatus_gabinete_telefone AS telefone,
         ultimostatus_gabinete_email AS email,
-        ultimostatus_situacao AS situacao_atual,
         ultimostatus_condicaoeleitoral AS condicao_eleitoral,
+        uri AS link_api_oficial,
+        data_carga,
         CASE
-            WHEN length((cpf::TEXT)) = 9 THEN '00' || (cpf::TEXT)
-            WHEN length((cpf::TEXT)) = 10 THEN '0' || (cpf::TEXT)
+            WHEN ultimostatus_siglapartido LIKE '%PODE%' THEN 'PODEMOS'
+            ELSE ultimostatus_siglapartido
+        END AS partido,
+        NULLIF(
+            ultimostatus_gabinete_sala, 'NONE'
+        ) AS num_gabinete_sala,
+        NULLIF(
+            ultimostatus_gabinete_predio, 'NONE'
+        ) AS num_gabinete_predio,
+        NULLIF(
+            ultimostatus_gabinete_andar, 'NONE'
+        ) AS num_gabinete_andar,
+        NULLIF(
+            ultimostatus_situacao, 'NONE'
+        ) AS situacao_atual,
+        CASE
+            WHEN LENGTH((cpf::TEXT)) = 9 THEN '00' || (cpf::TEXT)
+            WHEN LENGTH((cpf::TEXT)) = 10 THEN '0' || (cpf::TEXT)
             ELSE cpf::TEXT
         END AS cpf,
-        replace(replace(replace(redesocial, '[', ''), ']', ''), '''', '')
+        REPLACE(REPLACE(REPLACE(redesocial, '[', ''), ']', ''), '''', '')
         AS redesociais,
-        to_date(datanascimento, 'YYYY-MM-DD') AS data_nascimento,
-        to_date(cast(datafalecimento as text), 'YYYY-MM-DD') AS data_falecimento,
-        case
-            when datanascimento is null then null
-            when (datanascimento)::date between date '1928-01-01' and date '1945-12-31' then 'Silenciosa'
-            when (datanascimento)::date between date '1946-01-01' and date '1964-12-31' then 'Baby Boomer'
-            when (datanascimento)::date between date '1965-01-01' and date '1980-12-31' then 'X'
-            when (datanascimento)::date between date '1981-01-01' and date '1996-12-31' then 'Millennial'
-            when (datanascimento)::date between date '1997-01-01' and date '2012-12-31' then 'Z'
-            when (datanascimento)::date >=  date '2013-01-01' then 'Alpha'
-            else 'OUTRA'
-        end as geracao,
-        uri as link_api_oficial,
-        data_carga
+        TO_DATE(
+            datanascimento, 'YYYY-MM-DD'
+        ) AS data_nascimento,
+        TO_DATE(
+            datafalecimento::TEXT, 'YYYY-MM-DD'
+        ) AS data_falecimento,
+        CASE
+            WHEN datanascimento IS NULL THEN NULL
+            WHEN
+                (
+                    datanascimento
+                )::DATE BETWEEN DATE '1901-01-01' AND DATE '1927-12-31'
+                THEN 'GRANDIOSA'
+            WHEN
+                (
+                    datanascimento
+                )::DATE BETWEEN DATE '1928-01-01' AND DATE '1945-12-31'
+                THEN 'SILENCIOSA'
+            WHEN
+                (
+                    datanascimento
+                )::DATE BETWEEN DATE '1946-01-01' AND DATE '1964-12-31'
+                THEN 'BABY BOOMER'
+            WHEN
+                (
+                    datanascimento
+                )::DATE BETWEEN DATE '1965-01-01' AND DATE '1980-12-31'
+                THEN 'X'
+            WHEN
+                (
+                    datanascimento
+                )::DATE BETWEEN DATE '1981-01-01' AND DATE '1996-12-31'
+                THEN 'MILLENIAL'
+            WHEN
+                (
+                    datanascimento
+                )::DATE BETWEEN DATE '1997-01-01' AND DATE '2012-12-31'
+                THEN 'Z'
+            WHEN (datanascimento)::DATE >= DATE '2013-01-01' THEN 'ALPHA'
+        END AS geracao
     FROM source
 ),
+
 redesocial_tratamento AS (
     SELECT
         id,
-        trim(split_part(redesociais, ',', 1)) AS rede_1,
-        trim(split_part(redesociais, ',', 2)) AS rede_2,
-        trim(split_part(redesociais, ',', 3)) AS rede_3,
-        trim(split_part(redesociais, ',', 4)) AS rede_4
+        TRIM(SPLIT_PART(redesociais, ',', 1)) AS rede_1,
+        TRIM(SPLIT_PART(redesociais, ',', 2)) AS rede_2,
+        TRIM(SPLIT_PART(redesociais, ',', 3)) AS rede_3,
+        TRIM(SPLIT_PART(redesociais, ',', 4)) AS rede_4
     FROM renamed
 ),
+
 redesocial_tratamento_2 AS (
     SELECT
         id,
@@ -91,6 +131,7 @@ redesocial_tratamento_2 AS (
         END AS redesocial_youtube
     FROM redesocial_tratamento
 )
+
 SELECT
     t1.id,
     t1.nome,

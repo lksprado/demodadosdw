@@ -1,21 +1,73 @@
-
 version: 2
 
 models:
-  - name: stg_ecidadania__bignumbers
-    description: "Numero total de Votacoes e Votantes"
-  - name: stg_ecidadania__mais_votados
-    description: "Base tipo Fato Proposicoes legislativascom tramitacao em andamento e encerradas em destaque"
+  - name: stg_ecidadania_bignumbers
+    description: "Modelo staging com os totais agregados de votações e votantes na plataforma e-Cidadania"
     columns:
+      - name: data_extracao
+        description: "Data de extração dos dados da fonte"
+      - name: total_proposicoes_votadas
+        description: "Quantidade total de proposições que receberam votos"
+      - name: total_pessoas_votaram
+        description: "Quantidade total de pessoas distintas que votaram"
+      - name: total_votos_registrados
+        description: "Quantidade total de votos registrados na plataforma"
+      - name: votos_por_pessoa
+        description: "Média de votos por pessoa (total_votos / total_pessoas)"
+
+  - name: stg_ecidadania_mais_votados
+    description: "Modelo staging com as proposições legislativas em destaque (mais votadas) na plataforma e-Cidadania"
+    columns:
+      - name: data_extracao
+        description: "Data de extração dos dados da fonte"
+      - name: ano_proposicao
+        description: "Ano de apresentação da proposição"
       - name: sk_proposicao
-        description: "Identificador único da proposicao"
+        description: "Chave substituta da proposição (sigla + id)"
         tests:
           - not_null
-  - name: stg_ecidadania__paginas
-    description: "Base tipo Fato Proposicoes legislativascom tramitacao em andamento e encerradas"
+      - name: id_proposicao
+        description: "Identificador da proposição na fonte"
+      - name: tipo_proposicao
+        description: "Tipo/sigla da proposição (ex: PL, PEC, MPV)"
+      - name: ementa
+        description: "Ementa descritiva da proposição"
+      - name: votos_sim
+        description: "Quantidade de votos favoráveis à proposição"
+      - name: votos_nao
+        description: "Quantidade de votos contrários à proposição"
+      - name: total_votos
+        description: "Total de votos registrados para a proposição"
+      - name: vontade_popular
+        description: "Indicador da vontade popular (SIM/NÃO) com base na maioria dos votos"
+      - name: link
+        description: "URL da proposição na plataforma e-Cidadania"
+
+  - name: stg_ecidadania_paginas
+    description: "Modelo staging com todas as proposições legislativas (em andamento e encerradas) na plataforma e-Cidadania"
     columns:
+      - name: data_extracao
+        description: "Data de extração dos dados da fonte"
+      - name: ano_proposicao
+        description: "Ano de apresentação da proposição"
+      - name: sigla_proposicao
+        description: "Sigla do tipo de proposição (ex: PL, PEC)"
       - name: sk_proposicao
-        description: "Identificador único da proposicao"
+        description: "Chave substituta da proposição (sigla + id)"
         tests:
           - not_null
           - unique
+      - name: id_proposicao
+        description: "Identificador da proposição na fonte"
+      - name: ementa
+        description: "Ementa descritiva da proposição"
+      - name: votos_sim
+        description: "Quantidade de votos favoráveis à proposição"
+      - name: votos_nao
+        description: "Quantidade de votos contrários à proposição"
+      - name: total_votos
+        description: "Total de votos registrados para a proposição"
+      - name: vontade_popular
+        description: "Indicador da vontade popular (SIM/NÃO) com base na maioria dos votos"
+      - name: link
+        description: "URL da proposição na plataforma e-Cidadania"

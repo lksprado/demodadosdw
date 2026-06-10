@@ -122,8 +122,8 @@ models:
         description: Total de parlamentares considerados na base do Ranking.
       - name: total_parlamentar_por_casa
         description: Total de parlamentares no mesmo cargo/casa.
-      - name: pctg_economia
-        description: Percentual de economia de verbas
+      - name: perc_economia
+        description: Percentual de economia de verbas de mandato.
       - name: vlr_mandato_disponivel_total
         description: Valor total disponível no mandato (R$).
       - name: vlr_mandato_gasto_total
@@ -143,4 +143,106 @@ models:
       - name: vlr_verba_gabinete_economizado_subtotal
         description: Valor economizado referente à verba de gabinete (R$).
   - name: mrt_ecidadania_bignumbers
+    description: Mart com os totais agregados de votações e votantes na plataforma e-Cidadania.
+    columns:
+      - name: data_extracao
+        description: Data de extração dos dados da fonte.
+      - name: total_proposicoes_votadas
+        description: Quantidade total de proposições que receberam votos.
+      - name: total_pessoas_votaram
+        description: Quantidade total de pessoas distintas que votaram.
+      - name: total_votos_registrados
+        description: Quantidade total de votos registrados na plataforma.
+      - name: votos_por_pessoa
+        description: Média de votos por pessoa (total_votos / total_pessoas).
   - name: mrt_ecidadania_proposicoes
+    description: Mart de apresentação com métricas de votação por proposição na plataforma e-Cidadania, enriquecido com atributos de tramitação e deliberação do Senado.
+    columns:
+      - name: data_extracao
+        description: Data de extração dos dados da fonte.
+      - name: sk_proposicao
+        description: Chave substituta da proposição.
+        tests:
+          - not_null
+      - name: id_proposicao
+        description: Identificador da proposição na fonte.
+      - name: ano_proposicao
+        description: Ano de apresentação da proposição.
+      - name: apelido
+        description: Apelido ou nome popular da proposição.
+      - name: ementa
+        description: Ementa descritiva da proposição.
+      - name: tramitando
+        description: Indica se a proposição está em tramitação ativa.
+      - name: votos_sim
+        description: Quantidade de votos favoráveis à proposição.
+      - name: votos_nao
+        description: Quantidade de votos contrários à proposição.
+      - name: total_votos
+        description: Total de votos registrados para a proposição.
+      - name: vontade_popular
+        description: Indicador da vontade popular (SIM/NÃO) com base na maioria dos votos.
+      - name: tipo_deliberacao
+        description: Categoria do tipo de deliberação da proposição.
+      - name: aderencia_vontade_popular
+        description: Indicador de aderência entre a deliberação parlamentar e a vontade popular.
+      - name: flag_mais_votado_no_dia
+        description: Booleano indicando se a proposição estava entre as mais votadas na data de extração.
+      - name: casa
+        description: Casa legislativa de origem da proposição (SF, CD).
+      - name: status_consultado
+        description: Status da consulta pública associada à proposição.
+      - name: nome_ente
+        description: Nome do ente vinculado à proposição.
+      - name: descricao_proposicao
+        description: Descrição completa do tipo de proposição.
+      - name: data_apresentacao
+        description: Data de apresentação da proposição.
+      - name: autoria
+        description: Autoria da proposição (parlamentar, comissão, poder executivo).
+      - name: descricao_deliberacao
+        description: Descrição textual do tipo de deliberação.
+      - name: data_deliberacao
+        description: Data da deliberação/votação mais recente.
+      - name: norma_gerada
+        description: Norma jurídica gerada pela proposição, se aprovada.
+      - name: link_documento
+        description: URL para o documento oficial da proposição.
+      - name: link_votacao
+        description: URL para a votação da proposição na plataforma e-Cidadania.
+  - name: mrt_governismo
+    description: Mart de governismo da Câmara baseado em votos nominais reais, cruzando a orientação do governo com o voto de cada deputado por votação.
+    columns:
+      - name: sk_votacao
+        description: Chave substituta da votação.
+        tests:
+          - not_null
+      - name: id_votacao
+        description: Identificador original da votação.
+      - name: casa
+        description: Casa legislativa (camara).
+      - name: voto_governo
+        description: Orientação declarada pelo governo para a votação (SIM, NAO, OBSTRUCAO).
+      - name: sk_parlamentar
+        description: Chave substituta do parlamentar.
+        tests:
+          - not_null
+      - name: sk_voto
+        description: Chave substituta do voto individual.
+        tests:
+          - not_null
+          - unique
+      - name: id_deputado
+        description: Identificador do deputado na API da Câmara.
+      - name: voto_deputado
+        description: Voto registrado pelo deputado (SIM, NAO, ABSTENCAO, OBSTRUCAO).
+      - name: data_votacao
+        description: Data em que a votação ocorreu.
+      - name: sigla_orgao
+        description: Sigla do órgão que realizou a votação.
+      - name: proposicao_objeto
+        description: Descrição da proposição objeto da votação.
+      - name: aprovado
+        description: Booleano indicando se a proposição foi aprovada.
+      - name: alinhado_ao_governo
+        description: "TRUE se o deputado votou igual ao governo, FALSE se divergiu, NULL se absteve."

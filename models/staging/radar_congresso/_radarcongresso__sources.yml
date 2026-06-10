@@ -5,12 +5,16 @@ sources:
   - name: radar
     database: demodados
     schema: raw
+    loaded_at_field: data_carga
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
     tables:
-    - name: raw_radar_governismo_deputados
-      description: "Fato para deputados governismo"
+      - name: raw_radar_governismo_deputados
+        description: "Métricas de alinhamento ao governo por trimestre para deputados (Radar Congresso)"
 
-    - name: raw_radar_governismo_senadores
-      description: "Fato para senadores governismo"
+      - name: raw_radar_governismo_senadores
+        description: "Métricas de alinhamento ao governo por trimestre para senadores (Radar Congresso)"
 
-    - name: raw_radar_parlamentares
-      description: "Tabela que serve de de-para entre ID da API da camara e do radarcongresso. Contém também Senadores"
+      - name: raw_radar_parlamentares
+        description: "Tabela de-para entre IDs da API oficial (Câmara/Senado) e IDs do Radar Congresso. Contém deputados e senadores"

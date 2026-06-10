@@ -5,6 +5,15 @@ sources:
   - name: ranking
     database: demodados
     schema: raw
+    loaded_at_field: data_carga
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
     tables:
-    - name: raw_ranking_parlamentares
-      description: "Detalhes dos parlamentares"
+      - name: raw_ranking_parlamentares
+        description: "Pontuações, posições e métricas financeiras de parlamentares do Ranking dos Políticos"
+        columns:
+          - name: id_parlamentar
+            tests:
+              - unique
+              - not_null

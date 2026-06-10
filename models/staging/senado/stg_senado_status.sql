@@ -1,5 +1,6 @@
 {{ config(
-    tags=["stg","ecidadania","senado"]
+    enabled=false,
+    tags=["stg","senado","proposicoes"]
 ) }}
 
 WITH source AS (

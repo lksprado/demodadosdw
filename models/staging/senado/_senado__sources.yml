@@ -5,16 +5,23 @@ sources:
   - name: senado
     database: demodados
     schema: raw
+    loaded_at_field: data_carga
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
     tables:
-    - name: raw_parlamento_senadores
-      description: "Fato para deputados governismo"
-    - name: raw_senado_status
-      description: "Dimensao para status das proposicoes"
-    - name: raw_senado_tipos_decisao
-      description: "Detalhes para tipo de decisao no status das proposicoes"
-    - name: raw_senado_tipos_entes
-      description: "Detalhes para tipo entes"
-    - name: raw_senado_tipos_projetos
-      description: "Detalhes para tipo de proposicoes legislativas"
-    - name: stg_senado__tipos_projetos
-      description: "Siglas e descricao dos tipos de proposicao"
+      - name: raw_senado_senadores
+        description: "Detalhes dos senadores obtidos da API do Senado Federal"
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: raw_senado_status
+        description: "Status e tramitação das proposições legislativas do Senado"
+      - name: raw_senado_tipos_decisao
+        description: "Tipos de deliberações de proposições legislativas"
+      - name: raw_senado_tipos_entes
+        description: "Tipos de entes vinculados às proposições"
+      - name: raw_senado_tipos_projetos
+        description: "Siglas e descrições dos tipos de proposições legislativas"
