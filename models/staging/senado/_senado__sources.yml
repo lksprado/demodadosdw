@@ -3,6 +3,7 @@ version: 2
 
 sources:
   - name: senado
+    description: "Dados oriundos das extrações de endpoints da API https://legis.senado.leg.br/dadosabertos/api-docs/swagger-ui/index.html"
     database: demodados
     schema: raw
     loaded_at_field: data_carga
@@ -11,17 +12,25 @@ sources:
       error_after: {count: 48, period: hour}
     tables:
       - name: raw_senado_senadores
-        description: "Detalhes dos senadores obtidos da API do Senado Federal"
+        description: "Detalhes dos senadores das legislaturas atuais obtidos da API do Senado Federal. Endpoint: https://legis.senado.leg.br/dadosabertos/senador/lista/atual?v=4"
         columns:
           - name: id
             tests:
               - unique
               - not_null
+      - name: raw_senado_legislaturas
+        description: "Todos senadores das legislaturas 50 a 58. Endpoint: https://legis.senado.leg.br/dadosabertos/senador/lista/legislatura/{id_legislatura}?exercicio=S&v=4"
       - name: raw_senado_status
-        description: "Status e tramitação das proposições legislativas do Senado"
+        description: "Status e tramitação das proposições legislativas do Senado. Endpoint: https://legis.senado.leg.br/dadosabertos/processo/?sigla={sigla}&numero={numero}&ano={ano}&v=1"
       - name: raw_senado_tipos_decisao
-        description: "Tipos de deliberações de proposições legislativas"
+        description: "Tipos de deliberações de proposições legislativas. Endpoint: https://legis.senado.leg.br/dadosabertos/processo/tipos-decisao"
       - name: raw_senado_tipos_entes
-        description: "Tipos de entes vinculados às proposições"
+        description: "Tipos de entes vinculados às proposições. Endpoint: https://legis.senado.leg.br/dadosabertos/processo/entes"
       - name: raw_senado_tipos_projetos
-        description: "Siglas e descrições dos tipos de proposições legislativas"
+        description: "Siglas e descrições dos tipos de proposições legislativas. Endpoint: https://legis.senado.leg.br/dadosabertos/processo/siglas"
+      - name: raw_senado_votacoes
+        description: "Todas votações do Senado desde 2001. Endpoint: https://legis.senado.leg.br/dadosabertos/votacao/?dataInicio={y}-01-01&dataFim={y}-12-31&v=1"
+      - name: raw_senado_votos_orientacao
+        description: "Orientação de votos das bancadas e partidos no Senado. Endpoint: https://legis.senado.leg.br/dadosabertos/plenario/votacao/orientacaoBancada/{y}0101/{y}1231?v=1"
+      - name: raw_senado_votos_senadores
+        description: "Votos dos senadores em cada matéria. Derivado do Endpoint: https://legis.senado.leg.br/dadosabertos/votacao/?dataInicio={y}-01-01&dataFim={y}-12-31&v=1"
