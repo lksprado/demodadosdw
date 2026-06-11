@@ -11,10 +11,12 @@ SELECT
     codigosessao::INT AS codigo_sessao,
     codigosessaolegislativa AS codigo_sessao_legislativa,
     codigosessaovotacao AS codigo_sessao_votacao,
+    codigovotacaosve::INT AS codigo_votacao,
     TO_DATE(datasessao,'YYYY-MM-DD') AS data_sessao,
     idprocesso::INT AS id_processo,
     identificacao,
     sigla,
+    descricaovotacao AS descricao_votacao,
     siglatiposessao AS sigla_tipo_sessao,
     totalvotosabstencao::INT AS total_votos_abstencao,
     totalvotosnao::INT AS total_votos_contra,
@@ -31,8 +33,6 @@ SELECT
 {# DESCONSIDERADOS #}
 --,numerosessao
 --,dataapresentacao
---,codigovotacaosve
---,descricaovotacao
 --,ementa
 --,numero
 --,sequencialsessao

@@ -1,58 +1,94 @@
 {{ config(
-    tags=["mrt","camara","votacoes"]
+    tags=["mrt","parlamentar"]
 ) }}
 
-WITH
-orientacao_governo AS (
-    SELECT * FROM {{ ref('int_fct_votacoes_orientacao') }}
-    WHERE
-        sigla_partido_bloco = 'GOVERNO'
-        AND orientacao_voto <> 'LIBERADO'
-        AND orientacao_voto <> 'ABSTENCAO'
-),
-
-votos_parlamentares AS (
-    SELECT * FROM {{ ref('int_fct_votos') }}
-    WHERE voto IS NOT NULL
-),
-
-votacao AS (
-    SELECT *
-    FROM {{ ref('int_fct_votacoes') }}
-),
-
-joined AS (
+WITH presidentes AS (
     SELECT
-        t1.sk_votacao,
-        t1.id_votacao,
-        t1.casa,
-        t1.orientacao_voto AS voto_governo,
-        t2.sk_parlamentar,
-        t2.sk_voto,
-        t2.id_deputado,
-        t2.voto AS voto_deputado,
-        t3.data_votacao,
-        t3.sigla_orgao,
-        t3.proposicao_objeto,
-        t3.aprovado
-    FROM orientacao_governo AS t1
-    INNER JOIN votos_parlamentares AS t2
-        ON t1.sk_votacao = t2.sk_votacao
-    LEFT JOIN votacao AS t3
-        ON t1.sk_votacao = t3.sk_votacao
+        presidente,
+        mandato,
+        TO_DATE(inicio, 'DD/MM/YYYY') AS inicio,
+        TO_DATE(fim,    'DD/MM/YYYY') AS fim
+    FROM {{ ref('raw_executivo_presidente') }}
 ),
 
-final AS (
+mandatos AS (
+    SELECT DISTINCT ON (sk_parlamentar)
+        sk_parlamentar,
+        partido,
+        uf_representacao
+    FROM {{ ref('int_fct_mandatos') }}
+    ORDER BY sk_parlamentar, id_legislatura DESC NULLS LAST
+),
+
+parlamentares AS (
+    SELECT sk_parlamentar, nome_eleitoral
+    FROM {{ ref('int_dim_parlamentares') }}
+),
+
+camara AS (
     SELECT
-        *,
-        CASE
-            WHEN voto_governo = 'SIM' AND voto_deputado = 'SIM' THEN TRUE
-            WHEN voto_governo = 'NAO' AND voto_deputado = 'NAO' THEN TRUE
-            WHEN voto_governo = 'OBSTRUCAO' AND voto_deputado = 'OBSTRUCAO' THEN TRUE
-            WHEN voto_deputado = 'ABSTENCAO' THEN NULL
-            ELSE FALSE
-        END AS alinhado_ao_governo
-    FROM joined
+        v.sk_voto,
+        v.sk_parlamentar,
+        'camara'                                              AS casa,
+        vt.data_votacao                                       AS data_voto,
+        EXTRACT(YEAR FROM vt.data_votacao)::INT               AS ano,
+        date_trunc('quarter', vt.data_votacao)::DATE          AS trimestre,
+        vt.proposicao_objeto                                  AS descricao_votacao,
+        vt.sigla_orgao,
+        vt.aprovado                                           AS votacao_aprovada,
+        v.voto_deputado                                       AS voto_parlamentar,
+        v.voto_governo,
+        v.alinhado_ao_governo
+    FROM {{ ref('int_fct_votos_alinhados_camara') }} AS v
+    LEFT JOIN {{ ref('int_fct_votacoes') }} AS vt
+        ON v.sk_votacao = vt.sk_votacao
+),
+
+senado AS (
+    SELECT
+        vs.sk_voto,
+        vs.sk_parlamentar,
+        'senado'                                              AS casa,
+        vs.data_sessao                                        AS data_voto,
+        EXTRACT(YEAR FROM vs.data_sessao)::INT                AS ano,
+        date_trunc('quarter', vs.data_sessao)::DATE           AS trimestre,
+        vs.identificacao                                      AS descricao_votacao,
+        vs.sigla                                              AS sigla_orgao,
+        CASE vs.resultado_votacao
+            WHEN 'APROVADO'  THEN TRUE
+            WHEN 'REPROVADO' THEN FALSE
+        END                                                   AS votacao_aprovada,
+        vs.voto_senador                                       AS voto_parlamentar,
+        vs.voto_governo,
+        vs.alinhado_ao_governo
+    FROM {{ ref('int_fct_votos_senado') }} AS vs
+),
+
+todas_casas AS (
+    SELECT * FROM camara
+    UNION ALL
+    SELECT * FROM senado
 )
 
-SELECT * FROM final
+SELECT
+    t.sk_voto,
+    t.sk_parlamentar,
+    t.casa,
+    p.nome_eleitoral,
+    m.partido,
+    m.uf_representacao,
+    t.data_voto,
+    t.ano,
+    t.trimestre,
+    t.descricao_votacao,
+    t.sigla_orgao,
+    t.votacao_aprovada,
+    t.voto_parlamentar,
+    t.voto_governo,
+    t.alinhado_ao_governo,
+    pr.presidente,
+    pr.mandato
+FROM todas_casas AS t
+LEFT JOIN parlamentares AS p  ON t.sk_parlamentar = p.sk_parlamentar
+LEFT JOIN mandatos AS m       ON t.sk_parlamentar = m.sk_parlamentar
+LEFT JOIN presidentes AS pr   ON t.data_voto BETWEEN pr.inicio AND pr.fim

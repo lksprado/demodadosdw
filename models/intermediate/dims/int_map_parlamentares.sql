@@ -11,10 +11,9 @@ camara AS (
 ),
 
 senado AS (
-    SELECT
-        id,
-        'senado' AS casa
-    FROM {{ ref('stg_senado_senadores') }}
+    SELECT id, 'senado' AS casa FROM {{ ref('stg_senado_senadores') }}
+    UNION
+    SELECT id, 'senado' AS casa FROM {{ ref('stg_senado_legislaturas') }}
 ),
 
 parlamento AS (
@@ -24,10 +23,11 @@ parlamento AS (
 ),
 
 ranking AS (
-    SELECT
+    SELECT DISTINCT ON (id_parlamentar_congresso)
         id_parlamentar_ranking,
         id_parlamentar_congresso
     FROM {{ ref('stg_ranking_parlamentares') }}
+    ORDER BY id_parlamentar_congresso
 )
 
 SELECT

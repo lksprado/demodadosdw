@@ -1,0 +1,87 @@
+[sqlfluff]
+dialect = postgres
+templater = dbt
+runaway_limit = 10
+max_line_length = 0
+exclude_rules = RF02
+
+[sqlfluff:templater:dbt]
+project_dir = .
+
+[sqlfluff:indentation]
+tab_space_size = 4
+indent_unit = space
+indented_joins = false
+indented_using_on = true
+implicit_indents = allow
+indented_on_contents = false
+indented_ctes = false
+
+[sqlfluff:rules:aliasing.table]
+# Quando a tabela for renomeada no FROM, precisa ter o 'AS'.
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+# Quando a coluna for renomeada no SELECT, precisa ter o 'AS'.
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.expression]
+# Alterações em colunas devem ser renomeadas, exemplo: SUM(events) AS total_events.
+allow_scalar = True
+
+[sqlfluff:rules:ambiguous.join]
+# JOIN sem qualificação será considerado INNER.
+fully_qualify_join_types = inner
+
+[sqlfluff:rules:ambiguous.column_references]
+# GROUP BY e ORDER BY devem usar consistentemente nomes ou números.
+group_by_and_order_by_style = consistent
+
+[sqlfluff:rules:capitalisation.keywords]
+# Palavras-chave em maiúsculo: SELECT, FROM, UNION.
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.identifiers]
+# Nomes de colunas em minúsculo.
+extended_capitalisation_policy = lower
+unquoted_identifiers_policy = all
+
+[sqlfluff:rules:capitalisation.functions]
+# Funções em maiúsculo: SUM, COUNT.
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.literals]
+# Valores fixos em maiúsculo: NULL, TRUE, FALSE.
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.types]
+# Tipos de dados em maiúsculo: INT, VARCHAR.
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:layout.spacing]
+# Remove espaços em branco no final das linhas e espaços extras.
+no_trailing_whitespace = true
+extra_whitespace = false
+
+[sqlfluff:rules:layout.commas]
+# Vírgula no final da linha (trailing).
+line_position = trailing
+
+[sqlfluff:rules:layout.functions]
+# Sem espaço entre função e parênteses: SUM(column).
+no_space_after_function_name = true
+
+[sqlfluff:rules:layout.select_targets]
+# 1 coluna fica na mesma linha do SELECT; múltiplas pulam linha.
+wildcard_policy = single
+
+[sqlfluff:rules:layout.set_operators]
+# UNION e UNION ALL isolados em quebra de linha.
+set_operator_on_new_line = ['UNION', 'UNION ALL']
+
+[sqlfluff:rules:structure.nested_case]
+# Simplifica CASE WHEN aninhados.
+
+[sqlfluff:rules:structure.subquery]
+# Subquery dentro de JOIN deve ser extraída.
+forbid_subquery_in = join

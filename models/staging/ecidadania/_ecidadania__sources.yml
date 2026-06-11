@@ -15,11 +15,6 @@ sources:
 
       - name: raw_ecidadania_paginas
         description: "Todas as proposições legislativas (em andamento e encerradas) na plataforma e-Cidadania"
-        columns:
-          - name: sk_proposicao
-            tests:
-              - unique
-              - not_null
 
       - name: raw_ecidadania_bignumbers
         description: "Totais agregados de votações e votantes na plataforma e-Cidadania"

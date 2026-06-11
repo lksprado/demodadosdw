@@ -13,7 +13,7 @@ sources:
       - name: raw_ranking_parlamentares
         description: "Pontuações, posições e métricas financeiras de parlamentares do Ranking dos Políticos"
         columns:
-          - name: id_parlamentar
+          - name: parliamentarianid
             tests:
               - unique
               - not_null

@@ -6,6 +6,7 @@ WITH source AS (
     SELECT * FROM {{ source('senado','raw_senado_votos_orientacao') }}
 )
 SELECT
+codigovotacaosve::INT AS codigo_votacao,
 siglatipomateria AS sigla_tipo_materia,
 numeromateria AS numero_materia,
 qtdvotossim AS total_votos_favor,
@@ -16,7 +17,6 @@ UPPER(partido) AS partido,
 {{ clean_string("voto","upper") }} as voto,
 data_carga
 {# DESCONSIDERADOS #}
---,codigovotacaosve
 --,descricaovotacao
 --,datainiciovotacao
 --,dataterminovotacao

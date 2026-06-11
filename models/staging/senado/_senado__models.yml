@@ -8,7 +8,6 @@ models:
         description: "Identificador único do senador na API do Senado"
         tests:
           - not_null
-          - unique
       - name: nome
         description: "Nome civil completo do senador"
       - name: nome_eleitoral

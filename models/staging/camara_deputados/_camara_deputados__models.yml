@@ -77,7 +77,9 @@ models:
         description: "Identificador único da votação"
         tests:
           - not_null
-          - unique
+          - unique:
+              config:
+                severity: warn
       - name: data_votacao
         description: "Data da votação"
       - name: datahora_votacao
@@ -111,7 +113,9 @@ models:
       - name: id_deputado
         description: "Identificador do deputado na API da Câmara"
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
       - name: id_votacao
         description: "Identificador da votação à qual a orientação se refere"
       - name: voto

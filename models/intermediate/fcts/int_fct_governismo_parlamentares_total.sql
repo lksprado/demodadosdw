@@ -1,44 +1,44 @@
 {{ config(
     enabled=false,
-    tags=["fct","radar","parlamentar"]
+    tags=["fct","parlamentar"]
 ) }}
 
-with todas_casas as (
-    select
-        id_parlamentar_radar,
-        total_votos_favor_governo,
-        total_votos_contra_governo,
-        perc_governismo,
-        data_carga
-    from {{ ref("stg_radarcongresso_governismo_deputados") }}
-
-    union all
-
-    select
-        id_parlamentar_radar,
-        total_votos_favor_governo,
-        total_votos_contra_governo,
-        perc_governismo,
-        data_carga
-    from {{ ref("stg_radarcongresso_governismo_senadores") }}
+WITH governismo_camara AS (
+    SELECT
+        sk_parlamentar,
+        'camara' AS casa,
+        COUNT(*) FILTER (WHERE alinhado_ao_governo IS NOT NULL) AS total_votos,
+        COUNT(*) FILTER (WHERE alinhado_ao_governo = TRUE)      AS total_votos_favor_governo,
+        COUNT(*) FILTER (WHERE alinhado_ao_governo = FALSE)     AS total_votos_contra_governo
+    FROM {{ ref('int_fct_votos_alinhados_camara') }}
+    GROUP BY 1, 2
 ),
 
-de_para as (
-    select *
-    from {{ ref('int_map_parlamentares') }}
+governismo_senado AS (
+    SELECT
+        sk_parlamentar,
+        'senado' AS casa,
+        COUNT(*) FILTER (WHERE alinhado_ao_governo IS NOT NULL) AS total_votos,
+        COUNT(*) FILTER (WHERE alinhado_ao_governo = TRUE)      AS total_votos_favor_governo,
+        COUNT(*) FILTER (WHERE alinhado_ao_governo = FALSE)     AS total_votos_contra_governo
+    FROM {{ ref('int_fct_votos_senado') }}
+    GROUP BY 1, 2
 ),
 
-fato as (
-    select distinct
-        t2.sk_parlamentar,
-        t2.casa,
-        t1.total_votos_favor_governo,
-        t1.total_votos_contra_governo,
-        t1.perc_governismo,
-        t1.data_carga
-    from todas_casas t1
-    inner join de_para t2
-        on t1.id_parlamentar_radar = t2.id_parlamentar_radar
+todas_casas AS (
+    SELECT * FROM governismo_camara
+    UNION ALL
+    SELECT * FROM governismo_senado
 )
 
-select * from fato
+SELECT
+    sk_parlamentar,
+    casa,
+    total_votos,
+    total_votos_favor_governo,
+    total_votos_contra_governo,
+    ROUND(
+        total_votos_favor_governo::NUMERIC / NULLIF(total_votos, 0) * 100,
+        2
+    ) AS perc_governismo
+FROM todas_casas

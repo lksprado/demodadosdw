@@ -1,147 +1,52 @@
 version: 2
 
 models:
-  - name: mrt_governismo_parlamentares
-    description: Mart de apresentação com percentual de governismo de deputados e senadores, unindo a dimensão de deputados à fato consolidada de governismo.
+  - name: mrt_governismo
+    description: >
+      Grão: um voto por parlamentar por votação onde o Governo emitiu orientação.
+      Cobre Câmara (desde 1991) e Senado. Permite calcular perc_governismo para
+      qualquer período (ano, trimestre, legislatura) e rastrear a evolução temporal
+      do alinhamento de cada parlamentar ao governo.
     columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar.
+      - name: sk_voto
+        description: Chave substituta do evento de voto (parlamentar × votação).
         tests:
           - not_null
           - unique
-      - name: nome_eleitoral
-        description: Nome eleitoral do deputado.
-      - name: partido
-        description: Sigla do partido no momento mais recente.
-      - name: uf_representacao
-        description: UF representada pelo parlamentar.
-      - name: perc_governismo
-        description: Percentual de alinhamento ao governo.
-  - name: mrt_governismo_parlamentares_trimestral
-    description: Mart de apresentação do governismo trimestral de deputados e senadores, unindo a dimensão e a fato trimestral.
-    columns:
       - name: sk_parlamentar
         description: Chave substituta estável do parlamentar.
         tests:
           - not_null
-      - name: nome_eleitoral
-        description: Nome eleitoral do deputado.
-      - name: partido
-        description: Sigla do partido no momento mais recente.
-      - name: uf_representacao
-        description: UF representada pelo parlamentar.
-      - name: data_trimestre
-        description: Data representativa do trimestre de referência.
-      - name: perc_governismo_trimestre
-        description: Percentual de alinhamento ao governo no trimestre.
-  - name: mrt_obt_parlamentares
-    description: Mart “wide” de parlamentares unificado (deputados e senadores) com atributos pessoais/mandato e métricas de governismo e ranking.
-    columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar.
-        tests:
-          - not_null
-          - unique
-      - name: nome
-        description: Nome completo do parlamentar.
-      - name: partido
-        description: Sigla do partido no momento mais recente.
       - name: casa
         description: Casa legislativa (camara/senado).
       - name: nome_eleitoral
         description: Nome eleitoral como exibido ao público.
-      - name: email
-        description: E-mail institucional do parlamentar.
-      - name: redesocial_x_twitter
-        description: Handle/perfil no X/Twitter.
-      - name: redesocial_instagram
-        description: Perfil no Instagram.
-      - name: redesocial_facebook
-        description: Página/perfil no Facebook.
-      - name: redesocial_youtube
-        description: Canal no YouTube.
-      - name: telefone
-        description: Telefone de contato do gabinete ou institucional
-      - name: sexo
-        description: Sexo informado no cadastro.
-      - name: data_nascimento
-        description: Data de nascimento do parlamentar.
-      - name: geracao
-        description: Faixa geracional derivada da data de nascimento.
-      - name: uf_nascimento
-        description: UF de nascimento.
-      - name: municipio_nascimento
-        description: Município de nascimento.
+      - name: partido
+        description: Sigla do partido no mandato mais recente.
       - name: uf_representacao
-        description: UF representada no mandato.
-      - name: escolaridade
-        description: Grau de escolaridade informado.
-      - name: id_legislatura
-        description: Identificador da legislatura.
-      - name: data_posse
-        description: Data de posse no mandato.
-      - name: num_gabinete_predio
-        description: Identificação do prédio do gabinete.
-      - name: num_gabinete_andar
-        description: Andar do gabinete.
-      - name: num_gabinete_sala
-        description: Número da sala do gabinete.
-      - name: situacao_atual
-        description: Situação atual do mandato.
-      - name: condicao_eleitoral
-        description: Condição eleitoral (titular, suplente, etc.).
-      - name: link_api_oficial
-        description: URL oficial do parlamentar.
-      - name: link_foto
-        description: URL da foto oficial do parlamentar.
-      - name: total_votos_favor_governo
-        description: Quantidade total de votos alinhados ao governo.
-      - name: total_votos_contra_governo
-        description: Quantidade total de votos contrários ao governo.
-      - name: perc_governismo
-        description: Percentual de alinhamento ao governo.
-      - name: score_total
-        description: Pontuação total atribuída pelo Ranking dos Políticos.
-      - name: score_antiprivilegio
-        description: Subpontuação de antiprivilégios.
-      - name: score_antidesperdicio
-        description: Subpontuação de combate a desperdícios.
-      - name: score_processos
-        description: Subpontuação relacionada a processos.
-      - name: score_outros
-        description: Subpontuação residual do Ranking.
-      - name: ranking_por_cargo
-        description: Posição no ranking considerando o cargo do parlamentar.
-      - name: ranking_por_estado
-        description: Posição no ranking dentro do estado do parlamentar.
-      - name: cnt_parlamentares_estado
-        description: Quantidade total de parlamentares do estado (conforme fonte).
-      - name: cnt_cargo_por_estado
-        description: Quantidade total de parlamentares do mesmo cargo no estado.
-      - name: total_parlamentares
-        description: Total de parlamentares considerados na base do Ranking.
-      - name: total_parlamentar_por_casa
-        description: Total de parlamentares no mesmo cargo/casa.
-      - name: perc_economia
-        description: Percentual de economia de verbas de mandato.
-      - name: vlr_mandato_disponivel_total
-        description: Valor total disponível no mandato (R$).
-      - name: vlr_mandato_gasto_total
-        description: Valor total gasto no mandato (R$).
-      - name: vlr_mandato_economizado_total
-        description: Valor total economizado no mandato (R$).
-      - name: vlr_cota_parlamentar_disponivel_subtotal
-        description: Valor disponível referente à cota parlamentar (R$).
-      - name: vlr_cota_parlamentar_gasto_subtotal
-        description: Valor gasto referente à cota parlamentar (R$).
-      - name: vlr_cota_parlamentar_economizado_subtotal
-        description: Valor economizado referente à cota parlamentar (R$).
-      - name: vlr_verba_gabinete_disponivel_subtotal
-        description: Valor disponível referente à verba de gabinete (R$).
-      - name: vlr_verba_gabinete_gasto_subtotal
-        description: Valor gasto referente à verba de gabinete (R$).
-      - name: vlr_verba_gabinete_economizado_subtotal
-        description: Valor economizado referente à verba de gabinete (R$).
+        description: UF representada no mandato mais recente.
+      - name: data_voto
+        description: Data em que a votação ocorreu.
+      - name: ano
+        description: Ano da votação, extraído de data_voto.
+      - name: trimestre
+        description: Primeiro dia do trimestre da votação (truncado).
+      - name: descricao_votacao
+        description: Texto identificando a proposição votada (ex. “PEC 6/2019 — Reforma da Previdência”).
+      - name: sigla_orgao
+        description: Sigla do órgão/comissão ou tipo de proposição (ex. PLEN, PEC, PLP).
+      - name: votacao_aprovada
+        description: TRUE se a votação resultou em aprovação, FALSE se reprovada, NULL se não informado.
+      - name: voto_parlamentar
+        description: Voto registrado pelo parlamentar (SIM, NAO, ABSTENCAO, OBSTRUCAO).
+      - name: voto_governo
+        description: Orientação emitida pelo Governo para esta votação (SIM, NAO).
+      - name: alinhado_ao_governo
+        description: TRUE se o voto coincidiu com a orientação do Governo, FALSE se divergiu, NULL se abstenção.
+      - name: presidente
+        description: Nome do presidente da República no momento da votação, derivado do seed raw_executivo_presidente.
+      - name: mandato
+        description: Número ordinal do mandato do presidente (ex. 1 = primeiro mandato, 2 = segundo, 3 = terceiro).
   - name: mrt_ecidadania_bignumbers
     description: Mart com os totais agregados de votações e votantes na plataforma e-Cidadania.
     columns:
@@ -210,39 +115,3 @@ models:
         description: URL para o documento oficial da proposição.
       - name: link_votacao
         description: URL para a votação da proposição na plataforma e-Cidadania.
-  - name: mrt_governismo
-    description: Mart de governismo da Câmara baseado em votos nominais reais, cruzando a orientação do governo com o voto de cada deputado por votação.
-    columns:
-      - name: sk_votacao
-        description: Chave substituta da votação.
-        tests:
-          - not_null
-      - name: id_votacao
-        description: Identificador original da votação.
-      - name: casa
-        description: Casa legislativa (camara).
-      - name: voto_governo
-        description: Orientação declarada pelo governo para a votação (SIM, NAO, OBSTRUCAO).
-      - name: sk_parlamentar
-        description: Chave substituta do parlamentar.
-        tests:
-          - not_null
-      - name: sk_voto
-        description: Chave substituta do voto individual.
-        tests:
-          - not_null
-          - unique
-      - name: id_deputado
-        description: Identificador do deputado na API da Câmara.
-      - name: voto_deputado
-        description: Voto registrado pelo deputado (SIM, NAO, ABSTENCAO, OBSTRUCAO).
-      - name: data_votacao
-        description: Data em que a votação ocorreu.
-      - name: sigla_orgao
-        description: Sigla do órgão que realizou a votação.
-      - name: proposicao_objeto
-        description: Descrição da proposição objeto da votação.
-      - name: aprovado
-        description: Booleano indicando se a proposição foi aprovada.
-      - name: alinhado_ao_governo
-        description: "TRUE se o deputado votou igual ao governo, FALSE se divergiu, NULL se absteve."

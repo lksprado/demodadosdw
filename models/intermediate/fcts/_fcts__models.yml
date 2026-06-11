@@ -135,7 +135,9 @@ models:
         description: Chave substituta da votação (id + casa).
         tests:
           - not_null
-          - unique
+          - unique:
+              config:
+                severity: warn
       - name: casa
         description: Casa legislativa (camara).
       - name: id

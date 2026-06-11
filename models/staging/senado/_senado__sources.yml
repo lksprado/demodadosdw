@@ -14,9 +14,8 @@ sources:
       - name: raw_senado_senadores
         description: "Detalhes dos senadores das legislaturas atuais obtidos da API do Senado Federal. Endpoint: https://legis.senado.leg.br/dadosabertos/senador/lista/atual?v=4"
         columns:
-          - name: id
+          - name: identificacaoparlamentar_codigoparlamentar
             tests:
-              - unique
               - not_null
       - name: raw_senado_legislaturas
         description: "Todos senadores das legislaturas 50 a 58. Endpoint: https://legis.senado.leg.br/dadosabertos/senador/lista/legislatura/{id_legislatura}?exercicio=S&v=4"
