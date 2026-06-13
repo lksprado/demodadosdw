@@ -1,7 +1,14 @@
 {{ config(
+    materialized='incremental',
+    unique_key='id',
     tags=["stg","camara","votacoes"]
 ) }}
 
+{% if is_incremental() %}
+
+SELECT * FROM {{ this }} WHERE FALSE
+
+{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('camara','raw_camara_votacoes') }}
@@ -20,3 +27,5 @@ renamed AS (
 )
 
 SELECT * FROM renamed
+
+{% endif %}

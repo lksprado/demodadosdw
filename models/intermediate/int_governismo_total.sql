@@ -1,6 +1,6 @@
 {{ config(
     enabled=false,
-    tags=["fct","parlamentar"]
+    tags=["parlamentar"]
 ) }}
 
 WITH governismo_camara AS (
@@ -10,7 +10,7 @@ WITH governismo_camara AS (
         COUNT(*) FILTER (WHERE alinhado_ao_governo IS NOT NULL) AS total_votos,
         COUNT(*) FILTER (WHERE alinhado_ao_governo = TRUE)      AS total_votos_favor_governo,
         COUNT(*) FILTER (WHERE alinhado_ao_governo = FALSE)     AS total_votos_contra_governo
-    FROM {{ ref('int_fct_votos_alinhados_camara') }}
+    FROM {{ ref('fct_votos_alinhados_camara') }}
     GROUP BY 1, 2
 ),
 
@@ -21,7 +21,7 @@ governismo_senado AS (
         COUNT(*) FILTER (WHERE alinhado_ao_governo IS NOT NULL) AS total_votos,
         COUNT(*) FILTER (WHERE alinhado_ao_governo = TRUE)      AS total_votos_favor_governo,
         COUNT(*) FILTER (WHERE alinhado_ao_governo = FALSE)     AS total_votos_contra_governo
-    FROM {{ ref('int_fct_votos_senado') }}
+    FROM {{ ref('fct_votos_senado') }}
     GROUP BY 1, 2
 ),
 

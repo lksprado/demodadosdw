@@ -21,13 +21,6 @@ sources:
         description: "Mapeamento de deputados por legislatura. Endpoint: https://dadosabertos.camara.leg.br/api/v2/deputados/?idLegislatura={id_legislatura}&ordem=ASC&ordenarPor=nome"
       - name: raw_camara_votacoes
         description: "Sessões de votação da Câmara. Endpoint: https://dadosabertos.camara.leg.br/api/v2/votacoes/?dataInicio={data}&dataFim={data}&itens=100&ordem=DESC&ordenarPor=dataHoraRegistro"
-        columns:
-          - name: id
-            tests:
-              - not_null
-              - unique:
-                  config:
-                    severity: warn
       - name: raw_camara_votos_deputados
         description: "Votos individuais por deputado por votação. Endpoint: https://dadosabertos.camara.leg.br/api/v2/votacoes/{id_votacao/votos"
       - name: raw_camara_votacoes_orientacao

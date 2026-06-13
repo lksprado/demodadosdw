@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: mrt_governismo
+  - name: prs_governismo
     description: >
       Grão: um voto por parlamentar por votação onde o Governo emitiu orientação.
       Cobre Câmara (desde 1991) e Senado. Permite calcular perc_governismo para
@@ -32,7 +32,7 @@ models:
       - name: trimestre
         description: Primeiro dia do trimestre da votação (truncado).
       - name: descricao_votacao
-        description: Texto identificando a proposição votada (ex. “PEC 6/2019 — Reforma da Previdência”).
+        description: Texto identificando a proposição votada (ex. "PEC 6/2019 — Reforma da Previdência").
       - name: sigla_orgao
         description: Sigla do órgão/comissão ou tipo de proposição (ex. PLEN, PEC, PLP).
       - name: votacao_aprovada
@@ -47,21 +47,8 @@ models:
         description: Nome do presidente da República no momento da votação, derivado do seed raw_executivo_presidente.
       - name: mandato
         description: Número ordinal do mandato do presidente (ex. 1 = primeiro mandato, 2 = segundo, 3 = terceiro).
-  - name: mrt_ecidadania_bignumbers
-    description: Mart com os totais agregados de votações e votantes na plataforma e-Cidadania.
-    columns:
-      - name: data_extracao
-        description: Data de extração dos dados da fonte.
-      - name: total_proposicoes_votadas
-        description: Quantidade total de proposições que receberam votos.
-      - name: total_pessoas_votaram
-        description: Quantidade total de pessoas distintas que votaram.
-      - name: total_votos_registrados
-        description: Quantidade total de votos registrados na plataforma.
-      - name: votos_por_pessoa
-        description: Média de votos por pessoa (total_votos / total_pessoas).
-  - name: mrt_ecidadania_proposicoes
-    description: Mart de apresentação com métricas de votação por proposição na plataforma e-Cidadania, enriquecido com atributos de tramitação e deliberação do Senado.
+  - name: prs_ecidadania_proposicoes
+    description: Apresentação de proposições da plataforma e-Cidadania enriquecida com atributos de tramitação e deliberação do Senado. Desabilitada enquanto e-Cidadania não estiver ativo.
     columns:
       - name: data_extracao
         description: Data de extração dos dados da fonte.

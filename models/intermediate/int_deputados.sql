@@ -1,5 +1,5 @@
 {{ config(
-    tags=["dim","camara","parlamentar"]
+    tags=["camara","parlamentar"]
 ) }}
 
 WITH

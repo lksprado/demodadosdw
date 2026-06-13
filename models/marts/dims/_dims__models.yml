@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: dim_parlamentares
+    description: Dimensão conformada unificada de parlamentares (senadores e deputados). União das dimensões específicas com o mesmo conjunto de atributos.
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+          - unique
+      - name: nome
+        description: Nome completo do parlamentar.
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: UF de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: link_api_oficial
+        description: URL oficial do parlamentar.
+      - name: link_foto
+        description: URL da foto oficial.
+      - name: data_carga
+        description: Data/hora de carga do registro de origem.
+  - name: dim_proposicoes
+    description: Dimensão de proposições legislativas do Senado com atributos de tramitação, deliberação e vínculo institucional. Desabilitada enquanto e-Cidadania não estiver ativo.
+    columns:
+      - name: sk_proposicao
+        description: Chave substituta da proposição.
+        tests:
+          - not_null
+          - unique
+      - name: id_proposicao
+        description: Identificador numérico da proposição na API do Senado.
+      - name: sigla_proposicao
+        description: Sigla do tipo de proposição (ex PL, PEC, MPV).
+      - name: apelido
+        description: Apelido ou nome popular da proposição.
+      - name: ementa
+        description: Ementa descritiva da proposição.
+      - name: tramitando
+        description: Indica se a proposição está em tramitação ativa.
+      - name: codigo_casa
+        description: Código numérico da casa legislativa.
+      - name: casa
+        description: Casa legislativa de origem (SF, CD).
+      - name: codigo_ente
+        description: Código do ente vinculado à proposição.
+      - name: nome_ente
+        description: Nome do ente (ex Senado Federal, Câmara dos Deputados).
+      - name: tipo_ente
+        description: Categoria do ente.
+      - name: tipo_proposicao
+        description: Descrição do tipo de proposição.
+      - name: data_apresentacao
+        description: Data de apresentação da proposição.
+      - name: autoria
+        description: Autoria da proposição (parlamentar, comissão, poder executivo).
+      - name: codigo_deliberacao
+        description: Código da deliberação realizada.
+      - name: descricao_deliberacao
+        description: Descrição textual do tipo de deliberação.
+      - name: tipo_deliberacao
+        description: Categoria do tipo de deliberação.
+      - name: data_deliberacao
+        description: Data da deliberação/votação mais recente.
+      - name: link_documento
+        description: URL para o documento oficial da proposição.
+      - name: objetivo
+        description: Objetivo declarado da proposição.
+      - name: norma_gerada
+        description: Norma jurídica gerada pela proposição, se aprovada.
+      - name: ultima_informacao_atualizada
+        description: Data da última atualização do status da proposição.
+  - name: dim_tipo_proposicao
+    description: Dimensão auxiliar com siglas e descrições dos tipos de proposições legislativas.
+    columns:
+      - name: sigla_proposicao
+        description: Sigla do tipo de proposição (ex PL, PEC, MPV).
+        tests:
+          - not_null
+          - unique
+      - name: descricao_proposicao
+        description: Descrição completa do tipo de proposição.
+      - name: data_inicio
+        description: Data de início de vigência do tipo de proposição.
+      - name: data_fim
+        description: Data de encerramento de vigência do tipo de proposição (nulo se ainda ativo).

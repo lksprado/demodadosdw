@@ -1,20 +1,20 @@
 {{ config(
     enabled=false,
-    tags=["mrt","ecidadania"]
+    tags=["prs","ecidadania"]
 ) }}
 
 WITH
 proposicoes AS (
-    SELECT * FROM {{ ref('int_fct_ecidadania_proposicoes')}}
+    SELECT * FROM {{ ref('fct_ecidadania_proposicoes')}}
 ),
 status as (
-    select * from {{ ref('int_dim_proposicoes')}}
+    select * from {{ ref('dim_proposicoes')}}
 ),
 tipo_de_proposicoes AS (
-    SELECT * FROM {{ ref('int_dim_tipo_proposicao')}}
+    SELECT * FROM {{ ref('dim_tipo_proposicao')}}
 ),
 final as (
-    select 
+    select
     t1.data_extracao,
     t1.sk_proposicao,
     t1.id_proposicao,
@@ -27,8 +27,8 @@ final as (
     t1.total_votos,
     t1.vontade_popular,
     COALESCE(t2.tipo_deliberacao,'Sem deliberação') as tipo_deliberacao,
-    CASE 
-        WHEN t2.tipo_deliberacao IS NULL AND t2.tramitando = 'Sim' THEN 'A decidir'    
+    CASE
+        WHEN t2.tipo_deliberacao IS NULL AND t2.tramitando = 'Sim' THEN 'A decidir'
         WHEN t1.vontade_popular = t2.tipo_deliberacao THEN 'Convergente'
         WHEN t1.vontade_popular = 'A favor' AND t2.tipo_deliberacao = 'Contra' THEN 'Divergente'
         WHEN t1.vontade_popular = 'Contra' AND t2.tipo_deliberacao = 'A favor' THEN 'Divergente'
@@ -48,10 +48,10 @@ final as (
     t2.norma_gerada,
     t2.link_documento,
     t1.link as link_votacao
-    from proposicoes t1 
-    left join status t2 
+    from proposicoes t1
+    left join status t2
     on t1.sk_proposicao = t2.sk_proposicao
-    left join tipo_de_proposicoes t3 
+    left join tipo_de_proposicoes t3
     on t1.sigla_proposicao = t3.sigla_proposicao
     ORDER BY total_votos DESC
 )

@@ -1,0 +1,160 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "dim_parlamentares",
+        "schemaName": "public",
+        "x": 1322.2763671875,
+        "y": 12
+      },
+      {
+        "name": "dim_proposicoes",
+        "schemaName": "public",
+        "x": 384.58203125,
+        "y": 12
+      },
+      {
+        "name": "dim_tipo_proposicao",
+        "schemaName": "public",
+        "x": 384.58203125,
+        "y": 794
+      },
+      {
+        "name": "fct_votos_alinhados_camara",
+        "schemaName": "public",
+        "x": 1830.0263671875,
+        "y": 12
+      },
+      {
+        "name": "fct_votos_senado",
+        "schemaName": "public",
+        "x": 1830.0263671875,
+        "y": 282
+      },
+      {
+        "name": "fct_mandatos",
+        "schemaName": "public",
+        "x": 1830.0263671875,
+        "y": 680
+      },
+      {
+        "name": "fct_ranking_parlamentares_total",
+        "schemaName": "public",
+        "x": 1830.0263671875,
+        "y": 1110
+      },
+      {
+        "name": "fct_ecidadania_proposicoes",
+        "schemaName": "public",
+        "x": 962.30712890625,
+        "y": 12
+      },
+      {
+        "name": "fct_ecidadania_bignumbers",
+        "schemaName": "public",
+        "x": 12,
+        "y": 12
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "sk_parlamentar"
+        ],
+        "firstTableName": "fct_votos_alinhados_camara",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "sk_parlamentar"
+        ],
+        "secondTableName": "dim_parlamentares",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "sk_parlamentar"
+        ],
+        "firstTableName": "fct_votos_senado",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "sk_parlamentar"
+        ],
+        "secondTableName": "dim_parlamentares",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "sk_parlamentar"
+        ],
+        "firstTableName": "fct_mandatos",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "sk_parlamentar"
+        ],
+        "secondTableName": "dim_parlamentares",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "sk_parlamentar"
+        ],
+        "firstTableName": "fct_ranking_parlamentares_total",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "sk_parlamentar"
+        ],
+        "secondTableName": "dim_parlamentares",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "sk_proposicao"
+        ],
+        "firstTableName": "fct_ecidadania_proposicoes",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "sk_proposicao"
+        ],
+        "secondTableName": "dim_proposicoes",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "sigla_proposicao"
+        ],
+        "firstTableName": "fct_ecidadania_proposicoes",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "sigla_proposicao"
+        ],
+        "secondTableName": "dim_tipo_proposicao",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}

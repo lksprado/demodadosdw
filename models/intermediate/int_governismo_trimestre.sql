@@ -1,6 +1,6 @@
 {{ config(
     enabled=false,
-    tags=["fct","radar","parlamentar"]
+    tags=["radar","parlamentar"]
 ) }}
 
 with todas_casas as (

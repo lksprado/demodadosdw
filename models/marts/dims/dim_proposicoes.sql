@@ -3,7 +3,7 @@
     tags=["dim","senado"]
 ) }}
 
-with 
+with
 status_proposicoes as (
     select * from {{ ref('stg_senado_status')}}
 ),
@@ -14,7 +14,7 @@ tipos_entes as (
     select * from {{ ref('stg_senado_tipos_entes')}}
 ),
 tab_join as (
-    select 
+    select
     t1.sk_proposicao,
     t1.id_proposicao,
     t1.sigla_proposicao,
@@ -24,11 +24,11 @@ tab_join as (
     t1.codigo_casa,
     t1.casa,
     t1.codigo_ente,
-    CASE 
+    CASE
         WHEN t1.codigo_ente = 'PLEN' AND t1.codigo_casa = 'CN' THEN 'Plenário do Congresso Nacional'
         ELSE t3.nome_ente
     END AS nome_ente,
-    CASE 
+    CASE
         WHEN t1.codigo_ente = 'PLEN' AND t1.codigo_casa = 'CN' THEN 'PLENARIO'
         ELSE t3.tipo_ente
     END AS tipo_ente,
@@ -43,8 +43,8 @@ tab_join as (
     t1.objetivo,
     t1.norma_gerada,
     t1.ultima_informacao_atualizada
-    from status_proposicoes t1 
-    left join tipos_decisao t2 
+    from status_proposicoes t1
+    left join tipos_decisao t2
     on t1.codigo_deliberacao = t2.codigo_deliberacao
     left join tipos_entes t3
     on t1.codigo_ente = t3.codigo_ente and t1.codigo_casa = t3.codigo_casa

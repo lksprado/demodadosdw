@@ -31,6 +31,9 @@ models:
       +materialized: view
     marts:
       +schema: marts
+      +materialized: view
+    presentation:
+      +schema: presentation
       +materialized: table
 seeds:
   demodadosdw:

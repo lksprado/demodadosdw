@@ -1,7 +1,8 @@
 {{ config(
     unique_key = 'sk_parlamentar',
-    tags = ['dim', 'parlamentar']
+    tags = ['parlamentar']
 ) }}
+
 WITH
 camara AS (
     SELECT

@@ -1,7 +1,14 @@
 {{ config(
+    materialized='incremental',
+    unique_key='sk_proposicao',
     tags=["stg","ecidadania"]
 ) }}
 
+{% if is_incremental() %}
+
+SELECT * FROM {{ this }} WHERE FALSE
+
+{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('ecidadania','raw_ecidadania_mais_votados') }}
@@ -28,3 +35,5 @@ renamed AS (
 )
 
 SELECT * FROM renamed
+
+{% endif %}

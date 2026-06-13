@@ -1,0 +1,191 @@
+// ============================================================
+// Marts Layer — Dimensões e Fatos
+// ============================================================
+
+
+// ─────────────────────────────────────────────────────────────
+// DIMENSIONS
+// ─────────────────────────────────────────────────────────────
+
+Table dim_parlamentares {
+  sk_parlamentar       varchar [pk]
+  nome                 varchar
+  nome_eleitoral       varchar
+  email                varchar
+  telefone             varchar
+  sexo                 varchar
+  data_nascimento      date
+  geracao              varchar
+  uf_nascimento        varchar
+  municipio_nascimento varchar
+  escolaridade         varchar
+  redesocial_x_twitter varchar
+  redesocial_instagram varchar
+  redesocial_facebook  varchar
+  redesocial_youtube   varchar
+  link_api_oficial     varchar
+  link_foto            varchar
+  data_carga           timestamp
+}
+
+Table dim_proposicoes {
+  sk_proposicao               varchar [pk]
+  id_proposicao               varchar
+  sigla_proposicao            varchar
+  apelido                     varchar
+  ementa                      varchar
+  tramitando                  boolean
+  codigo_casa                 varchar
+  casa                        varchar
+  codigo_ente                 varchar
+  nome_ente                   varchar
+  tipo_ente                   varchar
+  tipo_proposicao             varchar
+  data_apresentacao           date
+  autoria                     varchar
+  codigo_deliberacao          varchar
+  descricao_deliberacao       varchar
+  tipo_deliberacao            varchar
+  data_deliberacao            date
+  link_documento              varchar
+  objetivo                    varchar
+  norma_gerada                varchar
+  ultima_informacao_atualizada varchar
+}
+
+Table dim_tipo_proposicao {
+  sigla_proposicao    varchar [pk]
+  descricao_proposicao varchar
+  data_inicio         date
+  data_fim            date
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// FACTS
+// ─────────────────────────────────────────────────────────────
+
+Table fct_votos_alinhados_camara {
+  sk_voto             varchar [pk]
+  sk_parlamentar      varchar
+  sk_votacao          varchar
+  voto_governo        varchar
+  voto_deputado       varchar
+  alinhado_ao_governo boolean
+}
+
+Table fct_votos_senado {
+  sk_voto             varchar [pk]
+  sk_parlamentar      varchar
+  codigo_votacao      varchar
+  data_sessao         date
+  identificacao       varchar
+  sigla               varchar
+  resultado_votacao   varchar
+  voto_governo        varchar
+  voto_senador        varchar
+  alinhado_ao_governo boolean
+}
+
+Table fct_mandatos {
+  sk_parlamentar      varchar
+  id_legislatura      integer
+  partido             varchar
+  uf_representacao    varchar
+  data_posse          date
+  situacao_atual      varchar
+  condicao_eleitoral  varchar
+  num_gabinete_predio varchar
+  num_gabinete_sala   varchar
+  num_gabinete_andar  varchar
+  data_carga          timestamp
+
+  indexes {
+    (sk_parlamentar, id_legislatura) [pk]
+  }
+}
+
+Table fct_ranking_parlamentares_total {
+  sk_parlamentar                        varchar
+  casa                                  varchar
+  score_total                           float
+  score_antiprivilegio                  float
+  score_antidesperdicio                 float
+  score_processos                       float
+  score_outros                          float
+  ranking_por_cargo                     integer
+  ranking_por_estado                    integer
+  cnt_parlamentares_estado              integer
+  cnt_cargo_por_estado                  integer
+  total_parlamentares                   integer
+  total_parlamentar_por_casa            integer
+  perc_economia                         float
+  vlr_mandato_disponivel_total          numeric
+  vlr_mandato_gasto_total               numeric
+  vlr_mandato_economizado_total         numeric
+  vlr_cota_parlamentar_disponivel_subtotal  numeric
+  vlr_cota_parlamentar_gasto_subtotal       numeric
+  vlr_cota_parlamentar_economizado_subtotal numeric
+  vlr_verba_gabinete_disponivel_subtotal    numeric
+  vlr_verba_gabinete_gasto_subtotal         numeric
+  vlr_verba_gabinete_economizado_subtotal   numeric
+
+  indexes {
+    (sk_parlamentar) [pk]
+  }
+}
+
+Table fct_ecidadania_proposicoes {
+  data_extracao         date
+  ano_proposicao        integer
+  sigla_proposicao      varchar
+  sk_proposicao         varchar
+  id_proposicao         varchar
+  ementa                varchar
+  votos_sim             integer
+  votos_nao             integer
+  total_votos           integer
+  vontade_popular       varchar
+  link                  varchar
+  flag_mais_votado_no_dia boolean
+}
+
+Table fct_ecidadania_bignumbers {
+  data_extracao              date
+  total_proposicoes_votadas  integer
+  total_pessoas_votaram      integer
+  total_votos_registrados    integer
+  votos_por_pessoa           float
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// RELACIONAMENTOS
+// ─────────────────────────────────────────────────────────────
+
+Ref: fct_votos_alinhados_camara.sk_parlamentar    > dim_parlamentares.sk_parlamentar
+Ref: fct_votos_senado.sk_parlamentar              > dim_parlamentares.sk_parlamentar
+Ref: fct_mandatos.sk_parlamentar                  > dim_parlamentares.sk_parlamentar
+Ref: fct_ranking_parlamentares_total.sk_parlamentar > dim_parlamentares.sk_parlamentar
+Ref: fct_ecidadania_proposicoes.sk_proposicao     > dim_proposicoes.sk_proposicao
+Ref: fct_ecidadania_proposicoes.sigla_proposicao  > dim_tipo_proposicao.sigla_proposicao
+
+
+// ─────────────────────────────────────────────────────────────
+// AGRUPAMENTOS
+// ─────────────────────────────────────────────────────────────
+
+TableGroup dims {
+  dim_parlamentares
+  dim_proposicoes
+  dim_tipo_proposicao
+}
+
+TableGroup fcts {
+  fct_votos_alinhados_camara
+  fct_votos_senado
+  fct_mandatos
+  fct_ranking_parlamentares_total
+  fct_ecidadania_proposicoes
+  fct_ecidadania_bignumbers
+}

@@ -3,11 +3,11 @@
 ) }}
 
 WITH senadores AS (
-    SELECT * FROM {{ ref('int_dim_senadores') }}
+    SELECT * FROM {{ ref('int_senadores') }}
 ),
 
 deputados AS (
-    SELECT * FROM {{ ref('int_dim_deputados') }}
+    SELECT * FROM {{ ref('int_deputados') }}
 )
 
 SELECT

@@ -1,5 +1,5 @@
 {{ config(
-    tags=["fct","camara","votacoes"]
+    tags=["camara","votacoes"]
 ) }}
 
 

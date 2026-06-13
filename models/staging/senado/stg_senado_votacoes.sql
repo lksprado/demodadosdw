@@ -1,6 +1,14 @@
 {{ config(
+    materialized='incremental',
+    unique_key='codigo_sessao_votacao',
     tags=["stg","senado"]
 ) }}
+
+{% if is_incremental() %}
+
+SELECT * FROM {{ this }} WHERE FALSE
+
+{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('senado','raw_senado_votacoes') }}
@@ -52,3 +60,5 @@ SELECT
 --,informelegislativo
 --,arquivo_origem
 FROM source
+
+{% endif %}

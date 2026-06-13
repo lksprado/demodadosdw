@@ -1,5 +1,5 @@
 {{ config(
-    tags=["mrt","parlamentar"]
+    tags=["prs","parlamentar"]
 ) }}
 
 WITH presidentes AS (
@@ -16,13 +16,13 @@ mandatos AS (
         sk_parlamentar,
         partido,
         uf_representacao
-    FROM {{ ref('int_fct_mandatos') }}
+    FROM {{ ref('fct_mandatos') }}
     ORDER BY sk_parlamentar, id_legislatura DESC NULLS LAST
 ),
 
 parlamentares AS (
     SELECT sk_parlamentar, nome_eleitoral
-    FROM {{ ref('int_dim_parlamentares') }}
+    FROM {{ ref('dim_parlamentares') }}
 ),
 
 camara AS (
@@ -39,8 +39,8 @@ camara AS (
         v.voto_deputado                                       AS voto_parlamentar,
         v.voto_governo,
         v.alinhado_ao_governo
-    FROM {{ ref('int_fct_votos_alinhados_camara') }} AS v
-    LEFT JOIN {{ ref('int_fct_votacoes') }} AS vt
+    FROM {{ ref('fct_votos_alinhados_camara') }} AS v
+    LEFT JOIN {{ ref('int_votacoes_camara') }} AS vt
         ON v.sk_votacao = vt.sk_votacao
 ),
 
@@ -61,7 +61,7 @@ senado AS (
         vs.voto_senador                                       AS voto_parlamentar,
         vs.voto_governo,
         vs.alinhado_ao_governo
-    FROM {{ ref('int_fct_votos_senado') }} AS vs
+    FROM {{ ref('fct_votos_senado') }} AS vs
 ),
 
 todas_casas AS (

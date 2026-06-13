@@ -1,6 +1,13 @@
 {{ config(
+    materialized='incremental',
     tags=["stg","senado"]
 ) }}
+
+{% if is_incremental() %}
+
+SELECT * FROM {{ this }} WHERE FALSE
+
+{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('senado','raw_senado_votos_senadores') }}
@@ -28,3 +35,5 @@ SELECT
     --siglaufparlamentar
     --,arquivo_origem
 FROM source
+
+{% endif %}

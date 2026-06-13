@@ -29,14 +29,20 @@ dbt docs generate && dbt docs serve   # Local documentation
 
 ## Architecture
 
-Three-layer medallion architecture:
+Four-layer architecture:
 
 | Layer | Folder | Schema | Materialization | Prefix |
 |---|---|---|---|---|
 | Staging (Bronze) | `models/staging/` | `staging` | table | `stg_` |
 | Intermediate (Silver) | `models/intermediate/` | `intermediate` | view | `int_dim_`, `int_fct_`, `int_map_` |
-| Marts (Gold) | `models/marts/` | `marts` | table | `mrt_` |
+| Marts (Gold) | `models/marts/dims/` + `models/marts/fcts/` | `marts` | view | `dim_`, `fct_` |
+| Presentation (Platinum) | `models/presentation/` | `presentation` | table | `prs_` |
 | Seeds | `seeds/` | `raw` | table | `raw_` |
+
+**Layer responsibilities:**
+- **Intermediate**: pure transforms and key mappings — never queried directly by analysts. Models here feed dims/fcts or other intermediates.
+- **Marts**: conformed dimensional models (`dim_`) and fact tables (`fct_`) — analyst-accessible, organized by domain. Materialized as views (lightweight).
+- **Presentation**: wide/OBT tables enriched with full business context — the primary analyst-facing layer. Materialized as tables.
 
 The `macros/generate_schema_name.sql` override ensures models are placed in `+schema` config value directly (not prefixed with the target schema name).
 
@@ -52,13 +58,13 @@ Five source domains, all reading from the `raw` schema in `demodados`:
 
 ## Key Design Patterns
 
-**Surrogate key**: `sk_parlamentar` is generated in `int_map_parlamentares` from (id, house type) to create a stable, unified identity across the Câmara and Senado sources. All fact tables and the unified dimension `int_dim_parlamentares` join through this key.
+**Surrogate key**: `sk_parlamentar` is generated in `int_map_parlamentares` from (id, house type) to create a stable, unified identity across the Câmara and Senado sources. All fact tables and `dim_parlamentares` join through this key.
 
-**Unified parliamentarian dimension**: `int_dim_parlamentares` is a UNION of `int_dim_deputados` and `int_dim_senadores`. Use this for cross-house queries.
+**Unified parliamentarian dimension**: `dim_parlamentares` (in `marts/dims/`) is a UNION of `int_dim_deputados` and `int_dim_senadores`. Use this for cross-house queries.
 
-**One Big Table**: `mrt_obt_parlamentares` is a wide denormalized table joining all dimensions and facts — intended as the primary analyst-facing table. New cross-domain metrics should land here.
+**Primary presentation table**: `prs_governismo` is the main analyst-facing table — vote-level governism tracking for both chambers with parliamentarian context, party, UF, and president data. New cross-domain metrics should land here.
 
-**Temporal granularity**: Government alignment facts exist at two levels — `_total` (all-time aggregates) and `_trimestre` (quarterly). Both exist for deputies and senators.
+**Temporal granularity**: `prs_governismo` exposes `ano` and `trimestre` columns, enabling aggregation at any desired period. Governism % = `count_if(alinhado_ao_governo=true) / count_if(alinhado_ao_governo is not null)`.
 
 **Multi-source enrichment**: Dimensions fill gaps using secondary sources (e.g., social media links in `int_dim_deputados` fall back to Ranking data when official API data is null).
 

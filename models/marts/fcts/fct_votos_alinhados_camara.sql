@@ -4,14 +4,14 @@
 
 WITH orientacao_governo AS (
     SELECT sk_votacao, orientacao_voto AS voto_governo
-    FROM {{ ref('int_fct_votacoes_orientacao') }}
+    FROM {{ ref('int_orientacoes_camara') }}
     WHERE sigla_partido_bloco = 'GOVERNO'
       AND orientacao_voto NOT IN ('LIBERADO', 'ABSTENCAO')
 ),
 
 votos_parlamentares AS (
     SELECT sk_parlamentar, sk_voto, sk_votacao, voto
-    FROM {{ ref('int_fct_votos') }}
+    FROM {{ ref('int_votos_camara') }}
     WHERE voto IS NOT NULL
 ),
 

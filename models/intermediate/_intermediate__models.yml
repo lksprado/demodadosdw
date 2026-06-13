@@ -1,0 +1,201 @@
+version: 2
+
+models:
+  - name: int_deputados
+    description: Deputados conformados com enriquecimento de redes sociais via Ranking dos Políticos. Alimenta dim_parlamentares.
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
+        tests:
+          - not_null
+          - unique
+      - name: nome
+        description: Nome completo do parlamentar conforme cadastro oficial.
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato do gabinete ou institucional.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento do parlamentar.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: Unidade federativa de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: link_api_oficial
+        description: URL para a página/detalhe oficial do parlamentar na API de origem.
+      - name: link_foto
+        description: URL da foto oficial do parlamentar.
+      - name: data_carga
+        description: Data/hora de carga do registro na camada de staging.
+  - name: int_senadores
+    description: Senadores conformados com enriquecimento de redes sociais via Ranking dos Políticos. Alimenta dim_parlamentares.
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
+        tests:
+          - not_null
+          - unique
+      - name: nome
+        description: Nome completo do parlamentar conforme cadastro oficial.
+      - name: nome_eleitoral
+        description: Nome eleitoral como exibido ao público.
+      - name: email
+        description: E-mail institucional do parlamentar.
+      - name: redesocial_x_twitter
+        description: Handle/perfil no X/Twitter.
+      - name: redesocial_instagram
+        description: Perfil no Instagram.
+      - name: redesocial_facebook
+        description: Página/perfil no Facebook.
+      - name: redesocial_youtube
+        description: Canal no YouTube.
+      - name: telefone
+        description: Telefone de contato do gabinete ou institucional.
+      - name: sexo
+        description: Sexo informado no cadastro.
+      - name: data_nascimento
+        description: Data de nascimento do parlamentar.
+      - name: geracao
+        description: Faixa geracional derivada da data de nascimento.
+      - name: uf_nascimento
+        description: Unidade federativa de nascimento.
+      - name: municipio_nascimento
+        description: Município de nascimento.
+      - name: escolaridade
+        description: Grau de escolaridade informado.
+      - name: link_api_oficial
+        description: URL para a página/detalhe oficial do parlamentar na API de origem.
+      - name: link_foto
+        description: URL da foto oficial do parlamentar.
+      - name: data_carga
+        description: Data/hora de carga do registro na camada de staging.
+  - name: int_map_parlamentares
+    description: Mapeamento de chaves entre ids oficiais das casas (Câmara/Senado) e identificadores das fontes (Ranking Políticos, Radar Congresso). Gera a chave substituta `sk_parlamentar` usada em todas as camadas.
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar gerada a partir do id da casa e tipo da casa.
+        tests:
+          - not_null
+          - unique
+      - name: casa
+        description: Casa legislativa do id natural (camara/senado).
+      - name: id_nk
+        description: Identificador natural (id) do parlamentar na casa de origem.
+      - name: id_parlamentar_radar
+        description: Identificador do parlamentar na base do Radar Congresso. Retorna NULL enquanto radar_congresso estiver desabilitado.
+      - name: id_parlamentar_ranking
+        description: Identificador do parlamentar na base do Ranking dos Políticos.
+  - name: int_votos_camara
+    description: "Votos individuais de deputados normalizados (BRANCO → NULL, FAVORAVEL COM RESTRICOES → SIM) com chaves substitutas geradas. Alimenta fct_votos_alinhados_camara."
+    columns:
+      - name: sk_voto
+        description: Chave substituta do voto (id_deputado + id_votacao + casa).
+        tests:
+          - not_null
+          - unique
+      - name: sk_parlamentar
+        description: Chave substituta do parlamentar (id_deputado + casa).
+        tests:
+          - not_null
+      - name: sk_votacao
+        description: Chave substituta da votação, compatível com int_votacoes_camara.
+        tests:
+          - not_null
+      - name: casa
+        description: Casa legislativa (camara).
+      - name: id_deputado
+        description: Identificador do deputado na API da Câmara.
+      - name: id_votacao
+        description: Identificador da votação.
+      - name: id_legislatura
+        description: Identificador da legislatura na qual o voto foi registrado.
+      - name: voto
+        description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO). BRANCO e FAVORAVEL COM RESTRICOES normalizados."
+  - name: int_votacoes_camara
+    description: "Sessões de votação da Câmara com chave substituta gerada. Alimenta prs_governismo para lookup de descrição e aprovação."
+    columns:
+      - name: sk_votacao
+        description: Chave substituta da votação (id + casa).
+        tests:
+          - not_null
+          - unique:
+              config:
+                severity: warn
+      - name: casa
+        description: Casa legislativa (camara).
+      - name: id
+        description: Identificador original da votação na API da Câmara.
+      - name: data_votacao
+        description: Data em que a votação ocorreu.
+      - name: sigla_orgao
+        description: Sigla do órgão que realizou a votação (ex. PLEN, CSPCCO).
+      - name: proposicao_objeto
+        description: Descrição da proposição objeto da votação.
+      - name: aprovado
+        description: Booleano indicando se a proposição foi aprovada.
+  - name: int_orientacoes_camara
+    description: "Orientações de voto por partido/liderança por sessão de votação da Câmara. Alimenta fct_votos_alinhados_camara."
+    columns:
+      - name: sk_votacao
+        description: Chave substituta da votação (id_votacao + casa).
+        tests:
+          - not_null
+      - name: id_votacao
+        description: Identificador da votação à qual a orientação se refere.
+      - name: casa
+        description: Casa legislativa (camara).
+      - name: sigla_partido_bloco
+        description: Sigla do partido ou bloco que recebeu a orientação.
+      - name: orientacao_voto
+        description: Orientação de voto dada pelo líder (SIM, NÃO, LIBERADO, OBSTRUÇÃO).
+      - name: codigo_tipo_liderancao
+        description: Código do tipo de liderança que deu a orientação.
+      - name: codigo_partido_bloco
+        description: Código do partido ou bloco que recebeu a orientação.
+  - name: int_governismo_total
+    description: "Governismo agregado por parlamentar (Câmara e Senado). Desabilitado enquanto radar_congresso estiver inativo (enabled=false)."
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+          - unique
+      - name: casa
+        description: Casa legislativa do parlamentar (camara/senado).
+      - name: total_votos_favor_governo
+        description: Quantidade total de votos do parlamentar alinhados ao governo.
+      - name: total_votos_contra_governo
+        description: Quantidade total de votos do parlamentar contrários ao governo.
+      - name: perc_governismo
+        description: Percentual de alinhamento ao governo (0–100).
+  - name: int_governismo_trimestre
+    description: "Governismo trimestral por parlamentar via Radar Congresso. Desabilitado enquanto radar_congresso estiver inativo (enabled=false)."
+    columns:
+      - name: sk_parlamentar
+        description: Chave substituta estável do parlamentar.
+        tests:
+          - not_null
+      - name: casa
+        description: Casa legislativa do parlamentar no período (camara/senado).
+      - name: data_trimestre
+        description: Data representativa do trimestre de referência (normalizada para início do trimestre).
+      - name: perc_governismo_trimestre
+        description: Percentual de alinhamento ao governo no trimestre (0–100).
+      - name: data_carga
+        description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
