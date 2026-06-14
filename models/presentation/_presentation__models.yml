@@ -7,48 +7,37 @@ models:
       Cobre Câmara (desde 1991) e Senado. Permite calcular perc_governismo para
       qualquer período (ano, trimestre, legislatura) e rastrear a evolução temporal
       do alinhamento de cada parlamentar ao governo.
+      Enriquecimento com nome, partido, presidente e mandato ainda não implementado — join com dim_parlamentares e seed raw_executivo_presidente pendente.
     columns:
+      - name: casa
+        description: Casa legislativa do voto (CAMARA ou SENADO).
       - name: sk_voto
-        description: Chave substituta do evento de voto (parlamentar × votação).
+        description: Chave substituta do evento de voto (parlamentar × votação × casa).
         tests:
           - not_null
           - unique
       - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar.
+        description: Chave substituta estável do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
-      - name: casa
-        description: Casa legislativa (camara/senado).
-      - name: nome_eleitoral
-        description: Nome eleitoral como exibido ao público.
-      - name: partido
-        description: Sigla do partido no mandato mais recente.
-      - name: uf_representacao
-        description: UF representada no mandato mais recente.
-      - name: data_voto
+      - name: sk_votacao
+        description: Chave substituta da votação, join com dim_votacoes.
+        tests:
+          - not_null
+      - name: data_votacao
         description: Data em que a votação ocorreu.
-      - name: ano
-        description: Ano da votação, extraído de data_voto.
-      - name: trimestre
-        description: Primeiro dia do trimestre da votação (truncado).
-      - name: descricao_votacao
-        description: Texto identificando a proposição votada (ex. "PEC 6/2019 — Reforma da Previdência").
-      - name: sigla_orgao
-        description: Sigla do órgão/comissão ou tipo de proposição (ex. PLEN, PEC, PLP).
-      - name: votacao_aprovada
-        description: TRUE se a votação resultou em aprovação, FALSE se reprovada, NULL se não informado.
-      - name: voto_parlamentar
-        description: Voto registrado pelo parlamentar (SIM, NAO, ABSTENCAO, OBSTRUCAO).
+      - name: objeto
+        description: Descrição da proposição ou matéria votada.
+      - name: aprovado
+        description: 1 se a votação resultou em aprovação, 0 caso contrário.
+      - name: voto
+        description: "Voto registrado pelo parlamentar (SIM, NAO, ABSTENCAO, OBSTRUCAO)."
       - name: voto_governo
         description: Orientação emitida pelo Governo para esta votação (SIM, NAO).
-      - name: alinhado_ao_governo
-        description: TRUE se o voto coincidiu com a orientação do Governo, FALSE se divergiu, NULL se abstenção.
-      - name: presidente
-        description: Nome do presidente da República no momento da votação, derivado do seed raw_executivo_presidente.
-      - name: mandato
-        description: Número ordinal do mandato do presidente (ex. 1 = primeiro mandato, 2 = segundo, 3 = terceiro).
+      - name: voto_alinhado
+        description: "1 se o voto coincidiu com a orientação do Governo, 0 se divergiu."
   - name: prs_ecidadania_proposicoes
-    description: Apresentação de proposições da plataforma e-Cidadania enriquecida com atributos de tramitação e deliberação do Senado. Desabilitada enquanto e-Cidadania não estiver ativo.
+    description: "Apresentação de proposições da plataforma e-Cidadania enriquecida com atributos de tramitação e deliberação do Senado. DESABILITADO: arquivo SQL renomeado para .disabled enquanto a fonte e-Cidadania não estiver ativa."
     columns:
       - name: data_extracao
         description: Data de extração dos dados da fonte.

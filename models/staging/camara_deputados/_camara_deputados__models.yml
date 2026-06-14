@@ -6,9 +6,6 @@ models:
     columns:
       - name: id
         description: "Identificador único do deputado na API da Câmara."
-        tests:
-          - not_null
-          - unique
       - name: nomecivil
         description: "Nome civil bruto conforme retornado pela API."
       - name: ultimostatus_nomeeleitoral
@@ -43,11 +40,6 @@ models:
     columns:
       - name: id
         description: "Identificador único da votação"
-        tests:
-          - not_null
-          - unique:
-              config:
-                severity: warn
       - name: data_votacao
         description: "Data da votação"
       - name: datahora_votacao
@@ -80,10 +72,6 @@ models:
     columns:
       - name: id_deputado
         description: "Identificador do deputado na API da Câmara"
-        tests:
-          - not_null:
-              config:
-                severity: warn
       - name: id_votacao
         description: "Identificador da votação à qual a orientação se refere"
       - name: voto

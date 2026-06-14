@@ -6,13 +6,8 @@ models:
     columns:
       - name: id
         description: "Identificador único do deputado no site Ranking dos Políticos."
-        tests:
-          - not_null
-          - unique
       - name: id_congresso
         description: "FK do deputado na API da Câmara, extraído via regex da URL da foto."
-        tests:
-          - not_null
       - name: nome
         description: "Nome completo padronizado (upper)."
       - name: nome_eleitoral

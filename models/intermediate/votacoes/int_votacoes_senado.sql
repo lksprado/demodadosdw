@@ -23,7 +23,9 @@ final AS (
             ELSE 0
         END AS aprovado
     FROM senado_votacoes
+    WHERE codigo_votacao IS NOT NULL
     ORDER BY data_sessao DESC
+    
 )
 
 SELECT * FROM final

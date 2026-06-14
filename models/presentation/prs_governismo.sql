@@ -44,7 +44,7 @@ votos_parlamentares_joined AS (
         t1.voto,
         t2.orientacao_voto AS voto_governo
     FROM {{ ref('fct_votos') }} AS t1
-    INNER JOIN votacoes_orientadas_governo
+    INNER JOIN votacoes_orientadas_governo AS t2
         ON t1.sk_votacao = t2.sk_votacao
 ),
 

@@ -258,8 +258,6 @@ models:
         description: Identificador do deputado na API da Câmara.
       - name: id_votacao
         description: Identificador da votação.
-      - name: id_legislatura
-        description: Identificador da legislatura na qual o voto foi registrado.
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO). BRANCO e FAVORAVEL COM RESTRICOES normalizados."
 

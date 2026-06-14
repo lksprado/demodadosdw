@@ -1,6 +1,7 @@
 WITH
 votacoes_camara AS (
     SELECT
+        DISTINCT ON (sk_votacao)
         sk_votacao,
         casa,
         data_votacao,
@@ -11,6 +12,7 @@ votacoes_camara AS (
 
 votacoes_senado AS (
     SELECT
+        DISTINCT ON (sk_votacao)
         sk_votacao,
         casa,
         data_sessao AS data_votacao,

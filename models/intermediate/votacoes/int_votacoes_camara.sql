@@ -10,7 +10,12 @@ camara_votacoes AS (
         'CAMARA' AS casa
     FROM {{ ref('stg_camara_votacoes') }}
 ),
-
+dedup as (
+    SELECT
+    ROW_NUMBER() OVER (PARTITION BY id) as rn,
+    *
+    from camara_votacoes
+),
 final AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['id', 'casa']) }} AS sk_votacao,
@@ -20,7 +25,8 @@ final AS (
         sigla_orgao,
         proposicao_objeto,
         aprovado
-    FROM camara_votacoes
+    FROM dedup
+    WHERE rn=1
     ORDER BY data_votacao DESC
 )
 
