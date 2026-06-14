@@ -8,8 +8,7 @@ sources:
     schema: raw
     loaded_at_field: data_carga
     freshness:
-      warn_after: {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+      warn_after: {count: 160, period: hour}
     tables:
       - name: raw_senado_senadores
         description: "Detalhes dos senadores das legislaturas atuais obtidos da API do Senado Federal. Endpoint: https://legis.senado.leg.br/dadosabertos/senador/lista/atual?v=4"

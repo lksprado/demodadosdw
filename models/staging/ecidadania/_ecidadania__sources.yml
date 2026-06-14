@@ -7,8 +7,7 @@ sources:
     schema: raw
     loaded_at_field: data_carga
     freshness:
-      warn_after: {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+      warn_after: {count: 160, period: hour}
     tables:
       - name: raw_ecidadania_mais_votados
         description: "Proposições legislativas em destaque (mais votadas no dia) na plataforma e-Cidadania"

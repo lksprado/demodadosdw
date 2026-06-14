@@ -7,8 +7,7 @@ sources:
     schema: raw
     loaded_at_field: data_carga
     freshness:
-      warn_after: {count: 24, period: hour}
-      error_after: {count: 48, period: hour}
+      warn_after: {count: 160, period: hour}
     tables:
       - name: raw_camara_deputados
         description: "Detalhes dos deputados obtidos da API da Câmara dos Deputados. Endpoint: https://dadosabertos.camara.leg.br/api/v2/deputados/{id}"
