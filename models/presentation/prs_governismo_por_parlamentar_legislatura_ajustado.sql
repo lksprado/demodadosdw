@@ -32,7 +32,7 @@ scored AS (
         *,
         AVG(qt_votos)        OVER (PARTITION BY legislatura, casa) AS _prior_votos,
         AVG(perc_governismo) OVER (PARTITION BY legislatura, casa) AS _prior_governismo
-    FROM governismo
+    FROM governismo_por_parlamentar_legislatura
 )
 SELECT
     casa,
