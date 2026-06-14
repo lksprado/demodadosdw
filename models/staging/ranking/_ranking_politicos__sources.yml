@@ -10,10 +10,5 @@ sources:
       warn_after: {count: 24, period: hour}
       error_after: {count: 48, period: hour}
     tables:
-      - name: raw_ranking_parlamentares
-        description: "Pontuações, posições e métricas financeiras de parlamentares do Ranking dos Políticos"
-        columns:
-          - name: parliamentarianid
-            tests:
-              - unique
-              - not_null
+      - name: raw_ranking_deputados
+      - name: raw_ranking_senadores

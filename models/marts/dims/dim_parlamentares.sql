@@ -1,55 +1,34 @@
 {{ config(
-    tags=["dim","parlamentar"]
+    tags=["camara","senado"]
 ) }}
 
-WITH senadores AS (
-    SELECT * FROM {{ ref('int_senadores') }}
+WITH
+deputados AS (
+    SELECT *
+    FROM {{ ref('int_deputados') }}
 ),
 
-deputados AS (
-    SELECT * FROM {{ ref('int_deputados') }}
+senadores AS (
+    SELECT *
+    FROM {{ ref('int_senadores') }}
+),
+
+parlamentares AS (
+    SELECT * FROM deputados
+    UNION ALL
+    SELECT * FROM senadores
+),
+
+final AS (
+    SELECT
+        {{ dbt_utils.generate_surrogate_key(['casa', 'id']) }} AS sk_parlamentar,
+        casa,
+        id,
+        nome,
+        nome_completo,
+        sexo,
+        uf
+    FROM parlamentares
 )
 
-SELECT
-    sk_parlamentar,
-    nome,
-    nome_eleitoral,
-    email,
-    telefone,
-    sexo,
-    data_nascimento,
-    geracao,
-    uf_nascimento,
-    municipio_nascimento,
-    escolaridade,
-    redesocial_x_twitter,
-    redesocial_instagram,
-    redesocial_facebook,
-    redesocial_youtube,
-    link_api_oficial,
-    link_foto,
-    data_carga
-FROM senadores
-
-UNION ALL
-
-SELECT
-    sk_parlamentar,
-    nome,
-    nome_eleitoral,
-    email,
-    telefone,
-    sexo,
-    data_nascimento,
-    geracao,
-    uf_nascimento,
-    municipio_nascimento,
-    escolaridade,
-    redesocial_x_twitter,
-    redesocial_instagram,
-    redesocial_facebook,
-    redesocial_youtube,
-    link_api_oficial,
-    link_foto,
-    data_carga
-FROM deputados
+SELECT * FROM final

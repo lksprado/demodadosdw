@@ -2,65 +2,33 @@ version: 2
 
 models:
   - name: stg_camara_deputados
-    description: "Modelo staging que carrega e padroniza os dados brutos da API da Câmara para deputados"
+    description: "Seleção mínima de colunas da API da Câmara para deputados. Renaming e enriquecimento ocorrem em int_deputados."
     columns:
       - name: id
-        description: "Identificador único do deputado na API da Câmara"
+        description: "Identificador único do deputado na API da Câmara."
         tests:
           - not_null
           - unique
-      - name: nome
-        description: "Nome civil completo do deputado"
-      - name: nome_eleitoral
-        description: "Nome eleitoral como exibido ao público"
-      - name: partido
-        description: "Sigla do partido no momento mais recente da carga"
-      - name: email
-        description: "E-mail institucional do gabinete"
-      - name: redesocial_x_twitter
-        description: "URL do perfil no X/Twitter"
-      - name: redesocial_instagram
-        description: "URL do perfil no Instagram"
-      - name: redesocial_facebook
-        description: "URL da página/perfil no Facebook"
-      - name: redesocial_youtube
-        description: "URL do canal no YouTube"
-      - name: telefone
-        description: "Telefone do gabinete"
+      - name: nomecivil
+        description: "Nome civil bruto conforme retornado pela API."
+      - name: ultimostatus_nomeeleitoral
+        description: "Nome eleitoral bruto do último status do deputado."
       - name: sexo
-        description: "Sexo informado no cadastro (M/F)"
-      - name: data_nascimento
-        description: "Data de nascimento do parlamentar"
-      - name: geracao
-        description: "Faixa geracional derivada da data de nascimento (GRANDIOSA, SILENCIOSA, BABY BOOMER, X, MILLENIAL, Z, ALPHA)"
-      - name: uf_nascimento
-        description: "Unidade federativa de nascimento"
-      - name: municipio_nascimento
-        description: "Município de nascimento"
-      - name: uf_representacao
-        description: "Unidade federativa representada no mandato"
+        description: "Sexo informado no cadastro (M/F)."
+      - name: redesocial
+        description: "Campo único da API com links de redes sociais (texto ou JSON)."
+      - name: datanascimento
+        description: "Data de nascimento bruta conforme API."
+      - name: datafalecimento
+        description: "Data de falecimento, quando houver."
+      - name: ufnascimento
+        description: "UF de nascimento bruta conforme API."
+      - name: municipionascimento
+        description: "Município de nascimento bruto conforme API."
       - name: escolaridade
-        description: "Grau de escolaridade informado"
-      - name: id_legislatura
-        description: "Identificador da última legislatura"
-      - name: data_posse
-        description: "Data de posse no mandato atual"
-      - name: num_gabinete_predio
-        description: "Identificação do prédio do gabinete"
-      - name: num_gabinete_andar
-        description: "Andar do gabinete"
-      - name: num_gabinete_sala
-        description: "Número da sala do gabinete"
-      - name: situacao_atual
-        description: "Situação atual do mandato (ex: EXERCÍCIO, AFASTADO)"
-      - name: condicao_eleitoral
-        description: "Condição eleitoral mais recente (TITULAR, SUPLENTE)"
-      - name: link_foto
-        description: "URL da foto oficial do deputado"
-      - name: link_api_oficial
-        description: "URL para o detalhe oficial do deputado na API da Câmara"
-      - name: data_carga
-        description: "Data/hora de ingestão do registro na camada raw"
+        description: "Grau de escolaridade informado."
+      - name: email
+        description: "E-mail institucional — COALESCE de ultimostatus_email e ultimostatus_gabinete_email."
 
   - name: stg_camara_legislaturas
     description: "Modelo staging com o mapeamento de deputados por legislatura"

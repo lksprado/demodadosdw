@@ -9,59 +9,41 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        identificacaoparlamentar_codigoparlamentar AS id,
-        identificacaoparlamentar_nomecompletoparlamentar AS nome,
-        identificacaoparlamentar_nomeparlamentar AS nome_eleitoral,
-        identificacaoparlamentar_siglapartidoparlamentar AS partido,
-        identificacaoparlamentar_emailparlamentar AS email,
-        NULL AS redesocial_x_twitter,
-        NULL AS redesocial_instagram,
-        NULL AS redesocial_facebook,
-        NULL AS redesocial_youtube,
-        NULL AS data_nascimento,
-        NULL AS geracao,
-        NULL AS uf_nascimento,
-        NULL AS municipio_nascimento,
-        identificacaoparlamentar_ufparlamentar AS uf_representacao,
-        NULL AS escolaridade,
-        mandato_primeiralegislaturadomandato_numerolegislatura AS id_legislatura,
-        NULL AS num_gabinete_sala,
-        NULL AS num_gabinete_predio,
-        NULL AS num_gabinete_andar,
-        'EXERCICIO' AS situacao_atual,
-        identificacaoparlamentar_urlfotoparlamentar AS link_foto,
-        data_carga,
-        (REPLACE(identificacaoparlamentar_telefones_telefone, '''', '"')::JSONB -> 0 ->> 'NumeroTelefone') AS telefone,
-        CASE
-            WHEN identificacaoparlamentar_sexoparlamentar LIKE 'MASCULINO' THEN 'M'
-            WHEN identificacaoparlamentar_sexoparlamentar LIKE 'FEMININO' THEN 'F'
-        END AS sexo,
-        TO_DATE(mandato_primeiralegislaturadomandato_datainicio::TEXT, 'YYYYMMDD') AS data_posse,
-        CASE
-            WHEN mandato_descricaoparticipacao LIKE 'TITULAR' THEN mandato_descricaoparticipacao
-            ELSE 'SUPLENTE'
-        END AS condicao_eleitoral
-    -- identificacaoparlamentar_urlpaginaparlamentar as url_website,    
-    --identificacaoparlamentar_bloco_codigobloco as bloco_atual,
-    --identificacaoparlamentar_bloco_nomebloco as bloco_atual,
-    --identificacaoparlamentar_bloco_nomeapelido
-    --identificacaoparlamentar_bloco_datacriacao
-    --identificacaoparlamentar_membromesa
-    --identificacaoparlamentar_membrolideranca as is_lideranca,
-    --mandato_codigomandato
-    --mandato_primeiralegislaturadomandato_datafim
-    --mandato_segundalegislaturadomandato_numerolegislatura
-    --mandato_segundalegislaturadomandato_datainicio
-    --to_date(mandato_segundalegislaturadomandato_datafim,'YYYYMMDD') as data_fim_mandato,
-    --mandato_suplentes_suplente
-    --mandato_exercicios_exercicio
-    --mandato_titular_descricaoparticipacao
-    --mandato_titular_codigoparlamentar
-    -- CASE 
-    --     WHEN mandato_titular_nomeparlamentar LIKE 'NAN' THEN null
-    --     ELSE mandato_titular_nomeparlamentar
-    -- END AS nome_titular_mandato,
-    --identificacaoparlamentar_urlpaginaparticular
+        identificacaoparlamentar_codigoparlamentar,
+        identificacaoparlamentar_codigopubliconalegatual,
+        identificacaoparlamentar_nomeparlamentar,
+        identificacaoparlamentar_nomecompletoparlamentar,
+        identificacaoparlamentar_sexoparlamentar,
+        identificacaoparlamentar_formatratamento,
+        identificacaoparlamentar_emailparlamentar,
+        identificacaoparlamentar_telefones_telefone,
+        identificacaoparlamentar_siglapartidoparlamentar,
+        identificacaoparlamentar_ufparlamentar,
+        identificacaoparlamentar_bloco_codigobloco,
+        identificacaoparlamentar_bloco_nomebloco,
+        identificacaoparlamentar_bloco_nomeapelido,
+        identificacaoparlamentar_membromesa,
+        identificacaoparlamentar_membrolideranca,
+        mandato_codigomandato,
+        mandato_ufparlamentar,
+        mandato_primeiralegislaturadomandato_numerolegislatura,
+        mandato_segundalegislaturadomandato_numerolegislatura,
+        mandato_descricaoparticipacao,
+        mandato_suplentes_suplente,
+        mandato_exercicios_exercicio,
+        TO_DATE(identificacaoparlamentar_bloco_datacriacao::TEXT, 'YYYYMMDD') AS identificacaoparlamentar_bloco_datacriacao,
+        TO_DATE(mandato_primeiralegislaturadomandato_datainicio::TEXT, 'YYYYMMDD') AS mandato_primeiralegislaturadomandato_datainicio,
+        TO_DATE(mandato_primeiralegislaturadomandato_datafim::TEXT, 'YYYYMMDD') AS mandato_primeiralegislaturadomandato_datafim,
+        TO_DATE(mandato_segundalegislaturadomandato_datainicio::TEXT, 'YYYYMMDD') AS mandato_segundalegislaturadomandato_datainicio,
+        TO_DATE(mandato_segundalegislaturadomandato_datafim::TEXT, 'YYYYMMDD') AS mandato_segundalegislaturadomandato_datafim,
+        NULLIF(mandato_titular_descricaoparticipacao, 'NAN') AS mandato_titular_descricaoparticipacao,
+        NULLIF(mandato_titular_codigoparlamentar, 'NAN') AS mandato_titular_codigoparlamentar,
+        NULLIF(mandato_titular_nomeparlamentar, 'NAN') AS mandato_titular_nomeparlamentar
+    {# DESCONSIDERADOS 
+    identificacaoparlamentar_urlfotoparlamentar
+    identificacaoparlamentar_urlpaginaparlamentar
+    identificacaoparlamentar_urlpaginaparticular
+     #}
     FROM source
 )
 

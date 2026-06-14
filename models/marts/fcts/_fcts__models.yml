@@ -1,83 +1,28 @@
 version: 2
 
 models:
-  - name: fct_votos_alinhados_camara
-    description: "Fato de votos individuais da Câmara com indicador de alinhamento ao governo. Grain: um voto por deputado por votação onde o Governo emitiu orientação."
+
+  - name: fct_votos
+    description: "Fato de votos individuais unificado (Câmara e Senado). Grain: um voto por parlamentar por votação."
     columns:
       - name: sk_voto
-        description: Chave substituta do evento de voto (deputado × votação).
+        description: Chave substituta do evento de voto (parlamentar × votação × casa).
         tests:
           - not_null
           - unique
       - name: sk_parlamentar
-        description: Chave substituta do parlamentar.
+        description: Chave substituta do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
       - name: sk_votacao
-        description: Chave substituta da votação, join com int_fct_votacoes.
+        description: Chave substituta da votação, join com dim_votacoes.
         tests:
           - not_null
-      - name: voto_governo
-        description: Orientação emitida pelo Governo para esta votação (SIM, NAO, OBSTRUCAO).
-      - name: voto_deputado
-        description: Voto registrado pelo deputado (SIM, NAO, ABSTENCAO, OBSTRUCAO).
-      - name: alinhado_ao_governo
-        description: TRUE se o voto coincidiu com a orientação do Governo, FALSE se divergiu, NULL se abstenção.
-  - name: fct_votos_senado
-    description: "Fato de votos individuais do Senado com indicador de alinhamento ao governo. Grain: um voto por senador por votação onde o Governo emitiu orientação."
-    columns:
-      - name: sk_voto
-        description: Chave substituta do evento de voto (senador × votação).
-        tests:
-          - not_null
-          - unique
-      - name: sk_parlamentar
-        description: Chave substituta do parlamentar.
-        tests:
-          - not_null
-      - name: codigo_votacao
-        description: Código da sessão de votação no Senado.
-      - name: data_sessao
-        description: Data da sessão de votação.
-      - name: identificacao
-        description: Descrição ou identificação da matéria votada.
-      - name: sigla
-        description: Sigla do tipo de matéria votada.
-      - name: resultado_votacao
-        description: Resultado da votação (APROVADO, REPROVADO).
-      - name: voto_governo
-        description: Orientação emitida pelo Governo para esta votação (SIM, NAO).
-      - name: voto_senador
-        description: Voto registrado pelo senador (SIM, NAO, ABSTENCAO, OBSTRUCAO).
-      - name: alinhado_ao_governo
-        description: TRUE se o voto coincidiu com a orientação do Governo, FALSE se divergiu, NULL se abstenção.
-  - name: fct_mandatos
-    description: "Fato de mandatos parlamentares unificado (Câmara e Senado). Grain: um registro por parlamentar por legislatura."
-    columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar.
-        tests:
-          - not_null
-      - name: id_legislatura
-        description: Identificador da legislatura do mandato.
-      - name: partido
-        description: Sigla do partido no mandato.
-      - name: uf_representacao
-        description: UF representada no mandato.
-      - name: data_posse
-        description: Data de posse no mandato.
-      - name: situacao_atual
-        description: Situação atual do mandato (em exercício, afastado, etc.).
-      - name: condicao_eleitoral
-        description: Condição eleitoral (titular, suplente, etc.).
-      - name: num_gabinete_predio
-        description: Identificação do prédio do gabinete.
-      - name: num_gabinete_andar
-        description: Andar do gabinete.
-      - name: num_gabinete_sala
-        description: Número da sala do gabinete.
-      - name: data_carga
-        description: Data/hora de carga do registro de origem.
+      - name: casa
+        description: Casa legislativa do voto (CAMARA ou SENADO).
+      - name: voto
+        description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO)."
+
   - name: fct_ecidadania_bignumbers
     description: Fato com os totais agregados de votações e votantes na plataforma e-Cidadania.
     columns:
@@ -91,6 +36,7 @@ models:
         description: Quantidade total de votos registrados na plataforma.
       - name: votos_por_pessoa
         description: Média de votos por pessoa (total_votos / total_pessoas).
+
   - name: fct_ecidadania_proposicoes
     description: Fato com métricas de votação por proposição na plataforma e-Cidadania, com flag indicando se foi a mais votada no dia da extração.
     columns:
@@ -120,55 +66,3 @@ models:
         description: URL da proposição na plataforma e-Cidadania.
       - name: flag_mais_votado_no_dia
         description: Booleano indicando se a proposição estava entre as mais votadas na data de extração.
-  - name: fct_ranking_parlamentares_total
-    description: "Fato de ranking dos políticos para todos os parlamentares (Câmara e Senado) com pontuações, posições e métricas financeiras. Grain: um registro por parlamentar."
-    columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
-        tests:
-          - not_null
-          - unique
-      - name: casa
-        description: Casa legislativa do parlamentar (camara/senado).
-      - name: score_total
-        description: Pontuação total atribuída pelo Ranking dos Políticos ao parlamentar.
-      - name: score_antiprivilegio
-        description: Subpontuação relacionada a postura antiprivilégios.
-      - name: score_antidesperdicio
-        description: Subpontuação relacionada a assiduidade e combate a desperdícios.
-      - name: score_processos
-        description: Subpontuação relacionada à existência/gravidade de processos.
-      - name: score_outros
-        description: Subpontuação residual (outros critérios) do Ranking.
-      - name: ranking_por_cargo
-        description: Posição do parlamentar no ranking dentro do seu cargo.
-      - name: ranking_por_estado
-        description: Posição do parlamentar no ranking dentro do seu estado.
-      - name: cnt_parlamentares_estado
-        description: Quantidade total de parlamentares do estado.
-      - name: cnt_cargo_por_estado
-        description: Quantidade total de parlamentares do mesmo cargo no estado.
-      - name: total_parlamentares
-        description: Quantidade total de parlamentares na base do Ranking.
-      - name: total_parlamentar_por_casa
-        description: Quantidade total de parlamentares no mesmo cargo/casa.
-      - name: perc_economia
-        description: Percentual de economia de verbas ao longo do mandato.
-      - name: vlr_mandato_disponivel_total
-        description: Valor total disponível no mandato.
-      - name: vlr_mandato_gasto_total
-        description: Valor total gasto no mandato.
-      - name: vlr_mandato_economizado_total
-        description: Valor total economizado no mandato.
-      - name: vlr_cota_parlamentar_disponivel_subtotal
-        description: Valor disponível referente à cota parlamentar.
-      - name: vlr_cota_parlamentar_gasto_subtotal
-        description: Valor gasto referente à cota parlamentar.
-      - name: vlr_cota_parlamentar_economizado_subtotal
-        description: Valor economizado referente à cota parlamentar.
-      - name: vlr_verba_gabinete_disponivel_subtotal
-        description: Valor disponível referente à verba de gabinete.
-      - name: vlr_verba_gabinete_gasto_subtotal
-        description: Valor gasto referente à verba de gabinete.
-      - name: vlr_verba_gabinete_economizado_subtotal
-        description: Valor economizado referente à verba de gabinete.

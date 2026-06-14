@@ -6,7 +6,8 @@
 
 {% if is_incremental() %}
 
-SELECT * FROM {{ this }} WHERE FALSE
+    SELECT * FROM {{ this }}
+    WHERE FALSE
 
 {% else %}
 

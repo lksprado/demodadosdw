@@ -7,11 +7,11 @@ WITH
 camara_votacoes AS (
     SELECT
         *,
-        'camara' AS casa
+        'CAMARA' AS casa
     FROM {{ ref('stg_camara_votacoes') }}
 ),
 
-renamed AS (
+final AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['id', 'casa']) }} AS sk_votacao,
         casa,
@@ -24,4 +24,4 @@ renamed AS (
     ORDER BY data_votacao DESC
 )
 
-SELECT * FROM renamed
+SELECT * FROM final

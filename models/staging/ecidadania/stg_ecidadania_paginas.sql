@@ -33,7 +33,8 @@ votos_agrupados AS (
 ),
 
 linha_representativa AS (
-    SELECT * FROM (
+    SELECT *
+    FROM (
         SELECT
             *,
             ROW_NUMBER() OVER (PARTITION BY id_proposicao ORDER BY total_votos DESC) AS rn
@@ -49,10 +50,10 @@ SELECT
     t1.ementa,
     t1.link,
     CAST(SPLIT_PART(UPPER(t1.id_proposicao), '/', 2) AS INT) AS ano_proposicao,
-    SPLIT_PART(UPPER(t1.id_proposicao), ' ', 1) AS sigla_proposicao,
     CAST(t2.vt_sim AS INT) AS votos_sim,
     CAST(t2.vt_nao AS INT) AS votos_nao,
     CAST(t2.total_vt AS INT) AS total_votos,
+    SPLIT_PART(UPPER(t1.id_proposicao), ' ', 1) AS sigla_proposicao,
     CASE
         WHEN t2.vt_sim > t2.vt_nao THEN 'A FAVOR'
         WHEN t2.vt_nao > t2.vt_sim THEN 'CONTRA'

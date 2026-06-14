@@ -1,90 +1,110 @@
 version: 2
 
 models:
-  - name: stg_ranking_parlamentares
-    description: "Modelo staging com dados de desempenho e financeiros dos parlamentares extraídos do Ranking dos Políticos"
+  - name: stg_ranking_deputados
+    description: "Dados brutos do Ranking dos Políticos para deputados federais, com ID do Congresso extraído da URL e nomes padronizados."
     columns:
-      - name: id_parlamentar_ranking
-        description: "Identificador único do parlamentar no site Ranking dos Políticos"
+      - name: id
+        description: "Identificador único do deputado no site Ranking dos Políticos."
         tests:
           - not_null
           - unique
-      - name: id_parlamentar_congresso
-        description: "FK do parlamentar na API oficial da Câmara ou Senado"
+      - name: id_congresso
+        description: "FK do deputado na API da Câmara, extraído via regex da URL da foto."
         tests:
           - not_null
-          - unique
-      - name: cargo
-        description: "Cargo do parlamentar (Senador, Deputado Federal)"
-      - name: score_total
-        description: "Pontuação total no Ranking dos Políticos"
-      - name: score_antiprivilegio
-        description: "Subpontuação referente à rejeição de privilégios"
-      - name: score_antidesperdicio
-        description: "Subpontuação referente a presenças e combate a desperdícios"
-      - name: perc_economia
-        description: "Percentual de economia de verbas de mandato"
-      - name: score_processos
-        description: "Subpontuação relacionada a processos judiciais em andamento"
-      - name: score_outros
-        description: "Subpontuação residual (outros critérios) do Ranking"
-      - name: ranking_por_cargo
-        description: "Posição no Ranking considerando apenas o cargo (Deputado ou Senador)"
-      - name: ranking_por_estado
-        description: "Posição no Ranking dentro do estado do parlamentar"
-      - name: cnt_parlamentares_estado
-        description: "Quantidade total de parlamentares (deputados e senadores) do estado"
-      - name: cnt_cargo_por_estado
-        description: "Quantidade total de parlamentares do mesmo cargo no estado"
-      - name: total_parlamentares
-        description: "Quantidade total de parlamentares considerados na base do Ranking"
-      - name: total_parlamentar_por_casa
-        description: "Quantidade total de parlamentares no mesmo cargo/casa"
-      - name: vlr_mandato_disponivel_total
-        description: "Valor total disponível no mandato (cota parlamentar + verba de gabinete) em R$"
-      - name: vlr_mandato_gasto_total
-        description: "Valor total gasto no mandato em R$"
-      - name: vlr_mandato_economizado_total
-        description: "Valor total economizado no mandato em R$"
-      - name: vlr_cota_parlamentar_disponivel_subtotal
-        description: "Valor disponível referente à cota parlamentar em R$"
-      - name: vlr_cota_parlamentar_gasto_subtotal
-        description: "Valor gasto referente à cota parlamentar em R$"
-      - name: vlr_cota_parlamentar_economizado_subtotal
-        description: "Valor economizado referente à cota parlamentar em R$"
-      - name: vlr_verba_gabinete_disponivel_subtotal
-        description: "Valor disponível referente à verba de gabinete em R$"
-      - name: vlr_verba_gabinete_gasto_subtotal
-        description: "Valor gasto referente à verba de gabinete em R$"
-      - name: vlr_verba_gabinete_economizado_subtotal
-        description: "Valor economizado referente à verba de gabinete em R$"
       - name: nome
-        description: "Nome completo do parlamentar conforme o Ranking dos Políticos"
-      - name: email
-        description: "E-mail institucional do parlamentar"
-      - name: link_api_oficial
-        description: "URL para o detalhe oficial do parlamentar na API de origem"
-      - name: profissao
-        description: "Profissão declarada pelo parlamentar"
-      - name: escolaridade
-        description: "Grau de escolaridade informado"
-      - name: uf_representacao
-        description: "Unidade federativa representada no mandato"
-      - name: telefone_gabinete_atual
-        description: "Telefone do gabinete atual do parlamentar"
-      - name: redesocial_instagram
-        description: "URL do perfil no Instagram"
-      - name: redesocial_x_twitter
-        description: "URL do perfil no X/Twitter"
-      - name: redesocial_facebook
-        description: "URL da página/perfil no Facebook"
-      - name: redesocial_youtube
-        description: "URL do canal no YouTube"
-      - name: data_nascimento
-        description: "Data de nascimento do parlamentar"
-      - name: is_ativo
-        description: "Booleano indicando se o parlamentar está em exercício"
-      - name: link_parlamentar
-        description: "URL da página do parlamentar no site Ranking dos Políticos"
-      - name: data_carga
-        description: "Data/hora de ingestão do registro na camada raw"
+        description: "Nome completo padronizado (upper)."
+      - name: nome_eleitoral
+        description: "Nome eleitoral padronizado (upper)."
+      - name: nome_civil
+        description: "Nome civil padronizado (upper)."
+      - name: url_foto
+        description: "URL da foto oficial do deputado."
+      - name: cargo
+        description: "Cargo do parlamentar (Deputado Federal)."
+      - name: partido
+        description: "Sigla do partido padronizada (upper)."
+      - name: situacao
+        description: "Situação do mandato padronizada (upper)."
+      - name: uf
+        description: "UF de representação padronizada (upper)."
+      - name: slug
+        description: "Slug do parlamentar no site Ranking dos Políticos."
+      - name: composicao_pontuacao_pontuacao
+        description: "Pontuação total atual no Ranking dos Políticos."
+      - name: composicao_pontuacao_anos
+        description: "Histórico anual de pontuações em formato JSON (array de objetos por ano). Usado em int_deputados_score_explodido."
+      - name: composicao_pontuacao_ranking_geral
+        description: "Posição no ranking geral."
+      - name: composicao_pontuacao_ranking_geral_variacao
+        description: "Variação da posição no ranking geral."
+      - name: composicao_pontuacao_ranking_casa
+        description: "Posição no ranking dentro da casa (Câmara)."
+      - name: composicao_pontuacao_ranking_casa_variacao
+        description: "Variação da posição no ranking da casa."
+      - name: composicao_pontuacao_ranking_partido
+        description: "Posição no ranking dentro do partido."
+      - name: composicao_pontuacao_ranking_partido_variacao
+        description: "Variação da posição no ranking do partido."
+      - name: composicao_pontuacao_ranking_estado
+        description: "Posição no ranking dentro do estado."
+      - name: composicao_pontuacao_ranking_estado_variacao
+        description: "Variação da posição no ranking do estado."
+      - name: composicao_pontuacao_ranking_casa_estado
+        description: "Posição no ranking da casa dentro do estado."
+      - name: composicao_pontuacao_ranking_casa_estado_variacao
+        description: "Variação da posição no ranking da casa por estado."
+
+  - name: stg_ranking_senadores
+    description: "Dados brutos do Ranking dos Políticos para senadores, com ID do Congresso extraído da URL e nomes padronizados. Sem nome_eleitoral (campo não existe na fonte do Senado)."
+    columns:
+      - name: id
+        description: "Identificador único do senador no site Ranking dos Políticos."
+        tests:
+          - not_null
+          - unique
+      - name: id_congresso
+        description: "FK do senador na API do Senado, extraído via regex da URL da foto."
+        tests:
+          - not_null
+      - name: nome
+        description: "Nome completo padronizado (upper)."
+      - name: nome_civil
+        description: "Nome civil padronizado (upper)."
+      - name: url_foto
+        description: "URL da foto oficial do senador."
+      - name: cargo
+        description: "Cargo do parlamentar (Senador)."
+      - name: partido
+        description: "Sigla do partido padronizada (upper)."
+      - name: situacao
+        description: "Situação do mandato padronizada (upper)."
+      - name: uf
+        description: "UF de representação padronizada (upper)."
+      - name: slug
+        description: "Slug do parlamentar no site Ranking dos Políticos."
+      - name: composicao_pontuacao_pontuacao
+        description: "Pontuação total atual no Ranking dos Políticos."
+      - name: composicao_pontuacao_anos
+        description: "Histórico anual de pontuações em formato JSON (array de objetos por ano). Usado em int_senadores_score_explodido."
+      - name: composicao_pontuacao_ranking_geral
+        description: "Posição no ranking geral."
+      - name: composicao_pontuacao_ranking_geral_variacao
+        description: "Variação da posição no ranking geral."
+      - name: composicao_pontuacao_ranking_casa
+        description: "Posição no ranking dentro da casa (Senado)."
+      - name: composicao_pontuacao_ranking_casa_variacao
+        description: "Variação da posição no ranking da casa."
+      - name: composicao_pontuacao_ranking_partido
+        description: "Posição no ranking dentro do partido."
+      - name: composicao_pontuacao_ranking_partido_variacao
+        description: "Variação da posição no ranking do partido."
+      - name: composicao_pontuacao_ranking_estado
+        description: "Posição no ranking dentro do estado."
+      - name: composicao_pontuacao_ranking_estado_variacao
+        description: "Variação da posição no ranking do estado."
+      - name: composicao_pontuacao_ranking_casa_estado
+        description: "Posição no ranking da casa dentro do estado."
+      - name: composicao_pontuacao_ranking_casa_estado_variacao
+        description: "Variação da posição no ranking da casa por estado."

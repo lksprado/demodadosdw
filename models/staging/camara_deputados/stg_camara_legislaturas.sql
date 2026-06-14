@@ -3,7 +3,6 @@
 ) }}
 
 
-
 WITH source AS (
     SELECT * FROM {{ source('camara','raw_camara_legislaturas') }}
 ),

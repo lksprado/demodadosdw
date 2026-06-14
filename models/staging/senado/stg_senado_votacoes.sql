@@ -1,14 +1,6 @@
 {{ config(
-    materialized='incremental',
-    unique_key='codigo_sessao_votacao',
     tags=["stg","senado"]
 ) }}
-
-{% if is_incremental() %}
-
-SELECT * FROM {{ this }} WHERE FALSE
-
-{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('senado','raw_senado_votacoes') }}
@@ -20,24 +12,27 @@ SELECT
     codigosessaolegislativa AS codigo_sessao_legislativa,
     codigosessaovotacao AS codigo_sessao_votacao,
     codigovotacaosve::INT AS codigo_votacao,
-    TO_DATE(datasessao,'YYYY-MM-DD') AS data_sessao,
     idprocesso::INT AS id_processo,
     identificacao,
+    numero,
+    numerosessao::INT AS numero_sessao,
     sigla,
     descricaovotacao AS descricao_votacao,
     siglatiposessao AS sigla_tipo_sessao,
     totalvotosabstencao::INT AS total_votos_abstencao,
     totalvotosnao::INT AS total_votos_contra,
     totalvotossim::INT AS total_votos_favor,
+    TO_DATE(datasessao, 'YYYY-MM-DD') AS data_sessao,
     CASE
         WHEN resultadovotacao = 'A' THEN 'APROVADO'
         WHEN resultadovotacao = 'R' THEN 'REPROVADO'
+        WHEN resultadovotacao = 'P' THEN 'PREJUDICADO'
+        WHEN resultadovotacao = 'E' THEN 'EMPATE'
     END AS resultado_votacao,
     CASE
         WHEN votacaosecreta = 'N' THEN 'NAO'
         WHEN votacaosecreta = 'S' THEN 'SIM'
-    END AS votacao_secreta,
-    data_carga
+    END AS votacao_secreta
 {# DESCONSIDERADOS #}
 --,numerosessao
 --,dataapresentacao
@@ -60,5 +55,3 @@ SELECT
 --,informelegislativo
 --,arquivo_origem
 FROM source
-
-{% endif %}

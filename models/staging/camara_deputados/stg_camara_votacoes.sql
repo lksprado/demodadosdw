@@ -1,14 +1,7 @@
 {{ config(
-    materialized='incremental',
-    unique_key='id',
     tags=["stg","camara","votacoes"]
 ) }}
 
-{% if is_incremental() %}
-
-SELECT * FROM {{ this }} WHERE FALSE
-
-{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('camara','raw_camara_votacoes') }}
@@ -22,10 +15,8 @@ renamed AS (
         siglaorgao AS sigla_orgao,
         proposicaoobjeto AS proposicao_objeto,
         {{ clean_string("descricao","upper") }} AS descricao,
-        (aprovacao::INT)::BOOLEAN AS aprovado
+        aprovacao::INT AS aprovado
     FROM source
 )
 
 SELECT * FROM renamed
-
-{% endif %}

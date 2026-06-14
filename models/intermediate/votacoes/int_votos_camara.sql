@@ -7,11 +7,11 @@ WITH
 camara_votos AS (
     SELECT
         *,
-        'camara' AS casa
+        'CAMARA' AS casa
     FROM {{ ref('stg_camara_votos_deputados') }}
 ),
 
-renamed AS (
+votos_filtrados AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['id_deputado','id_votacao', 'casa']) }} AS sk_voto,
         {{ dbt_utils.generate_surrogate_key(['id_deputado', 'casa']) }} AS sk_parlamentar,
@@ -19,13 +19,12 @@ renamed AS (
         casa,
         id_deputado,
         id_votacao,
-        id_legislatura,
         CASE
-            WHEN voto = 'BRANCO' THEN NULL
             WHEN voto = 'FAVORAVEL COM RESTRICOES' THEN 'SIM'
             ELSE voto
         END AS voto
     FROM camara_votos
+    WHERE voto NOT IN ('ARTIGO 17', 'BRANCO', 'ABSTENCAO')
 )
 
-SELECT * FROM renamed
+SELECT * FROM votos_filtrados

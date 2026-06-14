@@ -1,108 +1,243 @@
 version: 2
 
 models:
+
+  # ── PARLAMENTARES ──────────────────────────────────────────────────────────
+
   - name: int_deputados
-    description: Deputados conformados com enriquecimento de redes sociais via Ranking dos Políticos. Alimenta dim_parlamentares.
+    description: "Deputados normalizados com renaming de colunas e código de sexo expandido. Alimenta dim_parlamentares."
     columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
+      - name: casa
+        description: "Casa legislativa (constante 'CAMARA')."
+      - name: id
+        description: "Identificador do deputado na API da Câmara."
         tests:
           - not_null
           - unique
       - name: nome
-        description: Nome completo do parlamentar conforme cadastro oficial.
-      - name: nome_eleitoral
-        description: Nome eleitoral como exibido ao público.
-      - name: email
-        description: E-mail institucional do parlamentar.
-      - name: redesocial_x_twitter
-        description: Handle/perfil no X/Twitter.
-      - name: redesocial_instagram
-        description: Perfil no Instagram.
-      - name: redesocial_facebook
-        description: Página/perfil no Facebook.
-      - name: redesocial_youtube
-        description: Canal no YouTube.
-      - name: telefone
-        description: Telefone de contato do gabinete ou institucional.
+        description: "Nome eleitoral do deputado."
+      - name: nome_completo
+        description: "Nome civil completo."
       - name: sexo
-        description: Sexo informado no cadastro.
-      - name: data_nascimento
-        description: Data de nascimento do parlamentar.
-      - name: geracao
-        description: Faixa geracional derivada da data de nascimento.
-      - name: uf_nascimento
-        description: Unidade federativa de nascimento.
-      - name: municipio_nascimento
-        description: Município de nascimento.
-      - name: escolaridade
-        description: Grau de escolaridade informado.
-      - name: link_api_oficial
-        description: URL para a página/detalhe oficial do parlamentar na API de origem.
-      - name: link_foto
-        description: URL da foto oficial do parlamentar.
-      - name: data_carga
-        description: Data/hora de carga do registro na camada de staging.
+        description: "Sexo expandido (MASCULINO/FEMININO)."
+      - name: uf
+        description: "UF de nascimento."
+
   - name: int_senadores
-    description: Senadores conformados com enriquecimento de redes sociais via Ranking dos Políticos. Alimenta dim_parlamentares.
+    description: "Senadores normalizados combinando endpoint de senadores atuais (prioridade) com histórico de legislaturas. Alimenta dim_parlamentares."
     columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar (derivada de id+natureza da casa).
+      - name: casa
+        description: "Casa legislativa (constante 'SENADO')."
+      - name: id
+        description: "Código do senador na API do Senado."
         tests:
           - not_null
           - unique
       - name: nome
-        description: Nome completo do parlamentar conforme cadastro oficial.
-      - name: nome_eleitoral
-        description: Nome eleitoral como exibido ao público.
-      - name: email
-        description: E-mail institucional do parlamentar.
-      - name: redesocial_x_twitter
-        description: Handle/perfil no X/Twitter.
-      - name: redesocial_instagram
-        description: Perfil no Instagram.
-      - name: redesocial_facebook
-        description: Página/perfil no Facebook.
-      - name: redesocial_youtube
-        description: Canal no YouTube.
-      - name: telefone
-        description: Telefone de contato do gabinete ou institucional.
+        description: "Nome parlamentar do senador."
+      - name: nome_completo
+        description: "Nome completo do senador."
       - name: sexo
-        description: Sexo informado no cadastro.
-      - name: data_nascimento
-        description: Data de nascimento do parlamentar.
-      - name: geracao
-        description: Faixa geracional derivada da data de nascimento.
-      - name: uf_nascimento
-        description: Unidade federativa de nascimento.
-      - name: municipio_nascimento
-        description: Município de nascimento.
-      - name: escolaridade
-        description: Grau de escolaridade informado.
-      - name: link_api_oficial
-        description: URL para a página/detalhe oficial do parlamentar na API de origem.
-      - name: link_foto
-        description: URL da foto oficial do parlamentar.
-      - name: data_carga
-        description: Data/hora de carga do registro na camada de staging.
-  - name: int_map_parlamentares
-    description: Mapeamento de chaves entre ids oficiais das casas (Câmara/Senado) e identificadores das fontes (Ranking Políticos, Radar Congresso). Gera a chave substituta `sk_parlamentar` usada em todas as camadas.
+        description: "Sexo conforme cadastro do Senado."
+      - name: uf
+        description: "UF de representação do senador."
+
+  # ── SCORES ─────────────────────────────────────────────────────────────────
+
+  - name: int_deputados_score
+    description: "Scores agregados do Ranking dos Políticos para deputados, com ranking renomeado e sk_parlamentar gerado. Alimenta dim_parlamentares_score."
     columns:
       - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar gerada a partir do id da casa e tipo da casa.
+        description: "Chave substituta gerada de (casa, id_congresso)."
         tests:
           - not_null
           - unique
       - name: casa
-        description: Casa legislativa do id natural (camara/senado).
-      - name: id_nk
-        description: Identificador natural (id) do parlamentar na casa de origem.
-      - name: id_parlamentar_radar
-        description: Identificador do parlamentar na base do Radar Congresso. Retorna NULL enquanto radar_congresso estiver desabilitado.
-      - name: id_parlamentar_ranking
-        description: Identificador do parlamentar na base do Ranking dos Políticos.
+        description: "Casa legislativa (constante 'CAMARA')."
+      - name: id
+        description: "ID no Ranking dos Políticos."
+      - name: id_congresso
+        description: "FK do deputado na API da Câmara."
+      - name: nome
+        description: "Nome completo padronizado."
+      - name: nome_civil
+        description: "Nome civil padronizado."
+      - name: partido
+        description: "Sigla do partido."
+      - name: situacao
+        description: "Situação do mandato."
+      - name: slug
+        description: "Slug no Ranking dos Políticos."
+      - name: pontuacao_geral
+        description: "Pontuação total atual no Ranking dos Políticos."
+      - name: ranking_geral
+        description: "Posição no ranking geral."
+      - name: ranking_casa
+        description: "Posição no ranking da Câmara."
+      - name: ranking_partido
+        description: "Posição no ranking do partido."
+      - name: ranking_estado
+        description: "Posição no ranking do estado."
+      - name: ranking_casa_estado
+        description: "Posição no ranking da Câmara por estado."
+      - name: uf
+        description: "UF de representação (normalizada para sigla)."
+
+  - name: int_senadores_score
+    description: "Scores agregados do Ranking dos Políticos para senadores, com ranking renomeado e sk_parlamentar gerado. Alimenta dim_parlamentares_score."
+    columns:
+      - name: sk_parlamentar
+        description: "Chave substituta gerada de (casa, id_congresso)."
+        tests:
+          - not_null
+          - unique
+      - name: casa
+        description: "Casa legislativa (constante 'SENADO')."
+      - name: id
+        description: "ID no Ranking dos Políticos."
+      - name: id_congresso
+        description: "FK do senador na API do Senado."
+      - name: nome
+        description: "Nome completo padronizado."
+      - name: nome_civil
+        description: "Nome civil padronizado."
+      - name: partido
+        description: "Sigla do partido."
+      - name: situacao
+        description: "Situação do mandato."
+      - name: slug
+        description: "Slug no Ranking dos Políticos."
+      - name: pontuacao_geral
+        description: "Pontuação total atual no Ranking dos Políticos."
+      - name: ranking_geral
+        description: "Posição no ranking geral."
+      - name: ranking_casa
+        description: "Posição no ranking do Senado."
+      - name: ranking_partido
+        description: "Posição no ranking do partido."
+      - name: ranking_estado
+        description: "Posição no ranking do estado."
+      - name: ranking_casa_estado
+        description: "Posição no ranking do Senado por estado."
+      - name: uf
+        description: "UF de representação (normalizada para sigla)."
+
+  - name: int_deputados_score_explodido
+    description: "Scores de deputados explodidos por ano via JSON (composicao_pontuacao_anos). Uma linha por deputado por ano. Alimenta dim_parlamentares_score_historico."
+    columns:
+      - name: sk_parlamentar
+        description: "Chave substituta gerada de (casa, id_congresso)."
+        tests:
+          - not_null
+      - name: casa
+        description: "Casa legislativa (constante 'CAMARA')."
+      - name: id
+        description: "ID no Ranking dos Políticos."
+      - name: id_congresso
+        description: "FK do deputado na API da Câmara."
+      - name: nome
+        description: "Nome completo padronizado."
+      - name: nome_civil
+        description: "Nome civil padronizado."
+      - name: partido
+        description: "Sigla do partido."
+      - name: situacao
+        description: "Situação do mandato."
+      - name: uf
+        description: "UF de representação (normalizada para sigla)."
+      - name: slug
+        description: "Slug no Ranking dos Políticos."
+      - name: pontuacao_geral
+        description: "Pontuação total atual."
+      - name: ranking_geral
+        description: "Posição no ranking geral."
+      - name: ranking_casa
+        description: "Posição no ranking da Câmara."
+      - name: ranking_partido
+        description: "Posição no ranking do partido."
+      - name: ranking_estado
+        description: "Posição no ranking do estado."
+      - name: ranking_casa_estado
+        description: "Posição no ranking da Câmara por estado."
+      - name: ano
+        description: "Ano de referência do score explodido."
+      - name: nota_base_votacoes
+        description: "Nota base referente a votações naquele ano."
+      - name: nota_base_gastos
+        description: "Nota base referente a controle de gastos naquele ano."
+      - name: nota_base_presenca
+        description: "Nota base referente a presença/assiduidade naquele ano."
+      - name: nota_base_privilegios
+        description: "Nota base referente à rejeição de privilégios naquele ano."
+      - name: bonus_processos
+        description: "Bônus/penalidade por processos judiciais."
+      - name: bonus_producao_legislativa
+        description: "Bônus por produção legislativa."
+      - name: bonus_articulacao_legislativa
+        description: "Bônus por articulação legislativa."
+      - name: pontuacao
+        description: "Pontuação final do deputado naquele ano."
+
+  - name: int_senadores_score_explodido
+    description: "Scores de senadores explodidos por ano via JSON. Uma linha por senador por ano. Alimenta dim_parlamentares_score_historico."
+    columns:
+      - name: sk_parlamentar
+        description: "Chave substituta gerada de (casa, id_congresso)."
+        tests:
+          - not_null
+      - name: casa
+        description: "Casa legislativa (constante 'SENADO')."
+      - name: id
+        description: "ID no Ranking dos Políticos."
+      - name: id_congresso
+        description: "FK do senador na API do Senado."
+      - name: nome
+        description: "Nome completo padronizado."
+      - name: nome_civil
+        description: "Nome civil padronizado."
+      - name: partido
+        description: "Sigla do partido."
+      - name: situacao
+        description: "Situação do mandato."
+      - name: uf
+        description: "UF de representação (normalizada para sigla)."
+      - name: slug
+        description: "Slug no Ranking dos Políticos."
+      - name: pontuacao_geral
+        description: "Pontuação total atual."
+      - name: ranking_geral
+        description: "Posição no ranking geral."
+      - name: ranking_casa
+        description: "Posição no ranking do Senado."
+      - name: ranking_partido
+        description: "Posição no ranking do partido."
+      - name: ranking_estado
+        description: "Posição no ranking do estado."
+      - name: ranking_casa_estado
+        description: "Posição no ranking do Senado por estado."
+      - name: ano
+        description: "Ano de referência do score explodido."
+      - name: nota_base_votacoes
+        description: "Nota base referente a votações naquele ano."
+      - name: nota_base_gastos
+        description: "Nota base referente a controle de gastos naquele ano."
+      - name: nota_base_presenca
+        description: "Nota base referente a presença/assiduidade naquele ano."
+      - name: nota_base_privilegios
+        description: "Nota base referente à rejeição de privilégios naquele ano."
+      - name: bonus_processos
+        description: "Bônus/penalidade por processos judiciais."
+      - name: bonus_producao_legislativa
+        description: "Bônus por produção legislativa."
+      - name: bonus_articulacao_legislativa
+        description: "Bônus por articulação legislativa."
+      - name: pontuacao
+        description: "Pontuação final do senador naquele ano."
+
+  # ── VOTAÇÕES ───────────────────────────────────────────────────────────────
+
   - name: int_votos_camara
-    description: "Votos individuais de deputados normalizados (BRANCO → NULL, FAVORAVEL COM RESTRICOES → SIM) com chaves substitutas geradas. Alimenta fct_votos_alinhados_camara."
+    description: "Votos individuais de deputados normalizados (BRANCO → NULL, FAVORAVEL COM RESTRICOES → SIM) com chaves substitutas geradas. Alimenta fct_votos."
     columns:
       - name: sk_voto
         description: Chave substituta do voto (id_deputado + id_votacao + casa).
@@ -118,7 +253,7 @@ models:
         tests:
           - not_null
       - name: casa
-        description: Casa legislativa (camara).
+        description: Casa legislativa (CAMARA).
       - name: id_deputado
         description: Identificador do deputado na API da Câmara.
       - name: id_votacao
@@ -127,8 +262,9 @@ models:
         description: Identificador da legislatura na qual o voto foi registrado.
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO). BRANCO e FAVORAVEL COM RESTRICOES normalizados."
+
   - name: int_votacoes_camara
-    description: "Sessões de votação da Câmara com chave substituta gerada. Alimenta prs_governismo para lookup de descrição e aprovação."
+    description: "Sessões de votação da Câmara com chave substituta gerada. Alimenta dim_votacoes."
     columns:
       - name: sk_votacao
         description: Chave substituta da votação (id + casa).
@@ -138,7 +274,7 @@ models:
               config:
                 severity: warn
       - name: casa
-        description: Casa legislativa (camara).
+        description: Casa legislativa (CAMARA).
       - name: id
         description: Identificador original da votação na API da Câmara.
       - name: data_votacao
@@ -149,8 +285,9 @@ models:
         description: Descrição da proposição objeto da votação.
       - name: aprovado
         description: Booleano indicando se a proposição foi aprovada.
+
   - name: int_orientacoes_camara
-    description: "Orientações de voto por partido/liderança por sessão de votação da Câmara. Alimenta fct_votos_alinhados_camara."
+    description: "Orientações de voto por partido/liderança por sessão de votação da Câmara. Alimenta dim_orientacao_votacoes."
     columns:
       - name: sk_votacao
         description: Chave substituta da votação (id_votacao + casa).
@@ -159,43 +296,80 @@ models:
       - name: id_votacao
         description: Identificador da votação à qual a orientação se refere.
       - name: casa
-        description: Casa legislativa (camara).
-      - name: sigla_partido_bloco
-        description: Sigla do partido ou bloco que recebeu a orientação.
+        description: Casa legislativa (CAMARA).
       - name: orientacao_voto
-        description: Orientação de voto dada pelo líder (SIM, NÃO, LIBERADO, OBSTRUÇÃO).
-      - name: codigo_tipo_liderancao
-        description: Código do tipo de liderança que deu a orientação.
-      - name: codigo_partido_bloco
-        description: Código do partido ou bloco que recebeu a orientação.
-  - name: int_governismo_total
-    description: "Governismo agregado por parlamentar (Câmara e Senado). Desabilitado enquanto radar_congresso estiver inativo (enabled=false)."
+        description: Orientação de voto dada pelo líder (SIM, NÃO, OBSTRUÇÃO).
+      - name: tipo_lideranca
+        description: Tipo de liderança que deu a orientação (BANCADA ou PARTIDO).
+      - name: sigla_partido_bloco
+        description: Sigla do partido ou bloco que recebeu a orientação (normalizada).
+
+  - name: int_votos_senado
+    description: "Votos individuais de senadores normalizados com chaves substitutas geradas. Alimenta fct_votos."
     columns:
-      - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar.
+      - name: sk_voto
+        description: Chave substituta do voto (codigo_parlamentar + codigo_votacao + casa).
         tests:
           - not_null
           - unique
-      - name: casa
-        description: Casa legislativa do parlamentar (camara/senado).
-      - name: total_votos_favor_governo
-        description: Quantidade total de votos do parlamentar alinhados ao governo.
-      - name: total_votos_contra_governo
-        description: Quantidade total de votos do parlamentar contrários ao governo.
-      - name: perc_governismo
-        description: Percentual de alinhamento ao governo (0–100).
-  - name: int_governismo_trimestre
-    description: "Governismo trimestral por parlamentar via Radar Congresso. Desabilitado enquanto radar_congresso estiver inativo (enabled=false)."
-    columns:
       - name: sk_parlamentar
-        description: Chave substituta estável do parlamentar.
+        description: Chave substituta do parlamentar (codigo_parlamentar + casa).
+        tests:
+          - not_null
+      - name: sk_votacao
+        description: Chave substituta da votação, compatível com int_votacoes_senado.
         tests:
           - not_null
       - name: casa
-        description: Casa legislativa do parlamentar no período (camara/senado).
-      - name: data_trimestre
-        description: Data representativa do trimestre de referência (normalizada para início do trimestre).
-      - name: perc_governismo_trimestre
-        description: Percentual de alinhamento ao governo no trimestre (0–100).
-      - name: data_carga
-        description: Data/hora de carga da fonte do Radar Congresso utilizada no cálculo.
+        description: Casa legislativa (SENADO).
+      - name: id_senador
+        description: Código do senador na API do Senado.
+      - name: id_votacao
+        description: Código da votação na API do Senado.
+      - name: data_sessao
+        description: Data da sessão de votação.
+      - name: identificacao
+        description: Descrição ou identificação da matéria votada.
+      - name: voto
+        description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO)."
+
+  - name: int_votacoes_senado
+    description: "Sessões de votação do Senado com chave substituta gerada. Alimenta dim_votacoes."
+    columns:
+      - name: sk_votacao
+        description: Chave substituta da votação (codigo_votacao + casa).
+        tests:
+          - not_null
+          - unique:
+              config:
+                severity: warn
+      - name: casa
+        description: Casa legislativa (SENADO).
+      - name: id
+        description: Código original da votação na API do Senado.
+      - name: data_sessao
+        description: Data da sessão de votação.
+      - name: identificacao
+        description: Descrição da matéria votada.
+      - name: aprovado
+        description: 1 se aprovado, 0 caso contrário.
+
+  - name: int_orientacoes_senado
+    description: "Orientações de voto por partido/bancada por sessão de votação do Senado. Alimenta dim_orientacao_votacoes."
+    columns:
+      - name: sk_votacao
+        description: Chave substituta da votação (codigo_votacao + casa).
+        tests:
+          - not_null
+      - name: casa
+        description: Casa legislativa (SENADO).
+      - name: codigo_votacao
+        description: Código da votação na API do Senado.
+      - name: numero_materia
+        description: Número da matéria votada.
+      - name: sigla_tipo_materia
+        description: Sigla do tipo de matéria (PL, PEC, etc.).
+      - name: partido
+        description: Sigla do partido que recebeu a orientação.
+      - name: orientacao_voto
+        description: Orientação de voto (SIM, NAO, OBSTRUCAO — LIBERADO já filtrado).

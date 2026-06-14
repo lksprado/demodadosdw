@@ -16,4 +16,4 @@ renamed AS (
     FROM source
 )
 
-SELECT * FROM renamed WHERE voto <> 'ARTIGO 17'
+SELECT * FROM renamed

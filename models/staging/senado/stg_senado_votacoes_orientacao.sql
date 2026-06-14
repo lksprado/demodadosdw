@@ -1,13 +1,6 @@
 {{ config(
-    materialized='incremental',
     tags=["stg","senado"]
 ) }}
-
-{% if is_incremental() %}
-
-SELECT * FROM {{ this }} WHERE FALSE
-
-{% else %}
 
 WITH source AS (
     SELECT * FROM {{ source('senado','raw_senado_votos_orientacao') }}
@@ -21,13 +14,13 @@ SELECT
     qtdvotosnao AS total_votos_contra,
     qtdvotosabstencao AS total_votos_abstencao,
     datahora::DATE AS data,
-    UPPER(partido) AS partido,
-    {{ clean_string("voto","upper") }} as voto,
-    data_carga
+    {{ clean_string("partido","upper") }} AS partido,
+    CASE
+        WHEN {{ clean_string("voto","upper") }} = 'LIVRE' THEN 'LIBERADO'
+        ELSE {{ clean_string("voto","upper") }}
+    END AS orientacao_voto
 {# DESCONSIDERADOS #}
 --,descricaovotacao
 --,datainiciovotacao
 --,dataterminovotacao
 FROM source
-
-{% endif %}
