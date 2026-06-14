@@ -10,7 +10,13 @@ WITH presidentes AS (
         fim::DATE AS fim
     FROM {{ ref('raw_executivo_presidente') }}
 ),
-
+legislaturas as (
+    SELECT 
+        legislatura::INT as legislatura,
+        inicio::DATE as inicio,
+        fim::DATE as fim
+    FROM {{ ref('raw_legislaturas') }}
+),
 orientacao_governo AS (
     SELECT
         sk_votacao,
@@ -39,6 +45,7 @@ votos_parlamentares_joined AS (
         t1.sk_parlamentar,
         t1.sk_votacao,
         t2.data_votacao,
+        t3.legislatura,
         t2.objeto,
         t2.aprovado,
         t1.voto,
@@ -46,6 +53,8 @@ votos_parlamentares_joined AS (
     FROM {{ ref('fct_votos') }} AS t1
     INNER JOIN votacoes_orientadas_governo AS t2
         ON t1.sk_votacao = t2.sk_votacao
+    LEFT JOIN legislaturas AS t3
+        ON t2.data_votacao BETWEEN t3.inicio AND t3.fim
 ),
 
 final AS (
@@ -55,6 +64,7 @@ final AS (
         sk_parlamentar,
         sk_votacao,
         data_votacao,
+        legislatura,
         objeto,
         aprovado,
         voto,

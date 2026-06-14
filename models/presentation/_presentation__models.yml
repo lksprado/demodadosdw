@@ -36,6 +36,73 @@ models:
         description: Orientação emitida pelo Governo para esta votação (SIM, NAO).
       - name: voto_alinhado
         description: "1 se o voto coincidiu com a orientação do Governo, 0 se divergiu."
+  - name: prs_governismo_por_parlamentar_legislatura
+    description: >
+      Grão: um parlamentar por legislatura por casa.
+      Agrega os votos de prs_governismo para produzir o percentual bruto de governismo
+      de cada parlamentar em cada legislatura. Útil para séries históricas simples,
+      mas com alta variância para parlamentares com poucos votos registrados.
+      Para rankings comparativos, prefira prs_governismo_por_deputado_legislatura_ajustado.
+    columns:
+      - name: casa
+        description: Casa legislativa (CAMARA ou SENADO).
+      - name: sk_parlamentar
+        description: Chave substituta do parlamentar, join com dim_parlamentares.
+        tests:
+          - not_null
+      - name: legislatura
+        description: Número da legislatura.
+        tests:
+          - not_null
+      - name: qt_votos
+        description: Total de votos registrados pelo parlamentar na legislatura onde o Governo emitiu orientação.
+      - name: qt_votacoes
+        description: Total de votações distintas em que o parlamentar participou na legislatura.
+      - name: qt_votos_alinhados
+        description: Votos em que o parlamentar seguiu a orientação do Governo.
+      - name: qt_votos_nao_alinhados
+        description: Votos em que o parlamentar contrariou a orientação do Governo.
+      - name: perc_governismo
+        description: Percentual bruto de alinhamento ao Governo (qt_votos_alinhados / qt_votos × 100).
+
+  - name: prs_governismo_por_parlamentar_legislatura_ajustado
+    description: >
+      Grão: um parlamentar por legislatura por casa.
+      Estende prs_governismo_por_deputado_legislatura com score_governismo_ponderado,
+      calculado via média bayesiana que amortece extremos de baixa participação.
+      O prior (μ) e o peso de confiança (C) são derivados da média da própria casa
+      e legislatura, tornando o score comparável dentro de cada contexto.
+      Recomendado para rankings e visualizações onde participação e governismo
+      devem ser considerados conjuntamente.
+    columns:
+      - name: casa
+        description: Casa legislativa (CAMARA ou SENADO).
+      - name: sk_parlamentar
+        description: Chave substituta do parlamentar, join com dim_parlamentares.
+        tests:
+          - not_null
+      - name: legislatura
+        description: Número da legislatura.
+        tests:
+          - not_null
+      - name: qt_votos
+        description: Total de votos registrados pelo parlamentar na legislatura onde o Governo emitiu orientação.
+      - name: qt_votacoes
+        description: Total de votações distintas em que o parlamentar participou na legislatura.
+      - name: qt_votos_alinhados
+        description: Votos em que o parlamentar seguiu a orientação do Governo.
+      - name: qt_votos_nao_alinhados
+        description: Votos em que o parlamentar contrariou a orientação do Governo.
+      - name: perc_governismo
+        description: Percentual bruto de alinhamento ao Governo (qt_votos_alinhados / qt_votos × 100).
+      - name: score_governismo_ponderado
+        description: >
+          Governismo ajustado por participação via média bayesiana.
+          Fórmula: (qt_votos × perc_governismo + C × μ) / (qt_votos + C),
+          onde C = média de votos e μ = média de perc_governismo da casa/legislatura.
+          Valores próximos a perc_governismo indicam alta participação (score confiável);
+          valores próximos à média indicam baixa participação (score amortecido).
+
   - name: prs_ecidadania_proposicoes
     description: "Apresentação de proposições da plataforma e-Cidadania enriquecida com atributos de tramitação e deliberação do Senado. DESABILITADO: arquivo SQL renomeado para .disabled enquanto a fonte e-Cidadania não estiver ativa."
     columns:
