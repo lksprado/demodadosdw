@@ -4,7 +4,7 @@ models:
 
   # ── PARLAMENTARES ──────────────────────────────────────────────────────────
 
-  - name: int_deputados
+  - name: int_deputados_padronizados
     description: "Deputados normalizados com renaming de colunas e código de sexo expandido. Alimenta dim_parlamentares."
     columns:
       - name: casa
@@ -23,7 +23,7 @@ models:
       - name: uf
         description: "UF de nascimento."
 
-  - name: int_senadores
+  - name: int_senadores_padronizados
     description: "Senadores normalizados combinando endpoint de senadores atuais (prioridade) com histórico de legislaturas. Alimenta dim_parlamentares."
     columns:
       - name: casa
@@ -44,7 +44,7 @@ models:
 
   # ── SCORES ─────────────────────────────────────────────────────────────────
 
-  - name: int_deputados_score
+  - name: int_deputados_pontuacao
     description: "Scores agregados do Ranking dos Políticos para deputados, com ranking renomeado e sk_parlamentar gerado. Alimenta dim_parlamentares_score."
     columns:
       - name: sk_parlamentar
@@ -83,7 +83,7 @@ models:
       - name: uf
         description: "UF de representação (normalizada para sigla)."
 
-  - name: int_senadores_score
+  - name: int_senadores_pontuacao
     description: "Scores agregados do Ranking dos Políticos para senadores, com ranking renomeado e sk_parlamentar gerado. Alimenta dim_parlamentares_score."
     columns:
       - name: sk_parlamentar
@@ -122,7 +122,7 @@ models:
       - name: uf
         description: "UF de representação (normalizada para sigla)."
 
-  - name: int_deputados_score_explodido
+  - name: int_deputados_pontuacao_explodida
     description: "Scores de deputados explodidos por ano via JSON (composicao_pontuacao_anos). Uma linha por deputado por ano. Alimenta dim_parlamentares_score_historico."
     columns:
       - name: sk_parlamentar
@@ -178,7 +178,7 @@ models:
       - name: pontuacao
         description: "Pontuação final do deputado naquele ano."
 
-  - name: int_senadores_score_explodido
+  - name: int_senadores_pontuacao_explodida
     description: "Scores de senadores explodidos por ano via JSON. Uma linha por senador por ano. Alimenta dim_parlamentares_score_historico."
     columns:
       - name: sk_parlamentar
@@ -236,7 +236,7 @@ models:
 
   # ── VOTAÇÕES ───────────────────────────────────────────────────────────────
 
-  - name: int_votos_camara
+  - name: int_votos_camara_filtrados
     description: "Votos individuais de deputados normalizados (BRANCO → NULL, FAVORAVEL COM RESTRICOES → SIM) com chaves substitutas geradas. Alimenta fct_votos."
     columns:
       - name: sk_voto
@@ -249,7 +249,7 @@ models:
         tests:
           - not_null
       - name: sk_votacao
-        description: Chave substituta da votação, compatível com int_votacoes_camara.
+        description: Chave substituta da votação, compatível com int_votacoes_camara_deduplicadas.
         tests:
           - not_null
       - name: casa
@@ -261,7 +261,7 @@ models:
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO). BRANCO e FAVORAVEL COM RESTRICOES normalizados."
 
-  - name: int_votacoes_camara
+  - name: int_votacoes_camara_deduplicadas
     description: "Sessões de votação da Câmara com chave substituta gerada. Alimenta dim_votacoes."
     columns:
       - name: sk_votacao
@@ -284,7 +284,7 @@ models:
       - name: aprovado
         description: Booleano indicando se a proposição foi aprovada.
 
-  - name: int_orientacoes_camara
+  - name: int_orientacoes_camara_corrigidas
     description: "Orientações de voto por partido/liderança por sessão de votação da Câmara. Alimenta dim_orientacao_votacoes."
     columns:
       - name: sk_votacao
@@ -302,7 +302,7 @@ models:
       - name: sigla_partido_bloco
         description: Sigla do partido ou bloco que recebeu a orientação (normalizada).
 
-  - name: int_votos_senado
+  - name: int_votos_senado_filtrados
     description: "Votos individuais de senadores normalizados com chaves substitutas geradas. Alimenta fct_votos."
     columns:
       - name: sk_voto
@@ -315,7 +315,7 @@ models:
         tests:
           - not_null
       - name: sk_votacao
-        description: Chave substituta da votação, compatível com int_votacoes_senado.
+        description: Chave substituta da votação, compatível com int_votacoes_senado_filtradas.
         tests:
           - not_null
       - name: casa
@@ -331,7 +331,7 @@ models:
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO)."
 
-  - name: int_votacoes_senado
+  - name: int_votacoes_senado_filtradas
     description: "Sessões de votação do Senado com chave substituta gerada. Alimenta dim_votacoes."
     columns:
       - name: sk_votacao
@@ -352,7 +352,7 @@ models:
       - name: aprovado
         description: 1 se aprovado, 0 caso contrário.
 
-  - name: int_orientacoes_senado
+  - name: int_orientacoes_senado_filtradas
     description: "Orientações de voto por partido/bancada por sessão de votação do Senado. Alimenta dim_orientacao_votacoes."
     columns:
       - name: sk_votacao

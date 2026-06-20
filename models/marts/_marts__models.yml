@@ -3,7 +3,7 @@ version: 2
 models:
 
   - name: dim_parlamentares
-    description: Dimensão conformada unificada de parlamentares (senadores e deputados). União direta de int_deputados e int_senadores com sk_parlamentar gerado.
+    description: Dimensão conformada unificada de parlamentares (senadores e deputados). União direta de int_deputados_padronizados e int_senadores_padronizados com sk_parlamentar gerado.
     columns:
       - name: sk_parlamentar
         description: Chave substituta estável do parlamentar.

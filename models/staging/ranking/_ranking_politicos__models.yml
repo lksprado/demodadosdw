@@ -29,7 +29,7 @@ models:
       - name: composicao_pontuacao_pontuacao
         description: "Pontuação total atual no Ranking dos Políticos."
       - name: composicao_pontuacao_anos
-        description: "Histórico anual de pontuações em formato JSON (array de objetos por ano). Usado em int_deputados_score_explodido."
+        description: "Histórico anual de pontuações em formato JSON (array de objetos por ano). Usado em int_deputados_pontuacao_explodida."
       - name: composicao_pontuacao_ranking_geral
         description: "Posição no ranking geral."
       - name: composicao_pontuacao_ranking_geral_variacao
@@ -82,7 +82,7 @@ models:
       - name: composicao_pontuacao_pontuacao
         description: "Pontuação total atual no Ranking dos Políticos."
       - name: composicao_pontuacao_anos
-        description: "Histórico anual de pontuações em formato JSON (array de objetos por ano). Usado em int_senadores_score_explodido."
+        description: "Histórico anual de pontuações em formato JSON (array de objetos por ano). Usado em int_senadores_pontuacao_explodida."
       - name: composicao_pontuacao_ranking_geral
         description: "Posição no ranking geral."
       - name: composicao_pontuacao_ranking_geral_variacao

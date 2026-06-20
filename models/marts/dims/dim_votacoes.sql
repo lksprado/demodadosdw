@@ -7,7 +7,7 @@ votacoes_camara AS (
         data_votacao,
         proposicao_objeto AS objeto,
         aprovado
-    FROM {{ ref('int_votacoes_camara') }}
+    FROM {{ ref('int_votacoes_camara_deduplicadas') }}
 ),
 
 votacoes_senado AS (
@@ -18,13 +18,29 @@ votacoes_senado AS (
         data_sessao AS data_votacao,
         identificacao AS objeto,
         aprovado
-    FROM {{ ref('int_votacoes_senado') }}
+    FROM {{ ref('int_votacoes_senado_filtradas') }}
 ),
 
-final AS (
+unioned AS (
     SELECT * FROM votacoes_camara
     UNION ALL
     SELECT * FROM votacoes_senado
+),
+
+-- linha dummy para FKs sem correspondência (COALESCE com null_key nas facts cai aqui)
+dummy AS (
+    SELECT
+        '{{ var('null_key') }}'    AS sk_votacao,
+        '{{ var('null_string') }}' AS casa,
+        NULL::date                 AS data_votacao,
+        '{{ var('null_string') }}' AS objeto,
+        NULL::int                  AS aprovado
+),
+
+final AS (
+    SELECT * FROM unioned
+    UNION ALL
+    SELECT * FROM dummy
 )
 
 SELECT * FROM final

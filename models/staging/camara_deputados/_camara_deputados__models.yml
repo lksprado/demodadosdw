@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_camara_deputados
-    description: "Seleção mínima de colunas da API da Câmara para deputados. Renaming e enriquecimento ocorrem em int_deputados."
+    description: "Seleção mínima de colunas da API da Câmara para deputados. Renaming e enriquecimento ocorrem em int_deputados_padronizados."
     columns:
       - name: id
         description: "Identificador único do deputado na API da Câmara."

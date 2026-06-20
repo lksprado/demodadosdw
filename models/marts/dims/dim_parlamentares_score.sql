@@ -12,7 +12,7 @@ deputados AS (
         ranking_partido,
         ranking_estado,
         ranking_casa_estado
-    FROM {{ ref('int_deputados_score') }}
+    FROM {{ ref('int_deputados_pontuacao') }}
 ),
 
 senadores AS (
@@ -24,7 +24,7 @@ senadores AS (
         ranking_partido,
         ranking_estado,
         ranking_casa_estado
-    FROM {{ ref('int_senadores_score') }}
+    FROM {{ ref('int_senadores_pontuacao') }}
 ),
 
 final AS (

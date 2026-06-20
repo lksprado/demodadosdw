@@ -14,7 +14,7 @@ senado_votos AS (
 votos_tratados AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['codigo_parlamentar','codigo_votacao', 'casa']) }} AS sk_voto,
-        {{ dbt_utils.generate_surrogate_key(['codigo_parlamentar', 'casa']) }} AS sk_parlamentar,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'codigo_parlamentar']) }} AS sk_parlamentar,
         {{ dbt_utils.generate_surrogate_key(['codigo_votacao', 'casa']) }} AS sk_votacao,
         casa,
         codigo_parlamentar AS id_senador,

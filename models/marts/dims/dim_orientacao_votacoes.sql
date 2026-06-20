@@ -5,7 +5,7 @@ orientacao_camara AS (
         tipo_lideranca,
         sigla_partido_bloco,
         orientacao_voto
-    FROM {{ ref('int_orientacoes_camara') }}
+    FROM {{ ref('int_orientacoes_camara_corrigidas') }}
 ),
 
 orientacao_senado AS (
@@ -14,7 +14,7 @@ orientacao_senado AS (
         NULL AS tipo_lideranca,
         partido AS sigla_partido_bloco,
         orientacao_voto
-    FROM {{ ref('int_orientacoes_senado') }}
+    FROM {{ ref('int_orientacoes_senado_filtradas') }}
 ),
 
 final AS (

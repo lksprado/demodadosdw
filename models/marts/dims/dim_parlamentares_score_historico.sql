@@ -15,7 +15,7 @@ deputados AS (
         bonus_processos,
         bonus_producao_legislativa,
         bonus_articulacao_legislativa
-    FROM {{ ref('int_deputados_score_explodido') }}
+    FROM {{ ref('int_deputados_pontuacao_explodida') }}
 ),
 
 senadores AS (
@@ -30,7 +30,7 @@ senadores AS (
         bonus_processos,
         bonus_producao_legislativa,
         bonus_articulacao_legislativa
-    FROM {{ ref('int_senadores_score_explodido') }}
+    FROM {{ ref('int_senadores_pontuacao_explodida') }}
 ),
 
 final AS (

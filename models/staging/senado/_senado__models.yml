@@ -3,7 +3,7 @@ version: 2
 models:
 
   - name: stg_senado_senadores
-    description: "Senadores atuais com atributos de identificação e mandato mantidos nos nomes originais da API do Senado Federal. Renaming e limpeza ocorrem em int_senadores."
+    description: "Senadores atuais com atributos de identificação e mandato mantidos nos nomes originais da API do Senado Federal. Renaming e limpeza ocorrem em int_senadores_padronizados."
     columns:
       - name: identificacaoparlamentar_codigoparlamentar
         description: "Código único do senador na API do Senado."
@@ -80,7 +80,7 @@ models:
       - name: identificacaoparlamentar_formatratamento
         description: "Forma de tratamento do senador (upper)."
       - name: mandatos_mandato
-        description: "Dados dos mandatos em formato JSON/semi-estruturado. Processado em int_senadores."
+        description: "Dados dos mandatos em formato JSON/semi-estruturado. Processado em int_senadores_padronizados."
       - name: identificacaoparlamentar_emailparlamentar
         description: "E-mail institucional do senador."
       - name: identificacaoparlamentar_siglapartidoparlamentar
