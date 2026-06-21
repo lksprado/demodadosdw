@@ -28,6 +28,7 @@ orientacao_governo AS (
 votacoes_orientadas_governo AS (
     SELECT
         t1.sk_votacao,
+        t1.votacao_id,
         t1.casa,
         t1.data_votacao,
         t1.objeto,
@@ -44,6 +45,9 @@ votos_parlamentares_joined AS (
         t1.sk_voto,
         t1.sk_parlamentar,
         t1.sk_votacao,
+        t4.deputado_id,
+        t4.senador_id,
+        t2.votacao_id,
         t2.data_votacao,
         t3.legislatura,
         t2.objeto,
@@ -55,6 +59,8 @@ votos_parlamentares_joined AS (
         ON t1.sk_votacao = t2.sk_votacao
     LEFT JOIN legislaturas AS t3
         ON t2.data_votacao BETWEEN t3.inicio AND t3.fim
+    LEFT JOIN {{ ref('dim_parlamentares') }} AS t4
+        ON t1.sk_parlamentar = t4.sk_parlamentar
 ),
 
 final AS (
@@ -63,6 +69,9 @@ final AS (
         sk_voto,
         sk_parlamentar,
         sk_votacao,
+        deputado_id,
+        senador_id,
+        votacao_id,
         data_votacao,
         legislatura,
         objeto,

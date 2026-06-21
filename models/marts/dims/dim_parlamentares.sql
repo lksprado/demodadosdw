@@ -21,9 +21,13 @@ parlamentares AS (
 
 final AS (
     SELECT
+        ---------- surrogate keys
         {{ dbt_utils.generate_surrogate_key(['casa', 'id']) }} AS sk_parlamentar,
+        ---------- natural keys (uma coluna por fonte)
+        CASE WHEN casa = 'CAMARA' THEN id END AS deputado_id,
+        CASE WHEN casa = 'SENADO' THEN id END AS senador_id,
+        ---------- atributos
         casa,
-        id,
         nome,
         nome_completo,
         sexo,
@@ -35,8 +39,9 @@ final AS (
 dummy AS (
     SELECT
         '{{ var('null_key') }}'    AS sk_parlamentar,
+        NULL::INT                  AS deputado_id,
+        NULL::INT                  AS senador_id,
         '{{ var('null_string') }}' AS casa,
-        0                          AS id,
         '{{ var('null_string') }}' AS nome,
         '{{ var('null_string') }}' AS nome_completo,
         '{{ var('null_string') }}' AS sexo,

@@ -10,10 +10,12 @@ models:
         tests:
           - not_null
           - unique
+      - name: deputado_id
+        description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
+      - name: senador_id
+        description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
       - name: casa
         description: Casa legislativa (CAMARA ou SENADO).
-      - name: id
-        description: Identificador natural do parlamentar na casa de origem.
       - name: nome
         description: Nome eleitoral / parlamentar.
       - name: nome_completo
@@ -31,6 +33,8 @@ models:
         tests:
           - not_null
           - unique
+      - name: votacao_id
+        description: Identificador natural da votação na casa de origem (id da Câmara ou codigo_votacao do Senado).
       - name: casa
         description: Casa legislativa da votação (CAMARA ou SENADO).
       - name: data_votacao

@@ -7,7 +7,7 @@ models:
       Cobre Câmara (desde 1991) e Senado. Permite calcular perc_governismo para
       qualquer período (ano, trimestre, legislatura) e rastrear a evolução temporal
       do alinhamento de cada parlamentar ao governo.
-      Enriquecimento com nome, partido, presidente e mandato ainda não implementado — join com dim_parlamentares e seed raw_executivo_presidente pendente.
+      Enriquecimento com nome, partido, presidente e mandato ainda não implementado — join com nome/partido de dim_parlamentares e seed raw_executivo_presidente pendente.
     columns:
       - name: casa
         description: Casa legislativa do voto (CAMARA ou SENADO).
@@ -24,6 +24,12 @@ models:
         description: Chave substituta da votação, join com dim_votacoes.
         tests:
           - not_null
+      - name: deputado_id
+        description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
+      - name: senador_id
+        description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
+      - name: votacao_id
+        description: Identificador natural da votação na casa de origem (id da Câmara ou codigo_votacao do Senado).
       - name: data_votacao
         description: Data em que a votação ocorreu.
       - name: objeto
@@ -50,6 +56,10 @@ models:
         description: Chave substituta do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
+      - name: deputado_id
+        description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
+      - name: senador_id
+        description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
       - name: legislatura
         description: Número da legislatura.
         tests:
@@ -81,6 +91,10 @@ models:
         description: Chave substituta do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
+      - name: deputado_id
+        description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
+      - name: senador_id
+        description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
       - name: legislatura
         description: Número da legislatura.
         tests:

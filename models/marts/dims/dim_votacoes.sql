@@ -3,6 +3,7 @@ votacoes_camara AS (
     SELECT
         DISTINCT ON (sk_votacao)
         sk_votacao,
+        id::TEXT AS votacao_id,
         casa,
         data_votacao,
         proposicao_objeto AS objeto,
@@ -14,6 +15,7 @@ votacoes_senado AS (
     SELECT
         DISTINCT ON (sk_votacao)
         sk_votacao,
+        id::TEXT AS votacao_id,
         casa,
         data_sessao AS data_votacao,
         identificacao AS objeto,
@@ -31,6 +33,7 @@ unioned AS (
 dummy AS (
     SELECT
         '{{ var('null_key') }}'    AS sk_votacao,
+        NULL::text                 AS votacao_id,
         '{{ var('null_string') }}' AS casa,
         NULL::date                 AS data_votacao,
         '{{ var('null_string') }}' AS objeto,

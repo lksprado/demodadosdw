@@ -37,6 +37,8 @@ scored AS (
 SELECT
     casa,
     sk_parlamentar,
+    deputado_id,
+    senador_id,
     legislatura,
     qt_votos,
     qt_votacoes,

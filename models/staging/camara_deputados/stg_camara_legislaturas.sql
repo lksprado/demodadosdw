@@ -10,7 +10,9 @@ WITH source AS (
 renamed AS (
     SELECT
         idlegislatura AS id,
-        id AS id_deputado
+        id AS id_deputado,
+        nome,
+        siglauf AS uf
     FROM source
     WHERE nome IS NOT NULL
 )

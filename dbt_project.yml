@@ -12,6 +12,8 @@ snapshot-paths: ["snapshots"]
 
 vars:
     "dbt_date:time_zone": "America/Sao_Paulo"
+    null_key: '0'
+    null_string: 'desconhecido'
 
 
 clean-targets:

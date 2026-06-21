@@ -17,6 +17,8 @@ WITH governismo AS (
     SELECT
         casa,
         sk_parlamentar,
+        deputado_id,
+        senador_id,
         legislatura,
         COUNT(sk_voto) AS qt_votos,
         COUNT(DISTINCT sk_votacao) AS qt_votacoes,
@@ -27,6 +29,8 @@ WITH governismo AS (
     GROUP BY
         casa,
         sk_parlamentar,
+        deputado_id,
+        senador_id,
         legislatura
 )
 SELECT *

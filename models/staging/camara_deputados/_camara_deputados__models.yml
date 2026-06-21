@@ -28,12 +28,16 @@ models:
         description: "E-mail institucional — COALESCE de ultimostatus_email e ultimostatus_gabinete_email."
 
   - name: stg_camara_legislaturas
-    description: "Modelo staging com o mapeamento de deputados por legislatura"
+    description: "Modelo staging com o mapeamento de deputados por legislatura. Roster histórico usado para complementar deputados ausentes do endpoint de detalhes em int_deputados_padronizados."
     columns:
       - name: id
         description: "Identificador da legislatura"
       - name: id_deputado
         description: "Identificador do deputado na API da Câmara"
+      - name: nome
+        description: "Nome do deputado conforme roster da legislatura"
+      - name: uf
+        description: "UF de representação do deputado na legislatura (siglauf)"
 
   - name: stg_camara_votacoes
     description: "Modelo staging com as sessões de votação da Câmara"
