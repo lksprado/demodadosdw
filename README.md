@@ -23,8 +23,9 @@ Principais diretórios:
 
 - `models/`: modelos dbt organizados por domínio/área temática.
 - `models/staging/`: modelos de _staging_ (camada Bronze), alinhados às fontes brutas.
-- `models/intermediate/`: modelos dimensionais (camada Silver), alinhados ao Star Schema.
-- `models/marts/`: modelos de negócio (camada Gold), voltados para consumo analítico.
+- `models/intermediate/`: modelos intermediários para isolar lógicas complexas (camada Silver).
+- `models/marts/`: modelos dimensionais (camada Gold), alinhados à modelagem Start Schema.
+- `models/presentation/`: modelos prontos para consumo (camada Platinum).
 - `seeds/`: arquivos estáticos (CSV) usados como tabelas de referência.
 - `snapshots/`: definição de snapshots (quando aplicável).
 - `tests/`: testes adicionais que complementam os _tests_ nativos do dbt.
@@ -49,4 +50,3 @@ Os comandos acima assumem que você está dentro da pasta `demodadosdw` e que o 
 - Documentar sempre novas tabelas e campos usando `_<origem>__sources.yml`.
 - Adicionar testes de qualidade de dados (único, não nulo, relacionamento) sempre que criar novos modelos.
 - Preferir _incremental models_ quando fizer sentido para desempenho.
-- Abrir _pull requests_ pequenos, focados em um conjunto de modelos ou um tema específico.
