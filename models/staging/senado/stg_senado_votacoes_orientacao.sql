@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","senado"]
+    tags=["senado", "votacoes"]
 ) }}
 
 WITH source AS (
@@ -7,18 +7,18 @@ WITH source AS (
 )
 
 SELECT
-    codigovotacaosve::INT AS codigo_votacao,
-    siglatipomateria AS sigla_tipo_materia,
-    numeromateria AS numero_materia,
-    qtdvotossim AS total_votos_favor,
-    qtdvotosnao AS total_votos_contra,
-    qtdvotosabstencao AS total_votos_abstencao,
-    datahora::DATE AS data,
+    codigovotacaosve::INT                 AS codigo_votacao,
+    siglatipomateria                      AS sigla_tipo_materia,
+    numeromateria                         AS numero_materia,
+    qtdvotossim                           AS total_votos_favor,
+    qtdvotosnao                           AS total_votos_contra,
+    qtdvotosabstencao                     AS total_votos_abstencao,
+    datahora::DATE                        AS data,
     {{ clean_string("partido","upper") }} AS partido,
     CASE
         WHEN {{ clean_string("voto","upper") }} = 'LIVRE' THEN 'LIBERADO'
         ELSE {{ clean_string("voto","upper") }}
-    END AS orientacao_voto
+    END                                   AS orientacao_voto
 {# DESCONSIDERADOS #}
 --,descricaovotacao
 --,datainiciovotacao

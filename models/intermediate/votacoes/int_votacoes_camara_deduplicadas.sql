@@ -1,5 +1,5 @@
 {{ config(
-    tags=["camara","votacoes"]
+    tags=["camara", "votacoes"]
 ) }}
 
 
@@ -10,23 +10,26 @@ camara_votacoes AS (
         'CAMARA' AS casa
     FROM {{ ref('stg_camara_votacoes') }}
 ),
-dedup as (
+
+dedup AS (
     SELECT
-    ROW_NUMBER() OVER (PARTITION BY id) as rn,
-    *
-    from camara_votacoes
+        *,
+        ROW_NUMBER() OVER (PARTITION BY votacao_id_nk) AS rn
+    FROM camara_votacoes
 ),
+
 final AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['id', 'casa']) }} AS sk_votacao,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'votacao_id_nk']) }}    AS sk_votacao,
         casa,
-        id,
+        votacao_id_nk,
         data_votacao,
         sigla_orgao,
-        proposicao_objeto,
-        aprovado
+        {{ dbt_utils.generate_surrogate_key(['casa', 'proposicao_id_fk']) }} AS sk_proposicao,
+        aprovado,
+        CAST(TO_CHAR(data_votacao, 'YYYYMMDD') AS INTEGER)                AS sk_data
     FROM dedup
-    WHERE rn=1
+    WHERE rn = 1
     ORDER BY data_votacao DESC
 )
 

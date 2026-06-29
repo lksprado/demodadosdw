@@ -7,7 +7,7 @@ models:
       Cobre Câmara (desde 1991) e Senado. Permite calcular perc_governismo para
       qualquer período (ano, trimestre, legislatura) e rastrear a evolução temporal
       do alinhamento de cada parlamentar ao governo.
-      Enriquecimento com nome, partido, presidente e mandato ainda não implementado — join com nome/partido de dim_parlamentares e seed raw_executivo_presidente pendente.
+      Já enriquecido com nome, uf e legislatura. Enriquecimento com partido, presidente e mandato ainda não implementado — join com partido de dim_parlamentares e seed raw_executivo_presidente pendente.
     columns:
       - name: casa
         description: Casa legislativa do voto (CAMARA ou SENADO).
@@ -24,16 +24,20 @@ models:
         description: Chave substituta da votação, join com dim_votacoes.
         tests:
           - not_null
-      - name: deputado_id
+      - name: deputado_id_nk
         description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
-      - name: senador_id
+      - name: senador_id_nk
         description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
-      - name: votacao_id
+      - name: nome
+        description: Nome eleitoral / parlamentar.
+      - name: uf
+        description: UF de nascimento (deputados) ou representação (senadores).
+      - name: votacao_id_nk
         description: Identificador natural da votação na casa de origem (id da Câmara ou codigo_votacao do Senado).
-      - name: data_votacao
-        description: Data em que a votação ocorreu.
-      - name: objeto
-        description: Descrição da proposição ou matéria votada.
+      - name: tipo_proposicao
+        description: Tipo da proposição ou matéria votada.
+      - name: legislatura
+        description: Número da legislatura em que a votação ocorreu.
       - name: aprovado
         description: 1 se a votação resultou em aprovação, 0 caso contrário.
       - name: voto
@@ -42,6 +46,10 @@ models:
         description: Orientação emitida pelo Governo para esta votação (SIM, NAO).
       - name: voto_alinhado
         description: "1 se o voto coincidiu com a orientação do Governo, 0 se divergiu."
+      - name: data_proposicao
+        description: Data de apresentação da proposição votada.
+      - name: data_votacao
+        description: Data em que a votação ocorreu.
   - name: prs_governismo_por_parlamentar_legislatura
     description: >
       Grão: um parlamentar por legislatura por casa.
@@ -56,10 +64,14 @@ models:
         description: Chave substituta do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
-      - name: deputado_id
+      - name: deputado_id_nk
         description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
-      - name: senador_id
+      - name: senador_id_nk
         description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
+      - name: nome
+        description: Nome eleitoral / parlamentar.
+      - name: uf
+        description: UF de nascimento (deputados) ou representação (senadores).
       - name: legislatura
         description: Número da legislatura.
         tests:
@@ -91,9 +103,9 @@ models:
         description: Chave substituta do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
-      - name: deputado_id
+      - name: deputado_id_nk
         description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
-      - name: senador_id
+      - name: senador_id_nk
         description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
       - name: legislatura
         description: Número da legislatura.
@@ -126,8 +138,8 @@ models:
         description: Chave substituta da proposição.
         tests:
           - not_null
-      - name: id_proposicao
-        description: Identificador da proposição na fonte.
+      - name: proposicao_id_nk
+        description: "Chave natural da proposição na fonte (título, ex: PL 123/2024)."
       - name: ano_proposicao
         description: Ano de apresentação da proposição.
       - name: apelido

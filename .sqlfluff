@@ -85,3 +85,8 @@ set_operator_on_new_line = ['UNION', 'UNION ALL']
 [sqlfluff:rules:structure.subquery]
 # Subquery dentro de JOIN deve ser extraída.
 forbid_subquery_in = join
+
+[sqlfluff:layout:type:alias_expression]
+spacing_before = align
+align_within = select_clause
+spacing_after = touch

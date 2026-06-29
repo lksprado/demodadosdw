@@ -1,5 +1,5 @@
 {{ config(
-    tags=["prs","parlamentar"]
+    tags=["camara", "senado", "parlamentar", "votacoes"]
 ) }}
 
 /*
@@ -17,8 +17,10 @@ WITH governismo AS (
     SELECT
         casa,
         sk_parlamentar,
-        deputado_id,
-        senador_id,
+        deputado_id_nk,
+        senador_id_nk,
+        nome,
+        uf,
         legislatura,
         COUNT(sk_voto) AS qt_votos,
         COUNT(DISTINCT sk_votacao) AS qt_votacoes,
@@ -29,8 +31,10 @@ WITH governismo AS (
     GROUP BY
         casa,
         sk_parlamentar,
-        deputado_id,
-        senador_id,
+        deputado_id_nk,
+        senador_id_nk,
+        nome,
+        uf,
         legislatura
 )
 SELECT *

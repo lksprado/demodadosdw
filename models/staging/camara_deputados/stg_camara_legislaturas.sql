@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","camara","parlamentar"]
+    tags=["camara", "parlamentar"]
 ) }}
 
 
@@ -9,10 +9,10 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        idlegislatura AS id,
-        id AS id_deputado,
+        idlegislatura AS legislatura_id_nk,
+        id            AS deputado_id_fk,
         nome,
-        siglauf AS uf
+        siglauf       AS uf
     FROM source
     WHERE nome IS NOT NULL
 )

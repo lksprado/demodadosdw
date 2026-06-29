@@ -1,5 +1,5 @@
 {{ config(
-    tags=["camara","votacoes"]
+    tags=["camara", "votacoes"]
 ) }}
 
 
@@ -13,16 +13,16 @@ camara_votos AS (
 
 votos_filtrados AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['id_deputado','id_votacao', 'casa']) }} AS sk_voto,
-        {{ dbt_utils.generate_surrogate_key(['casa', 'id_deputado']) }} AS sk_parlamentar,
-        {{ dbt_utils.generate_surrogate_key(['id_votacao', 'casa']) }} AS sk_votacao,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'deputado_id_nk','votacao_id_fk']) }} AS sk_voto,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'deputado_id_nk']) }}                  AS sk_parlamentar,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'votacao_id_fk']) }}                   AS sk_votacao,
         casa,
-        id_deputado,
-        id_votacao,
+        deputado_id_nk,
+        votacao_id_fk AS votacao_id_nk,
         CASE
             WHEN voto = 'FAVORAVEL COM RESTRICOES' THEN 'SIM'
             ELSE voto
-        END AS voto
+        END                                                                          AS voto
     FROM camara_votos
     WHERE voto NOT IN ('ARTIGO 17', 'BRANCO', 'ABSTENCAO')
 )

@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","senado","proposicoes"]
+    tags=["senado", "legislacao"]
 ) }}
 
 
@@ -9,7 +9,7 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        sigla AS codigo_deliberacao,
+        sigla     AS codigo_deliberacao,
         descricao AS descricao_deliberacao,
         CASE
             WHEN sigla = 'APROVADA_NO_PLENARIO' THEN 'A favor'
@@ -49,7 +49,7 @@ renamed AS (
             WHEN sigla = 'PARA_PUBLICACAO' THEN 'Neutro'
             WHEN sigla = 'REAUTUADO' THEN 'Neutro'
             ELSE 'Desconhecido'
-        END AS tipo_deliberacao
+        END       AS tipo_deliberacao
     FROM source
 )
 

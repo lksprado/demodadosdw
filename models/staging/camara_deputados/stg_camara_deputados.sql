@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","camara","parlamentar"]
+    tags=["camara", "parlamentar"]
 ) }}
 
 
@@ -9,15 +9,15 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        id,
-        nomecivil,
-        ultimostatus_nomeeleitoral,
+        id AS deputado_id_nk,
+        nomecivil as nome_civil,
+        ultimostatus_nomeeleitoral as nome_eleitoral,
         sexo,
-        redesocial,
-        datanascimento,
-        datafalecimento,
-        ufnascimento,
-        municipionascimento,
+        redesocial as rede_social,
+        datanascimento as data_nascimento,
+        datafalecimento as data_falecimento,
+        ufnascimento as uf_nascimento,
+        municipionascimento as uf_municipio_nascimento,
         escolaridade,
         COALESCE(ultimostatus_email::TEXT, ultimostatus_gabinete_email::TEXT) AS email
     {# DESCONSIDERADOS

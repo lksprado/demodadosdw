@@ -1,5 +1,5 @@
 {{ config(
-    tags=["camara","senado"]
+    tags=["camara", "senado", "score"]
 ) }}
 
 WITH
@@ -33,10 +33,23 @@ senadores AS (
     FROM {{ ref('int_senadores_pontuacao_explodida') }}
 ),
 
-final AS (
+unioned AS (
     SELECT * FROM deputados
     UNION ALL
     SELECT * FROM senadores
 )
 
-SELECT * FROM final
+SELECT * FROM unioned
+UNION ALL
+{{ dummy_row([
+    ['sk_parlamentar', 'sk'],
+    ['ano', 'null::int'],
+    ['pontuacao', 'null::numeric'],
+    ['nota_base_votacoes', 'null::numeric'],
+    ['nota_base_gastos', 'null::numeric'],
+    ['nota_base_presenca', 'null::numeric'],
+    ['nota_base_privilegios', 'null::numeric'],
+    ['bonus_processos', 'null::numeric'],
+    ['bonus_producao_legislativa', 'null::numeric'],
+    ['bonus_articulacao_legislativa', 'null::numeric'],
+]) }}

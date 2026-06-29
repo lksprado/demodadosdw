@@ -1,5 +1,5 @@
 {{ config(
-    tags=["fct","ecidadania"]
+    tags=["ecidadania", "participacao"]
 ) }}
 
 

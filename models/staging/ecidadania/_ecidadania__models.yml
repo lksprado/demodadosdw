@@ -26,8 +26,8 @@ models:
         description: "Chave substituta da proposição (sigla + id)"
         tests:
           - not_null
-      - name: id_proposicao
-        description: "Identificador da proposição na fonte"
+      - name: proposicao_id_nk
+        description: "Chave natural da proposição na fonte (título, ex: PL 123/2024)."
       - name: tipo_proposicao
         description: "Tipo/sigla da proposição (ex: PL, PEC, MPV)"
       - name: ementa
@@ -57,8 +57,8 @@ models:
         tests:
           - not_null
           - unique
-      - name: id_proposicao
-        description: "Identificador da proposição na fonte"
+      - name: proposicao_id_nk
+        description: "Chave natural da proposição na fonte (título, ex: PL 123/2024)."
       - name: ementa
         description: "Ementa descritiva da proposição"
       - name: votos_sim

@@ -4,24 +4,24 @@ models:
   - name: stg_camara_deputados
     description: "Seleção mínima de colunas da API da Câmara para deputados. Renaming e enriquecimento ocorrem em int_deputados_padronizados."
     columns:
-      - name: id
-        description: "Identificador único do deputado na API da Câmara."
-      - name: nomecivil
-        description: "Nome civil bruto conforme retornado pela API."
-      - name: ultimostatus_nomeeleitoral
-        description: "Nome eleitoral bruto do último status do deputado."
+      - name: deputado_id_nk
+        description: "Chave natural do deputado na API da Câmara."
+      - name: nome_civil
+        description: "Nome civil do deputado."
+      - name: nome_eleitoral
+        description: "Nome eleitoral do último status do deputado."
       - name: sexo
         description: "Sexo informado no cadastro (M/F)."
-      - name: redesocial
+      - name: rede_social
         description: "Campo único da API com links de redes sociais (texto ou JSON)."
-      - name: datanascimento
-        description: "Data de nascimento bruta conforme API."
-      - name: datafalecimento
+      - name: data_nascimento
+        description: "Data de nascimento."
+      - name: data_falecimento
         description: "Data de falecimento, quando houver."
-      - name: ufnascimento
-        description: "UF de nascimento bruta conforme API."
-      - name: municipionascimento
-        description: "Município de nascimento bruto conforme API."
+      - name: uf_nascimento
+        description: "UF de nascimento."
+      - name: uf_municipio_nascimento
+        description: "Município de nascimento."
       - name: escolaridade
         description: "Grau de escolaridade informado."
       - name: email
@@ -30,55 +30,83 @@ models:
   - name: stg_camara_legislaturas
     description: "Modelo staging com o mapeamento de deputados por legislatura. Roster histórico usado para complementar deputados ausentes do endpoint de detalhes em int_deputados_padronizados."
     columns:
-      - name: id
-        description: "Identificador da legislatura"
-      - name: id_deputado
-        description: "Identificador do deputado na API da Câmara"
+      - name: legislatura_id_nk
+        description: "Chave natural da legislatura."
+      - name: deputado_id_fk
+        description: "Chave estrangeira do deputado na API da Câmara."
       - name: nome
-        description: "Nome do deputado conforme roster da legislatura"
+        description: "Nome do deputado conforme roster da legislatura."
       - name: uf
-        description: "UF de representação do deputado na legislatura (siglauf)"
+        description: "UF de representação do deputado na legislatura (siglauf)."
 
   - name: stg_camara_votacoes
-    description: "Modelo staging com as sessões de votação da Câmara"
+    description: "Modelo staging com as sessões de votação da Câmara."
     columns:
-      - name: id
-        description: "Identificador único da votação"
+      - name: votacao_id_nk
+        description: "Chave natural da votação."
       - name: data_votacao
-        description: "Data da votação"
+        description: "Data da votação."
       - name: datahora_votacao
-        description: "Data e hora do registro da votação"
+        description: "Data e hora do registro da votação."
       - name: sigla_orgao
-        description: "Sigla do órgão que realizou a votação (ex: PLEN, CSPCCO)"
+        description: "Sigla do órgão que realizou a votação (ex: PLEN, CSPCCO)."
       - name: proposicao_objeto
-        description: "Descrição da proposição objeto da votação"
+        description: "Descrição da proposição objeto da votação."
       - name: descricao
-        description: "Descrição da votação"
+        description: "Descrição da votação."
+      - name: proposicao_id_fk
+        description: "Chave estrangeira da proposição objeto da votação na API da Câmara."
       - name: aprovado
-        description: "Booleano indicando se a proposição foi aprovada"
+        description: "Booleano indicando se a proposição foi aprovada."
 
   - name: stg_camara_votacoes_orientacao
-    description: "Modelo staging com a orientação de cada partido/liderança por votação"
+    description: "Modelo staging com a orientação de cada partido/liderança por votação."
     columns:
+      - name: votacao_id_nk
+        description: "Chave natural da votação à qual a orientação se refere."
       - name: orientacao_voto
-        description: "Orientação de voto dada pelo líder (SIM, NÃO, LIBERADO, OBSTRUÇÃO)"
-      - name: codigo_tipo_liderancao
-        description: "Código do tipo de liderança que deu a orientação"
+        description: "Orientação de voto dada pelo líder (SIM, NÃO, LIBERADO, OBSTRUÇÃO)."
+      - name: codigo_tipo_lideranca
+        description: "Código do tipo de liderança que deu a orientação."
       - name: codigo_partido_bloco
-        description: "Código do partido ou bloco que recebeu a orientação"
+        description: "Código do partido ou bloco que recebeu a orientação."
       - name: sigla_partido_bloco
-        description: "Sigla do partido ou bloco que recebeu a orientação"
-      - name: id_votacao
-        description: "Identificador da votação à qual a orientação se refere"
+        description: "Sigla do partido ou bloco que recebeu a orientação."
 
   - name: stg_camara_votos_deputados
-    description: "Modelo staging com o voto individual de cada deputado por votação"
+    description: "Modelo staging com o voto individual de cada deputado por votação."
     columns:
-      - name: id_deputado
-        description: "Identificador do deputado na API da Câmara"
-      - name: id_votacao
-        description: "Identificador da votação à qual a orientação se refere"
+      - name: deputado_id_nk
+        description: "Chave natural do deputado na API da Câmara."
       - name: voto
-        description: "Tipo do voto registrado (SIM, NÃO, ABSTENCAO, OBSTRUÇÃO, ARTIGO17)"
-      - name: id_legislatura
-        description: "Identificador da legislatura na qual o voto foi registrado"
+        description: "Tipo do voto registrado (SIM, NÃO, ABSTENCAO, OBSTRUÇÃO, ARTIGO17)."
+      - name: legislatura_id_fk
+        description: "Chave estrangeira da legislatura na qual o voto foi registrado."
+      - name: votacao_id_fk
+        description: "Chave estrangeira da votação à qual o voto se refere."
+
+  - name: stg_camara_temas
+    description: "Modelo staging com os temas de uma proposição."
+    columns:
+      - name: proposicao_id_nk
+        description: "Chave natural da proposição na API da Câmara."
+      - name: tema
+        description: "Nome do tema."
+      - name: codigo_tema
+        description: "Código do tema."
+      - name: relevancia
+        description: "Não identificado. Tudo zero."
+
+  - name: stg_camara_proposicoes
+    description: "Modelo staging com as proposições da Câmara."
+    columns:
+      - name: proposicao_id_nk
+        description: "Chave natural da proposição na API da Câmara."
+      - name: codigo_tipo
+        description: "Código do tipo de proposição."
+      - name: descricao_tipo
+        description: "Descrição do tipo de proposição."
+      - name: data_proposicao
+        description: "Data de apresentação da proposição."
+      - name: palavras_chave
+        description: "Palavras-chave do que se trata a proposição."

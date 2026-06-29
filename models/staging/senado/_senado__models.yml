@@ -3,37 +3,37 @@ version: 2
 models:
 
   - name: stg_senado_senadores
-    description: "Senadores atuais com atributos de identificação e mandato mantidos nos nomes originais da API do Senado Federal. Renaming e limpeza ocorrem em int_senadores_padronizados."
+    description: "Senadores atuais com atributos de identificação e mandato. Renaming e limpeza adicionais ocorrem em int_senadores_padronizados."
     columns:
-      - name: identificacaoparlamentar_codigoparlamentar
-        description: "Código único do senador na API do Senado."
-      - name: identificacaoparlamentar_codigopubliconalegatual
+      - name: senador_id_nk
+        description: "Chave natural do senador na API do Senado."
+      - name: codigo_publico_na_leg_atual
         description: "Código público do senador na legislatura atual."
-      - name: identificacaoparlamentar_nomeparlamentar
+      - name: nome
         description: "Nome parlamentar do senador."
-      - name: identificacaoparlamentar_nomecompletoparlamentar
+      - name: nome_completo
         description: "Nome civil completo do senador."
-      - name: identificacaoparlamentar_sexoparlamentar
+      - name: sexo
         description: "Sexo informado no cadastro (M/F)."
-      - name: identificacaoparlamentar_formatratamento
+      - name: forma_tratamento
         description: "Forma de tratamento do senador (ex: Senador, Senadora)."
-      - name: identificacaoparlamentar_emailparlamentar
+      - name: email
         description: "E-mail institucional do senador."
-      - name: identificacaoparlamentar_telefones_telefone
+      - name: telefones_telefone
         description: "Telefone(s) do gabinete em formato semi-estruturado."
-      - name: identificacaoparlamentar_siglapartidoparlamentar
+      - name: sigla_partido
         description: "Sigla do partido no momento mais recente da carga."
-      - name: identificacaoparlamentar_ufparlamentar
+      - name: uf
         description: "UF representada pelo senador."
-      - name: identificacaoparlamentar_bloco_codigobloco
+      - name: bloco_codigo_bloco
         description: "Código do bloco parlamentar ao qual o senador pertence."
-      - name: identificacaoparlamentar_bloco_nomebloco
+      - name: bloco_nome_bloco
         description: "Nome do bloco parlamentar."
-      - name: identificacaoparlamentar_bloco_nomeapelido
+      - name: bloco_nome_apelido
         description: "Nome/apelido do bloco parlamentar."
-      - name: identificacaoparlamentar_membromesa
+      - name: membro_mesa
         description: "Indica se o senador é membro da Mesa Diretora."
-      - name: identificacaoparlamentar_membrolideranca
+      - name: membro_lideranca
         description: "Indica se o senador exerce função de liderança."
       - name: mandato_codigomandato
         description: "Código identificador do mandato."
@@ -69,26 +69,60 @@ models:
   - name: stg_senado_legislaturas
     description: "Todos os senadores das legislaturas 50 a 58, com dados de identificação e mandato em formato semi-estruturado."
     columns:
-      - name: identificacaoparlamentar_codigoparlamentar
-        description: "Código do senador na API do Senado."
-      - name: identificacaoparlamentar_nomeparlamentar
+      - name: senador_id_nk
+        description: "Chave natural do senador na API do Senado."
+      - name: nome
         description: "Nome parlamentar do senador (upper)."
-      - name: identificacaoparlamentar_nomecompletoparlamentar
+      - name: nome_completo
         description: "Nome completo do senador (upper)."
-      - name: identificacaoparlamentar_sexoparlamentar
+      - name: sexo
         description: "Sexo do senador (upper)."
-      - name: identificacaoparlamentar_formatratamento
+      - name: forma_tratamento
         description: "Forma de tratamento do senador (upper)."
       - name: mandatos_mandato
         description: "Dados dos mandatos em formato JSON/semi-estruturado. Processado em int_senadores_padronizados."
-      - name: identificacaoparlamentar_emailparlamentar
+      - name: email
         description: "E-mail institucional do senador."
-      - name: identificacaoparlamentar_siglapartidoparlamentar
+      - name: sigla_partido
         description: "Sigla do partido do senador."
-      - name: identificacaoparlamentar_codigopubliconalegatual
+      - name: codigo_publico_na_leg_atual
         description: "Código público do senador na legislatura atual."
-      - name: identificacaoparlamentar_ufparlamentar
+      - name: uf
         description: "UF representada pelo senador."
+
+  - name: stg_senado_processos
+    description: "Processos legislativos do Senado, usados como dimensão de proposição em int_proposicoes_unificadas."
+    columns:
+      - name: processo_id_nk
+        description: "Chave natural do processo legislativo na API do Senado."
+      - name: tramitando
+        description: "Indica se o processo está em tramitação."
+      - name: autoria
+        description: "Autoria do processo."
+      - name: codigo_materia
+        description: "Código da matéria associada ao processo."
+      - name: data_apresentacao
+        description: "Data de apresentação do processo."
+      - name: data_liberacao
+        description: "Data de deliberação do processo."
+      - name: data_situacao_atual
+        description: "Data da situação atual do processo."
+      - name: codigo_tipo
+        description: "Sigla do tipo do processo, derivada da identificação (apenas letras)."
+      - name: identificacao
+        description: "Identificação textual do processo (ex: PL 123/2024)."
+      - name: normagerada
+        description: "Norma gerada pelo processo, quando houver."
+      - name: objetivo
+        description: "Objetivo do processo (upper)."
+      - name: sigla_tipo_deliberacao
+        description: "Sigla do tipo de deliberação."
+      - name: situacao_atual
+        description: "Situação atual do processo (upper)."
+      - name: tipo_conteudo
+        description: "Tipo de conteúdo do processo (upper)."
+      - name: tipo_documento
+        description: "Tipo de documento do processo (upper)."
 
   - name: stg_senado_votacoes
     description: "Todas as votações do Senado desde 2001, com resultado e totais de votos por sessão."
@@ -103,8 +137,8 @@ models:
         description: "Código da sessão de votação."
       - name: codigo_votacao
         description: "Código único da votação."
-      - name: id_processo
-        description: "Identificador do processo legislativo."
+      - name: processo_id_nk
+        description: "Chave natural do processo legislativo associado à votação."
       - name: identificacao
         description: "Identificação da matéria votada."
       - name: numero
@@ -145,8 +179,8 @@ models:
         description: "Código único da votação."
       - name: data_sessao
         description: "Data da sessão de votação."
-      - name: id_processo
-        description: "Identificador do processo legislativo."
+      - name: processo_id_nk
+        description: "Chave natural do processo legislativo associado à votação."
       - name: identificacao
         description: "Identificação da matéria votada."
       - name: numero
@@ -157,9 +191,9 @@ models:
         description: "Sigla do tipo de matéria."
       - name: sigla_tipo_sessao
         description: "Sigla do tipo de sessão."
-      - name: codigo_parlamentar
-        description: "Código do senador na API do Senado."
-      - name: descricaovotoparlamentar
+      - name: senador_id_nk
+        description: "Chave natural do senador na API do Senado."
+      - name: descricao_voto
         description: "Descrição textual do voto do senador (upper)."
       - name: sigla_partido
         description: "Sigla do partido do senador no momento do voto (upper)."

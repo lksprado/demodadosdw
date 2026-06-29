@@ -24,8 +24,9 @@ Cada seção é marcada como **obrigatório** ou **recomendação** para deixar 
 | Tipo | Prefixo / Convenção | Exemplo |
 |---|---|---|
 | Surrogate key (PK da dim) | `sk_<entidade>` | `sk_parlamentar`, `sk_voto` |
-| Natural key | `<entidade>_id` | `deputado_id`, `votacao_id` |
-| Foreign key na fact | mesmo nome da PK da dim referenciada | `sk_parlamentar` na fct aponta para `sk_parlamentar` da dim |
+| Natural Key | Adiciona sufixo `_nk` `<entidade>_id_nk` | `deputado_id_nk`, `votacao_id_nk` |
+| Foreign Key na fact | mesmo nome da PK da dim referenciada | `sk_parlamentar` na fct aponta para `sk_parlamentar` da dim |
+| Foreign Key na dim | Adiciona sufixo `_fk` `<entidade>_id_fk` | `legislatura_id_fk` |
 | Data | `data_<evento>` | `data_votacao`, `data_nascimento` |
 | Timestamp | `<evento>_em` em UTC | `criado_em`, `atualizado_em` |
 | Booleano | `fl_<condição>` | `fl_valido`, `fl_ativo` |
@@ -54,13 +55,13 @@ Toda `dim_` tem uma surrogate key como Primary Key com as seguintes propriedades
 
 ### Natural keys
 
-A chave operacional de cada sistema de origem é preservada como atributo na dimensão com sufixo `_id`. Serve para rastreabilidade e debug — não usar como chave de JOIN na Gold.
+A chave operacional de cada sistema de origem é preservada como atributo na dimensão com sufixo `_nk`. Serve para rastreabilidade e debug — não usar como chave de JOIN na Gold.
 
 Para entidades presentes em múltiplos sistemas de origem, uma coluna `_id` por fonte:
 
 ```sql
-id_voto        AS voto_id,
-partido_code   AS partido_codigo_id,
+id_voto        AS voto_id_nk,
+partido_id     AS partido_id_nk,
 ```
 ---
 
@@ -128,7 +129,7 @@ colunas dbt SCD
 Aplicar nas CTEs iniciais ou CTE final
 
 ```sql
-id::STRING    AS deputado_id,
+id::STRING    AS deputado_id_nk,
 quantity::INT AS quantity
 ```
 
@@ -324,6 +325,32 @@ Sem o `weighting_factor`, `SUM(revenue_brl)` retornaria R$ 900 (300 × 3 segment
     - name: sk_campaign
       tests:
         - not_null  # garantido pelo COALESCE com a linha dummy
+```
+
+---
+
+## Tags — recomendação
+
+Toda tag deve cumprir seu papel: permitir **seleção transversal** que a estrutura de pastas não oferece (ex.: `dbt build -s tag:senado`, `dbt test -s tag:votacoes`). Para isso, as tags seguem **duas facetas ortogonais e um vocabulário fechado**. Não se usa tag de camada (`stg`/`int`/`dim`/`fct`/`prs`): a camada já é selecionável por caminho (`-s staging.*`, `-s marts.*`).
+
+| Faceta | Valores permitidos | Significado |
+|---|---|---|
+| **Fonte** (origem do dado) | `camara`, `senado`, `ecidadania`, `ranking` | Sistema de origem. Modelos que unem fontes recebem **todas** (ex.: `dim_parlamentares` → `camara`, `senado`). |
+| **Assunto** (área de negócio) | `parlamentar`, `votacoes`, `legislacao`, `score`, `participacao`, `datas` | Tema transversal às camadas. |
+
+Regras:
+
+- Todo modelo recebe **uma faceta de fonte** (ou várias, se combinar fontes) **e uma faceta de assunto**. Exceção: dimensões utilitárias sem fonte (ex.: `dim_dates` / `int_dates` → apenas `datas`).
+- Vocabulário **fechado**: nada de sinônimos (`votacao` vs `votacoes`) nem termos novos sem antes adicioná-los a esta tabela.
+- `votacoes` = eventos de votação, votos e orientações. `legislacao` = proposições, processos e tabelas de tipos/referência legislativa. `score` = pontuação/ranking. `participacao` = plataforma e-Cidadania. `parlamentar` = deputados, senadores e legislaturas.
+- A tag de fonte deve refletir o dado real do modelo, não a pasta — atenção a copy-paste (ex.: um modelo de Senado nunca leva `camara`).
+
+Aplicação no bloco de config:
+
+```sql
+{{ config(
+    tags=["senado", "votacoes"]
+) }}
 ```
 
 ---

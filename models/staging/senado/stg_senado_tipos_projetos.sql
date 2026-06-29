@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","senado","proposicoes"]
+    tags=["senado", "legislacao"]
 ) }}
 
 WITH source AS (
@@ -7,8 +7,8 @@ WITH source AS (
 )
 
 SELECT
-    sigla AS sigla_proposicao,
-    descricao AS descricao_proposicao,
+    sigla        AS sigla_proposicao,
+    descricao    AS descricao_proposicao,
     "dataInicio" AS data_inicio,
-    "dataFim" AS data_fim
+    "dataFim"    AS data_fim
 FROM source

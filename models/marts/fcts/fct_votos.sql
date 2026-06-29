@@ -1,3 +1,7 @@
+{{ config(
+    tags=["camara", "senado", "votacoes"]
+) }}
+
 WITH
 votos_deputados AS (
     SELECT

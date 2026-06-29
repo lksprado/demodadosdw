@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","camara","votacoes"]
+    tags=["camara", "votacoes"]
 ) }}
 
 
@@ -9,13 +9,14 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        id,
-        data::DATE AS data_votacao,
-        datahoraregistro::TIMESTAMP AS datahora_votacao,
-        siglaorgao AS sigla_orgao,
-        proposicaoobjeto AS proposicao_objeto,
-        {{ clean_string("descricao","upper") }} AS descricao,
-        aprovacao::INT AS aprovado
+        id                                           AS votacao_id_nk,
+        data::DATE                                   AS data_votacao,
+        datahoraregistro::TIMESTAMP                  AS datahora_votacao,
+        siglaorgao                                   AS sigla_orgao,
+        proposicaoobjeto                             AS proposicao_objeto,
+        {{ clean_string("descricao","upper") }}      AS descricao,
+        SPLIT_PART(uriproposicaoobjeto, '/', 7)::INT AS proposicao_id_fk,
+        aprovacao::INT                               AS aprovado
     FROM source
 )
 

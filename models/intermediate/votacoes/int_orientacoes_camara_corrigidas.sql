@@ -1,5 +1,5 @@
 {{ config(
-    tags=["camara","votacoes"]
+    tags=["camara", "votacoes"]
 ) }}
 
 
@@ -13,20 +13,20 @@ camara_votos AS (
 
 ajustes AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['id_votacao', 'casa']) }} AS sk_votacao,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'votacao_id_nk']) }} AS sk_votacao,
         casa,
-        id_votacao,
+        votacao_id_nk,
         orientacao_voto,
         CASE
             WHEN codigo_tipo_lideranca = 'B' THEN 'BANCADA'
             WHEN codigo_tipo_lideranca = 'P' THEN 'PARTIDO'
-        END AS tipo_lideranca,
+        END                                                            AS tipo_lideranca,
         CASE
             WHEN sigla_partido_bloco IN ('SD', 'SDD', 'SOLIDARIED', 'SOLIDARIEDADE') THEN 'SOLIDARIEDADE'
             WHEN sigla_partido_bloco IN ('PATRI', 'PATRIOTA') THEN 'PATRIOTA'
             WHEN sigla_partido_bloco IN ('FDR PSDBCIDADAN', 'FDR PSDBCIDADANIA') THEN 'FDR PSDBCIDADANIA'
             ELSE sigla_partido_bloco
-        END AS sigla_partido_bloco
+        END                                                            AS sigla_partido_bloco
     FROM camara_votos
     WHERE orientacao_voto IS NOT NULL
 ),
@@ -42,7 +42,7 @@ correcao_lideranca AS (
 final AS (
     SELECT
         t1.sk_votacao,
-        t1.id_votacao,
+        t1.votacao_id_nk,
         t1.casa,
         t1.orientacao_voto,
         t2.tipo_lideranca,

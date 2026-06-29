@@ -1,5 +1,5 @@
 {{ config(
-    tags=["prs","parlamentar"]
+    tags=["camara", "senado", "parlamentar", "votacoes"]
 ) }}
 
 /*
@@ -37,8 +37,8 @@ scored AS (
 SELECT
     casa,
     sk_parlamentar,
-    deputado_id,
-    senador_id,
+    deputado_id_nk,
+    senador_id_nk,
     legislatura,
     qt_votos,
     qt_votacoes,

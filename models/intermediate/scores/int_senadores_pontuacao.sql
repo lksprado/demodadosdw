@@ -1,18 +1,22 @@
+{{ config(
+    tags=["senado", "score"]
+) }}
+
 WITH senador_score AS (
     SELECT
-        'SENADO' AS casa,
-        id,
-        id_congresso,
+        'SENADO'                                 AS casa,
+        ranking_id_nk,
+        congresso_id_fk,
         nome,
         nome_civil,
         partido,
         situacao,
         slug,
-        composicao_pontuacao_pontuacao AS pontuacao_geral,
-        composicao_pontuacao_ranking_geral AS ranking_geral,
-        composicao_pontuacao_ranking_casa AS ranking_casa,
-        composicao_pontuacao_ranking_partido AS ranking_partido,
-        composicao_pontuacao_ranking_estado AS ranking_estado,
+        composicao_pontuacao_pontuacao           AS pontuacao_geral,
+        composicao_pontuacao_ranking_geral       AS ranking_geral,
+        composicao_pontuacao_ranking_casa        AS ranking_casa,
+        composicao_pontuacao_ranking_partido     AS ranking_partido,
+        composicao_pontuacao_ranking_estado      AS ranking_estado,
         composicao_pontuacao_ranking_casa_estado AS ranking_casa_estado,
         CASE
             WHEN uf = 'ACRE' THEN 'AC'
@@ -42,13 +46,13 @@ WITH senador_score AS (
             WHEN uf = 'SAO PAULO' THEN 'SP'
             WHEN uf = 'SERGIPE' THEN 'SE'
             WHEN uf = 'TOCANTINS' THEN 'TO'
-        END AS uf
+        END                                      AS uf
     FROM {{ ref('stg_ranking_senadores') }}
 ),
 
 final AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['casa', 'id_congresso']) }} AS sk_parlamentar,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'congresso_id_fk']) }} AS sk_parlamentar,
         *
     FROM senador_score
 )

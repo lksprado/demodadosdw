@@ -1,5 +1,5 @@
 {{ config(
-    tags=["stg","camara","votacoes"]
+    tags=["camara", "votacoes"]
 ) }}
 
 
@@ -9,10 +9,10 @@ WITH source AS (
 
 renamed AS (
     SELECT
-        deputado__id::INT AS id_deputado,
+        deputado__id::INT                      AS deputado_id_nk,
         {{ clean_string("tipovoto","upper") }} AS voto,
-        deputado__idlegislatura AS id_legislatura,
-        SPLIT_PART(url_votos, '/', 7) AS id_votacao
+        deputado__idlegislatura                AS legislatura_id_fk,
+        SPLIT_PART(url_votos, '/', 7)          AS votacao_id_fk
     FROM source
 )
 

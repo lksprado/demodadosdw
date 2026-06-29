@@ -1,5 +1,5 @@
 {{ config(
-    tags=["senado","votacoes"]
+    tags=["senado", "votacoes"]
 ) }}
 
 
@@ -13,7 +13,7 @@ senado_votos AS (
 
 final AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['codigo_votacao', 'casa']) }} AS sk_votacao,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'codigo_votacao']) }} AS sk_votacao,
         casa,
         codigo_votacao,
         numero_materia,
@@ -21,7 +21,8 @@ final AS (
         partido,
         orientacao_voto
     FROM senado_votos
-    WHERE orientacao_voto IS NOT NULL
+    WHERE
+        orientacao_voto IS NOT NULL
         AND orientacao_voto <> 'LIBERADO'
 )
 

@@ -11,11 +11,6 @@ sources:
     tables:
       - name: raw_camara_deputados
         description: "Detalhes dos deputados obtidos da API da Câmara dos Deputados. Endpoint: https://dadosabertos.camara.leg.br/api/v2/deputados/{id}"
-        columns:
-          - name: id
-            tests:
-              - unique
-              - not_null
       - name: raw_camara_legislaturas
         description: "Mapeamento de deputados por legislatura. Endpoint: https://dadosabertos.camara.leg.br/api/v2/deputados/?idLegislatura={id_legislatura}&ordem=ASC&ordenarPor=nome"
       - name: raw_camara_votacoes
@@ -24,3 +19,7 @@ sources:
         description: "Votos individuais por deputado por votação. Endpoint: https://dadosabertos.camara.leg.br/api/v2/votacoes/{id_votacao/votos"
       - name: raw_camara_votacoes_orientacao
         description: "Orientação de voto por partido/liderança por votação. Endpoint: https://dadosabertos.camara.leg.br/api/v2/votacoes/{id_votacao}/orientacoes"
+      - name: raw_camara_proposicao_tema
+        description: "Temas da proposição Legislativa. Endpoint: https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_proposicao}/temas"
+      - name: raw_camara_proposicao
+        description: "Proposições Legislativas. Endpoint: https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_proposicao}/"

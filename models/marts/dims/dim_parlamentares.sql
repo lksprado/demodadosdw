@@ -1,5 +1,5 @@
 {{ config(
-    tags=["camara","senado"]
+    tags=["camara", "senado", "parlamentar"]
 ) }}
 
 WITH
@@ -21,33 +21,26 @@ parlamentares AS (
 
 final AS (
     SELECT
-        ---------- surrogate keys
-        {{ dbt_utils.generate_surrogate_key(['casa', 'id']) }} AS sk_parlamentar,
-        ---------- natural keys (uma coluna por fonte)
-        CASE WHEN casa = 'CAMARA' THEN id END AS deputado_id,
-        CASE WHEN casa = 'SENADO' THEN id END AS senador_id,
-        ---------- atributos
+        sk_parlamentar,
+        CASE WHEN casa = 'CAMARA' THEN parlamentar_id_nk END AS deputado_id_nk,
+        CASE WHEN casa = 'SENADO' THEN parlamentar_id_nk END AS senador_id_nk,
         casa,
         nome,
         nome_completo,
         sexo,
         uf
     FROM parlamentares
-),
-
--- linha dummy para FKs sem correspondência (COALESCE com null_key nas facts cai aqui)
-dummy AS (
-    SELECT
-        '{{ var('null_key') }}'    AS sk_parlamentar,
-        NULL::INT                  AS deputado_id,
-        NULL::INT                  AS senador_id,
-        '{{ var('null_string') }}' AS casa,
-        '{{ var('null_string') }}' AS nome,
-        '{{ var('null_string') }}' AS nome_completo,
-        '{{ var('null_string') }}' AS sexo,
-        '{{ var('null_string') }}' AS uf
 )
 
 SELECT * FROM final
 UNION ALL
-SELECT * FROM dummy
+{{ dummy_row([
+    ['sk_parlamentar', 'sk'],
+    ['deputado_id_nk', 'null::int'],
+    ['senador_id_nk', 'null::int'],
+    ['casa', 'text'],
+    ['nome', 'text'],
+    ['nome_completo', 'text'],
+    ['sexo', 'text'],
+    ['uf', 'text'],
+]) }}

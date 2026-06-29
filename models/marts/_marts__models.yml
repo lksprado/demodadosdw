@@ -10,10 +10,10 @@ models:
         tests:
           - not_null
           - unique
-      - name: deputado_id
-        description: Identificador natural do deputado na fonte da Câmara. Nulo para senadores.
-      - name: senador_id
-        description: Identificador natural do senador na fonte do Senado. Nulo para deputados.
+      - name: deputado_id_nk
+        description: Chave natural do deputado na fonte da Câmara. Nulo para senadores.
+      - name: senador_id_nk
+        description: Chave natural do senador na fonte do Senado. Nulo para deputados.
       - name: casa
         description: Casa legislativa (CAMARA ou SENADO).
       - name: nome
@@ -33,16 +33,18 @@ models:
         tests:
           - not_null
           - unique
-      - name: votacao_id
-        description: Identificador natural da votação na casa de origem (id da Câmara ou codigo_votacao do Senado).
+      - name: votacao_id_nk
+        description: Chave natural da votação na casa de origem (id da Câmara ou codigo_votacao do Senado).
       - name: casa
         description: Casa legislativa da votação (CAMARA ou SENADO).
       - name: data_votacao
         description: Data da sessão de votação.
-      - name: objeto
-        description: Descrição da proposição ou matéria votada.
+      - name: sk_proposicao
+        description: Chave substituta da proposição objeto da votação.
       - name: aprovado
         description: 1 se aprovada, 0 caso contrário.
+      - name: sk_data
+        description: Chave substituta de data (YYYYMMDD) da votação.
 
   - name: dim_orientacao_votacoes
     description: Dimensão de orientações de voto por partido/bancada (Câmara e Senado). Alimenta análises de alinhamento governista.
@@ -105,6 +107,36 @@ models:
       - name: bonus_articulacao_legislativa
         description: Bônus por articulação legislativa.
 
+  - name: dim_proposicoes
+    description: "Dimensão de proposições unificada (Câmara e Senado) com linha dummy para chaves órfãs. Alimenta joins em prs_governismo e dim_votacoes."
+    columns:
+      - name: sk_proposicao
+        description: Chave substituta da proposição (casa + id).
+        tests:
+          - not_null
+          - unique:
+              config:
+                severity: warn
+      - name: casa
+        description: Casa legislativa de origem da proposição (CAMARA ou SENADO).
+      - name: proposicao_id_nk
+        description: Chave natural da proposição na casa de origem.
+      - name: tipo_proposicao
+        description: Tipo da proposição padronizado em maiúsculas (ex. PL, PEC).
+      - name: data_proposicao
+        description: Data de apresentação da proposição.
+      - name: sk_data
+        description: Chave substituta de data (YYYYMMDD) da apresentação da proposição.
+
+  - name: dim_dates
+    description: "Dimensão de datas (YYYYMMDD) derivada de int_dates. Atributos de calendário herdados do macro dbt_date. Exceção da convenção de SK: PK inteira data_sk."
+    columns:
+      - name: data_sk
+        description: Chave primária inteira no formato YYYYMMDD.
+        tests:
+          - not_null
+          - unique
+
   - name: fct_votos
     description: "Fato de votos individuais unificado (Câmara e Senado). Grain: um voto por parlamentar por votação."
     columns:
@@ -153,8 +185,8 @@ models:
         description: Chave substituta da proposição.
         tests:
           - not_null
-      - name: id_proposicao
-        description: Identificador da proposição na fonte.
+      - name: proposicao_id_nk
+        description: "Chave natural da proposição na fonte (título, ex: PL 123/2024)."
       - name: ementa
         description: Ementa descritiva da proposição.
       - name: votos_sim

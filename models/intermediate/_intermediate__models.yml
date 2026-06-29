@@ -7,10 +7,15 @@ models:
   - name: int_deputados_padronizados
     description: "Deputados normalizados com renaming de colunas e código de sexo expandido. Alimenta dim_parlamentares."
     columns:
+      - name: sk_parlamentar
+        description: "Chave substituta gerada de (casa, parlamentar_id_nk)."
+        tests:
+          - not_null
+          - unique
       - name: casa
         description: "Casa legislativa (constante 'CAMARA')."
-      - name: id
-        description: "Identificador do deputado na API da Câmara."
+      - name: parlamentar_id_nk
+        description: "Chave natural do parlamentar na sua casa de origem (id do deputado na API da Câmara). Chave comum do UNION e da geração da sk_parlamentar."
         tests:
           - not_null
           - unique
@@ -26,10 +31,15 @@ models:
   - name: int_senadores_padronizados
     description: "Senadores normalizados combinando endpoint de senadores atuais (prioridade) com histórico de legislaturas. Alimenta dim_parlamentares."
     columns:
+      - name: sk_parlamentar
+        description: "Chave substituta gerada de (casa, parlamentar_id_nk)."
+        tests:
+          - not_null
+          - unique
       - name: casa
         description: "Casa legislativa (constante 'SENADO')."
-      - name: id
-        description: "Código do senador na API do Senado."
+      - name: parlamentar_id_nk
+        description: "Chave natural do parlamentar na sua casa de origem (código do senador na API do Senado). Chave comum do UNION e da geração da sk_parlamentar."
         tests:
           - not_null
           - unique
@@ -48,15 +58,15 @@ models:
     description: "Scores agregados do Ranking dos Políticos para deputados, com ranking renomeado e sk_parlamentar gerado. Alimenta dim_parlamentares_score."
     columns:
       - name: sk_parlamentar
-        description: "Chave substituta gerada de (casa, id_congresso)."
+        description: "Chave substituta gerada de (casa, congresso_id_fk)."
         tests:
           - not_null
           - unique
       - name: casa
         description: "Casa legislativa (constante 'CAMARA')."
-      - name: id
-        description: "ID no Ranking dos Políticos."
-      - name: id_congresso
+      - name: ranking_id_nk
+        description: "Chave natural do parlamentar no Ranking dos Políticos."
+      - name: congresso_id_fk
         description: "FK do deputado na API da Câmara."
       - name: nome
         description: "Nome completo padronizado."
@@ -87,15 +97,15 @@ models:
     description: "Scores agregados do Ranking dos Políticos para senadores, com ranking renomeado e sk_parlamentar gerado. Alimenta dim_parlamentares_score."
     columns:
       - name: sk_parlamentar
-        description: "Chave substituta gerada de (casa, id_congresso)."
+        description: "Chave substituta gerada de (casa, congresso_id_fk)."
         tests:
           - not_null
           - unique
       - name: casa
         description: "Casa legislativa (constante 'SENADO')."
-      - name: id
-        description: "ID no Ranking dos Políticos."
-      - name: id_congresso
+      - name: ranking_id_nk
+        description: "Chave natural do parlamentar no Ranking dos Políticos."
+      - name: congresso_id_fk
         description: "FK do senador na API do Senado."
       - name: nome
         description: "Nome completo padronizado."
@@ -126,14 +136,14 @@ models:
     description: "Scores de deputados explodidos por ano via JSON (composicao_pontuacao_anos). Uma linha por deputado por ano. Alimenta dim_parlamentares_score_historico."
     columns:
       - name: sk_parlamentar
-        description: "Chave substituta gerada de (casa, id_congresso)."
+        description: "Chave substituta gerada de (casa, congresso_id_fk)."
         tests:
           - not_null
       - name: casa
         description: "Casa legislativa (constante 'CAMARA')."
-      - name: id
-        description: "ID no Ranking dos Políticos."
-      - name: id_congresso
+      - name: ranking_id_nk
+        description: "Chave natural do parlamentar no Ranking dos Políticos."
+      - name: congresso_id_fk
         description: "FK do deputado na API da Câmara."
       - name: nome
         description: "Nome completo padronizado."
@@ -182,14 +192,14 @@ models:
     description: "Scores de senadores explodidos por ano via JSON. Uma linha por senador por ano. Alimenta dim_parlamentares_score_historico."
     columns:
       - name: sk_parlamentar
-        description: "Chave substituta gerada de (casa, id_congresso)."
+        description: "Chave substituta gerada de (casa, congresso_id_fk)."
         tests:
           - not_null
       - name: casa
         description: "Casa legislativa (constante 'SENADO')."
-      - name: id
-        description: "ID no Ranking dos Políticos."
-      - name: id_congresso
+      - name: ranking_id_nk
+        description: "Chave natural do parlamentar no Ranking dos Políticos."
+      - name: congresso_id_fk
         description: "FK do senador na API do Senado."
       - name: nome
         description: "Nome completo padronizado."
@@ -240,12 +250,12 @@ models:
     description: "Votos individuais de deputados normalizados (BRANCO → NULL, FAVORAVEL COM RESTRICOES → SIM) com chaves substitutas geradas. Alimenta fct_votos."
     columns:
       - name: sk_voto
-        description: Chave substituta do voto (id_deputado + id_votacao + casa).
+        description: Chave substituta do voto (deputado_id_nk + votacao_id_fk + casa).
         tests:
           - not_null
           - unique
       - name: sk_parlamentar
-        description: Chave substituta do parlamentar (id_deputado + casa).
+        description: Chave substituta do parlamentar (deputado_id_nk + casa).
         tests:
           - not_null
       - name: sk_votacao
@@ -254,10 +264,10 @@ models:
           - not_null
       - name: casa
         description: Casa legislativa (CAMARA).
-      - name: id_deputado
-        description: Identificador do deputado na API da Câmara.
-      - name: id_votacao
-        description: Identificador da votação.
+      - name: deputado_id_nk
+        description: Chave natural do deputado na API da Câmara.
+      - name: votacao_id_nk
+        description: Chave natural da votação.
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO). BRANCO e FAVORAVEL COM RESTRICOES normalizados."
 
@@ -265,7 +275,7 @@ models:
     description: "Sessões de votação da Câmara com chave substituta gerada. Alimenta dim_votacoes."
     columns:
       - name: sk_votacao
-        description: Chave substituta da votação (id + casa).
+        description: Chave substituta da votação (votacao_id_nk + casa).
         tests:
           - not_null
           - unique:
@@ -273,26 +283,28 @@ models:
                 severity: warn
       - name: casa
         description: Casa legislativa (CAMARA).
-      - name: id
-        description: Identificador original da votação na API da Câmara.
+      - name: votacao_id_nk
+        description: Chave natural da votação na API da Câmara.
       - name: data_votacao
         description: Data em que a votação ocorreu.
       - name: sigla_orgao
         description: Sigla do órgão que realizou a votação (ex. PLEN, CSPCCO).
-      - name: proposicao_objeto
-        description: Descrição da proposição objeto da votação.
+      - name: sk_proposicao
+        description: Chave substituta da proposição objeto da votação.
       - name: aprovado
         description: Booleano indicando se a proposição foi aprovada.
+      - name: sk_data
+        description: Chave substituta de data (YYYYMMDD) da votação.
 
   - name: int_orientacoes_camara_corrigidas
     description: "Orientações de voto por partido/liderança por sessão de votação da Câmara. Alimenta dim_orientacao_votacoes."
     columns:
       - name: sk_votacao
-        description: Chave substituta da votação (id_votacao + casa).
+        description: Chave substituta da votação (votacao_id_nk + casa).
         tests:
           - not_null
-      - name: id_votacao
-        description: Identificador da votação à qual a orientação se refere.
+      - name: votacao_id_nk
+        description: Chave natural da votação à qual a orientação se refere.
       - name: casa
         description: Casa legislativa (CAMARA).
       - name: orientacao_voto
@@ -306,12 +318,12 @@ models:
     description: "Votos individuais de senadores normalizados com chaves substitutas geradas. Alimenta fct_votos."
     columns:
       - name: sk_voto
-        description: Chave substituta do voto (codigo_parlamentar + codigo_votacao + casa).
+        description: Chave substituta do voto (senador_id_nk + codigo_votacao + casa).
         tests:
           - not_null
           - unique
       - name: sk_parlamentar
-        description: Chave substituta do parlamentar (codigo_parlamentar + casa).
+        description: Chave substituta do parlamentar (senador_id_nk + casa).
         tests:
           - not_null
       - name: sk_votacao
@@ -320,16 +332,18 @@ models:
           - not_null
       - name: casa
         description: Casa legislativa (SENADO).
-      - name: id_senador
-        description: Código do senador na API do Senado.
-      - name: id_votacao
-        description: Código da votação na API do Senado.
+      - name: senador_id_nk
+        description: Chave natural do senador na API do Senado.
+      - name: votacao_id_nk
+        description: Chave natural da votação na API do Senado.
       - name: data_sessao
         description: Data da sessão de votação.
       - name: identificacao
         description: Descrição ou identificação da matéria votada.
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO)."
+      - name: sk_data
+        description: Chave substituta de data (YYYYMMDD) da sessão de votação.
 
   - name: int_votacoes_senado_filtradas
     description: "Sessões de votação do Senado com chave substituta gerada. Alimenta dim_votacoes."
@@ -343,14 +357,18 @@ models:
                 severity: warn
       - name: casa
         description: Casa legislativa (SENADO).
-      - name: id
-        description: Código original da votação na API do Senado.
-      - name: data_sessao
+      - name: votacao_id_nk
+        description: Chave natural da votação na API do Senado.
+      - name: sk_proposicao
+        description: Chave substituta da proposição objeto da votação.
+      - name: data_votacao
         description: Data da sessão de votação.
       - name: identificacao
         description: Descrição da matéria votada.
       - name: aprovado
         description: 1 se aprovado, 0 caso contrário.
+      - name: sk_data
+        description: Chave substituta de data (YYYYMMDD) da votação.
 
   - name: int_orientacoes_senado_filtradas
     description: "Orientações de voto por partido/bancada por sessão de votação do Senado. Alimenta dim_orientacao_votacoes."
@@ -371,3 +389,30 @@ models:
         description: Sigla do partido que recebeu a orientação.
       - name: orientacao_voto
         description: Orientação de voto (SIM, NAO, OBSTRUCAO — LIBERADO já filtrado).
+
+  - name: int_proposicoes_unificadas
+    description: "Proposições unificadas (UNION de Câmara e Senado) com tipo padronizado e chave substituta gerada. Alimenta dim_proposicoes."
+    columns:
+      - name: sk_proposicao
+        description: Chave substituta da proposição (casa + id).
+        tests:
+          - not_null
+          - unique
+      - name: casa
+        description: Casa legislativa de origem da proposição (CAMARA ou SENADO).
+      - name: proposicao_id_nk
+        description: Chave natural da proposição na casa de origem.
+      - name: tipo_proposicao
+        description: Tipo da proposição padronizado em maiúsculas (ex. PL, PEC).
+      - name: data_proposicao
+        description: Data de apresentação da proposição.
+      - name: sk_data
+        description: Chave substituta de data (YYYYMMDD) da apresentação da proposição.
+
+  # ── DATAS ──────────────────────────────────────────────────────────────────
+
+  - name: int_dates
+    description: "Dimensão de datas (1900-01-01 a 2050-12-31) gerada pelo macro dbt_date.get_date_dimension. Atributos de calendário herdados do macro. Alimenta dim_dates."
+    columns:
+      - name: date_day
+        description: Data de calendário (chave natural da dimensão de datas).

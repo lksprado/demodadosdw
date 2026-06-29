@@ -4,9 +4,9 @@ models:
   - name: stg_ranking_deputados
     description: "Dados brutos do Ranking dos Políticos para deputados federais, com ID do Congresso extraído da URL e nomes padronizados."
     columns:
-      - name: id
-        description: "Identificador único do deputado no site Ranking dos Políticos."
-      - name: id_congresso
+      - name: ranking_id_nk
+        description: "Chave natural do deputado no site Ranking dos Políticos."
+      - name: congresso_id_fk
         description: "FK do deputado na API da Câmara, extraído via regex da URL da foto."
       - name: nome
         description: "Nome completo padronizado (upper)."
@@ -54,12 +54,12 @@ models:
   - name: stg_ranking_senadores
     description: "Dados brutos do Ranking dos Políticos para senadores, com ID do Congresso extraído da URL e nomes padronizados. Sem nome_eleitoral (campo não existe na fonte do Senado)."
     columns:
-      - name: id
-        description: "Identificador único do senador no site Ranking dos Políticos."
+      - name: ranking_id_nk
+        description: "Chave natural do senador no site Ranking dos Políticos."
         tests:
           - not_null
           - unique
-      - name: id_congresso
+      - name: congresso_id_fk
         description: "FK do senador na API do Senado, extraído via regex da URL da foto."
         tests:
           - not_null

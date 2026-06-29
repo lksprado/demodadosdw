@@ -1,11 +1,15 @@
+{{ config(
+    tags=["ranking", "score"]
+) }}
+
 WITH source AS (
     SELECT * FROM {{ source('ranking', 'raw_ranking_deputados') }}
 ),
 
 renamed AS (
     SELECT
-        id,
-        REGEXP_REPLACE(SPLIT_PART(url_foto, '/', 7), '\D', '', 'g')::INT AS id_congresso,
+        id                                                              AS ranking_id_nk,
+        REGEXP_REPLACE(SPLIT_PART(url_foto, '/', 7), '\D', '', 'g')::INT AS congresso_id_fk,
         {{ clean_string("nome", "upper") }} AS nome,
         {{ clean_string("nome_eleitoral", "upper") }} AS nome_eleitoral,
         {{ clean_string("nome_civil", "upper") }} AS nome_civil,

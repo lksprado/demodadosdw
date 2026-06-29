@@ -1,7 +1,7 @@
 {{ config(
     materialized='incremental',
     unique_key='data_extracao',
-    tags=["stg","ecidadania"]
+    tags=["ecidadania", "participacao"]
 ) }}
 
 {% if is_incremental() %}

@@ -1,8 +1,12 @@
+{{ config(
+    tags=["senado", "score"]
+) }}
+
 WITH source AS (
     SELECT
-        'SENADO' AS casa,
-        id,
-        id_congresso,
+        'SENADO'                                 AS casa,
+        ranking_id_nk,
+        congresso_id_fk,
         nome,
         nome_civil,
         url_foto,
@@ -11,11 +15,11 @@ WITH source AS (
         situacao,
         slug,
         composicao_pontuacao_anos,
-        composicao_pontuacao_pontuacao AS pontuacao_geral,
-        composicao_pontuacao_ranking_geral AS ranking_geral,
-        composicao_pontuacao_ranking_casa AS ranking_casa,
-        composicao_pontuacao_ranking_partido AS ranking_partido,
-        composicao_pontuacao_ranking_estado AS ranking_estado,
+        composicao_pontuacao_pontuacao           AS pontuacao_geral,
+        composicao_pontuacao_ranking_geral       AS ranking_geral,
+        composicao_pontuacao_ranking_casa        AS ranking_casa,
+        composicao_pontuacao_ranking_partido     AS ranking_partido,
+        composicao_pontuacao_ranking_estado      AS ranking_estado,
         composicao_pontuacao_ranking_casa_estado AS ranking_casa_estado,
         CASE
             WHEN uf = 'ACRE' THEN 'AC'
@@ -45,7 +49,7 @@ WITH source AS (
             WHEN uf = 'SAO PAULO' THEN 'SP'
             WHEN uf = 'SERGIPE' THEN 'SE'
             WHEN uf = 'TOCANTINS' THEN 'TO'
-        END AS uf
+        END                                      AS uf
     FROM {{ ref('stg_ranking_senadores') }}
 ),
 
@@ -66,10 +70,10 @@ exploded AS (
 
 renamed AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['casa', 'id_congresso']) }} AS sk_parlamentar,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'congresso_id_fk']) }}                    AS sk_parlamentar,
         casa,
-        id,
-        id_congresso,
+        ranking_id_nk,
+        congresso_id_fk,
         nome,
         nome_civil,
         partido,
@@ -82,18 +86,18 @@ renamed AS (
         ranking_partido,
         ranking_estado,
         ranking_casa_estado,
-        (ranking_item ->> 'ano')::INT AS ano,
+        (ranking_item ->> 'ano')::INT                                                       AS ano,
 
-        (ranking_item -> 'nota_base' ->> 'votacoes')::NUMERIC(18, 4) AS nota_base_votacoes,
-        (ranking_item -> 'nota_base' ->> 'gastos')::NUMERIC(18, 4) AS nota_base_gastos,
-        (ranking_item -> 'nota_base' ->> 'presenca')::NUMERIC(18, 4) AS nota_base_presenca,
-        (ranking_item -> 'nota_base' ->> 'privilegios')::NUMERIC(18, 4) AS nota_base_privilegios,
+        (ranking_item -> 'nota_base' ->> 'votacoes')::NUMERIC(18, 4)                        AS nota_base_votacoes,
+        (ranking_item -> 'nota_base' ->> 'gastos')::NUMERIC(18, 4)                          AS nota_base_gastos,
+        (ranking_item -> 'nota_base' ->> 'presenca')::NUMERIC(18, 4)                        AS nota_base_presenca,
+        (ranking_item -> 'nota_base' ->> 'privilegios')::NUMERIC(18, 4)                     AS nota_base_privilegios,
 
-        (ranking_item -> 'bonus_penalidades' ->> 'processos')::NUMERIC(18, 4) AS bonus_processos,
-        (ranking_item -> 'bonus_penalidades' ->> 'producao_legislativa')::NUMERIC(18, 4) AS bonus_producao_legislativa,
+        (ranking_item -> 'bonus_penalidades' ->> 'processos')::NUMERIC(18, 4)               AS bonus_processos,
+        (ranking_item -> 'bonus_penalidades' ->> 'producao_legislativa')::NUMERIC(18, 4)    AS bonus_producao_legislativa,
         (ranking_item -> 'bonus_penalidades' ->> 'articulacao_legislativa')::NUMERIC(18, 4) AS bonus_articulacao_legislativa,
 
-        (ranking_item ->> 'pontuacao')::NUMERIC(18, 4) AS pontuacao
+        (ranking_item ->> 'pontuacao')::NUMERIC(18, 4)                                      AS pontuacao
 
     FROM exploded
 )

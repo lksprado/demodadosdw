@@ -1,5 +1,5 @@
 {{ config(
-    tags=["senado","votacoes"]
+    tags=["senado", "votacoes"]
 ) }}
 
 
@@ -13,12 +13,12 @@ senado_votos AS (
 
 votos_tratados AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['codigo_parlamentar','codigo_votacao', 'casa']) }} AS sk_voto,
-        {{ dbt_utils.generate_surrogate_key(['casa', 'codigo_parlamentar']) }} AS sk_parlamentar,
-        {{ dbt_utils.generate_surrogate_key(['codigo_votacao', 'casa']) }} AS sk_votacao,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'senador_id_nk','codigo_votacao']) }} AS sk_voto,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'senador_id_nk']) }}                  AS sk_parlamentar,
+        {{ dbt_utils.generate_surrogate_key(['casa', 'codigo_votacao']) }}                 AS sk_votacao,
         casa,
-        codigo_parlamentar AS id_senador,
-        codigo_votacao AS id_votacao,
+        senador_id_nk,
+        codigo_votacao                                                                     AS votacao_id_nk,
         data_sessao,
         identificacao,
         CASE
@@ -26,15 +26,17 @@ votos_tratados AS (
             WHEN sigla_voto = 'NAO' THEN 'NAO'
             WHEN sigla_voto = 'ABSTENCAO' THEN 'ABSTENCAO'
             WHEN sigla_voto IN ('OBSTRUCAO', 'P-OD') THEN 'OBSTRUCAO'
-        END AS voto
+        END                                                                                     AS voto,
+        CAST(TO_CHAR(data_sessao, 'YYYYMMDD') AS INTEGER)                                       AS sk_data
     FROM senado_votos
 ),
 
 votos_filtrados AS (
     SELECT * FROM votos_tratados
-    WHERE voto IS NOT NULL
+    WHERE
+        voto IS NOT NULL
         AND voto <> 'ABSTENCAO'
-        AND id_votacao IS NOT NULL
+        AND votacao_id_nk IS NOT NULL
 )
 
 SELECT * FROM votos_filtrados

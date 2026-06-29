@@ -32,3 +32,5 @@ sources:
         description: "Orientação de votos das bancadas e partidos no Senado. Endpoint: https://legis.senado.leg.br/dadosabertos/plenario/votacao/orientacaoBancada/{y}0101/{y}1231?v=1"
       - name: raw_senado_votos_senadores
         description: "Votos dos senadores em cada matéria. Derivado do Endpoint: https://legis.senado.leg.br/dadosabertos/votacao/?dataInicio={y}-01-01&dataFim={y}-12-31&v=1"
+      - name: raw_senado_processo
+        description: "Votos dos senadores em cada matéria. Derivado do Endpoint: https://legis.senado.leg.br/dadosabertos/processo?idProcesso={id}&v=1"
