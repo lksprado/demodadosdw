@@ -149,12 +149,26 @@ models:
         description: Chave substituta do parlamentar, join com dim_parlamentares.
         tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_parlamentares')
+                field: sk_parlamentar
       - name: sk_votacao
         description: Chave substituta da votação, join com dim_votacoes.
         tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_votacoes')
+                field: sk_votacao
+      - name: votacao_id_nk
+        description: Chave natural da votação na casa de origem (id da Câmara ou codigo_votacao do Senado), mantida para rastreabilidade.
       - name: casa
         description: Casa legislativa do voto (CAMARA ou SENADO).
+      - name: partido
+        description: "Dimensão degenerada: sigla do partido do parlamentar no momento do voto."
+      - name: partido_nome
+        description: "Dimensão degenerada: nome do partido no momento do voto ('desconhecido' quando não há partido)."
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO)."
 

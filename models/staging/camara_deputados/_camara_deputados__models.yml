@@ -34,11 +34,10 @@ models:
         description: "Chave natural da legislatura."
       - name: deputado_id_fk
         description: "Chave estrangeira do deputado na API da Câmara."
-      - name: nome
-        description: "Nome do deputado conforme roster da legislatura."
       - name: uf
         description: "UF de representação do deputado na legislatura (siglauf)."
-
+      - name: partido_id_fk
+        description: "Chave estrangeira do partido na API da Câmara."
   - name: stg_camara_votacoes
     description: "Modelo staging com as sessões de votação da Câmara."
     columns:
@@ -78,12 +77,18 @@ models:
     columns:
       - name: deputado_id_nk
         description: "Chave natural do deputado na API da Câmara."
+      - name: nome
+        description: "Nome eleitoral do deputado conforme registrado no voto. Usado como roster de fallback em int_deputados_padronizados."
+      - name: uf
+        description: "Sigla da UF do deputado conforme registrada no voto. Usada como roster de fallback em int_deputados_padronizados."
       - name: voto
         description: "Tipo do voto registrado (SIM, NÃO, ABSTENCAO, OBSTRUÇÃO, ARTIGO17)."
       - name: legislatura_id_fk
         description: "Chave estrangeira da legislatura na qual o voto foi registrado."
       - name: votacao_id_fk
         description: "Chave estrangeira da votação à qual o voto se refere."
+      - name: partido_id_fk
+        description: "Chave estrangeira do partido na API da Câmara."
 
   - name: stg_camara_temas
     description: "Modelo staging com os temas de uma proposição."

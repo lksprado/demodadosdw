@@ -30,7 +30,21 @@ deputados_historico AS (
     ORDER BY deputado_id_fk
 ),
 
--- MANTEM DADOS MAIS COMPLETOS DO ENDPOINT DE DETALHES; LEGISLATURAS PREENCHE DEPUTADOS HISTORICOS AUSENTES
+-- ULTIMO FALLBACK: DEPUTADOS QUE VOTARAM MAS ESTAO AUSENTES DOS ENDPOINTS DE DETALHE E ROSTER
+deputados_votos AS (
+    SELECT DISTINCT ON (deputado_id_nk)
+        -1             AS prioridade,
+        deputado_id_nk AS parlamentar_id_nk,
+        {{ clean_string("nome","upper") }} as nome,
+        NULL           AS nome_completo,
+        NULL           AS sexo,
+        uf
+    FROM {{ ref('stg_camara_votos_deputados') }}
+    WHERE deputado_id_nk IS NOT NULL
+    ORDER BY deputado_id_nk, legislatura_id_fk DESC
+),
+
+-- MANTEM DADOS MAIS COMPLETOS DO ENDPOINT DE DETALHES; LEGISLATURAS E VOTOS PREENCHEM DEPUTADOS AUSENTES
 deputados_completo AS (
     SELECT
         *,
@@ -40,6 +54,8 @@ deputados_completo AS (
         SELECT * FROM deputados
         UNION ALL
         SELECT * FROM deputados_historico
+        UNION ALL
+        SELECT * FROM deputados_votos
     )
 ),
 

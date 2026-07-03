@@ -59,18 +59,17 @@ votos_parlamentares_joined AS (
         t1.sk_votacao,
         t4.deputado_id_nk,
         t4.senador_id_nk,
+        t1.votacao_id_nk,
         t4.nome,
         t4.uf,
-        t2.votacao_id_nk,
+        t1.partido,
+        t1.partido_nome,
         t2.data_votacao,
         t3.legislatura,
         t2.aprovado,
         t1.voto,
         t2.orientacao_voto AS voto_governo,
-        CASE
-            WHEN t1.voto = t2.orientacao_voto THEN 1
-            ELSE 0
-        END AS voto_alinhado
+        CASE WHEN t1.voto = t2.orientacao_voto THEN 1 ELSE 0 END AS voto_alinhado
     FROM {{ ref('fct_votos') }} AS t1
     INNER JOIN votacoes_orientadas_governo AS t2
         ON t1.sk_votacao = t2.sk_votacao
@@ -80,6 +79,7 @@ votos_parlamentares_joined AS (
         ON t1.sk_parlamentar = t4.sk_parlamentar
     LEFT JOIN proposicoes AS t5
         ON t2.sk_proposicao = t5.sk_proposicao
+    WHERE t1.sk_parlamentar <> '0'
 ),
 
 final AS (
@@ -96,6 +96,8 @@ final AS (
         casa,
         nome,
         uf,
+        partido,
+        partido_nome,
         tipo_proposicao,
         legislatura,
         aprovado,

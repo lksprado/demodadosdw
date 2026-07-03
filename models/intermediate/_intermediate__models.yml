@@ -5,7 +5,7 @@ models:
   # ── PARLAMENTARES ──────────────────────────────────────────────────────────
 
   - name: int_deputados_padronizados
-    description: "Deputados normalizados com renaming de colunas e código de sexo expandido. Alimenta dim_parlamentares."
+    description: "Deputados normalizados com renaming de colunas e código de sexo expandido. Combina o endpoint de detalhes (prioridade), o roster de legislaturas e, como último fallback, os deputados que aparecem apenas nos votos — garantindo que todo votante exista em dim_parlamentares. Alimenta dim_parlamentares."
     columns:
       - name: sk_parlamentar
         description: "Chave substituta gerada de (casa, parlamentar_id_nk)."
@@ -268,6 +268,10 @@ models:
         description: Chave natural do deputado na API da Câmara.
       - name: votacao_id_nk
         description: Chave natural da votação.
+      - name: partido
+        description: "Sigla do partido vigente no momento do voto (ponto-no-tempo, da seed raw_partidos via partido_id_fk)."
+      - name: partido_nome
+        description: "Nome do partido resolvido por partido_id_fk = raw_partidos.id_camara."
       - name: voto
         description: "Voto registrado (SIM, NAO, ABSTENCAO, OBSTRUCAO). BRANCO e FAVORAVEL COM RESTRICOES normalizados."
 
@@ -336,6 +340,10 @@ models:
         description: Chave natural do senador na API do Senado.
       - name: votacao_id_nk
         description: Chave natural da votação na API do Senado.
+      - name: partido
+        description: "Sigla do partido vigente no momento do voto (ponto-no-tempo, normalizada)."
+      - name: partido_nome
+        description: "Nome do partido resolvido por sigla normalizada + período de vigência na seed raw_partidos; 'desconhecido' quando não há partido (ex. SEM REGISTRO)."
       - name: data_sessao
         description: Data da sessão de votação.
       - name: identificacao

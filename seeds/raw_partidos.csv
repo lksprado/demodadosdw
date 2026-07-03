@@ -1,0 +1,57 @@
+﻿id_camara,sigla_camara,nome,id_senado,sigla_senado,sigla_conformada,data_criacao,data_extincao
+36898,AVANTE,Avante,578,AVANTE,AVANTE,1989-11-01,
+37905,CIDADANIA,Cidadania,41,CIDADANIA,CIDADANIA,1992-01-01,
+37902,DC,Democracia Cristã,581,DC,DC,2018-05-18,
+36769,DEM,Democratas,554,DEM,DEM,2007-03-28,
+36800,MDB,Movimento Democrático Brasileiro,33,MDB,MDB,1980-01-01,
+36899,MDB,Movimento Democrático Brasileiro,33,MDB,MDB,1980-01-01,
+38011,MISSÃO,Partido Missão,586,MISSÃO,MISSÃO,2025-11-04,
+37901,NOVO,Partido Novo,566,NOVO,NOVO,2015-09-15,
+36776,PAN,Partido dos Aposentados da Nação,142,PAN,PAN,1998-02-19,
+37900,PATRI,Patriota,579,PATRIOTA,PATRIOTA,2018-04-26,2023-11-09
+37907,PATRIOTA,Patriota,579,PATRIOTA,PATRIOTA,2018-04-26,2023-11-09
+36779,PCdoB,Partido Comunista do Brasil,86,PCdoB,PCdoB,1962-02-01,
+36786,PDT,Partido Democrático Trabalhista,20,PDT,PDT,1980-09-16,
+36761,PEN,Partido Ecológico Nacional,559,PEN,PEN,2012-06-19,
+36790,PFL,Partido da Frente Liberal,22,PFL,PFL,1985-01-24,2007-08-02
+36793,PHS,Partido Humanista da Solidariedade,149,PHS,PHS,1997-03-20,
+36795,PL,Partido Liberal,25,PL,PL,1985-06-25,2006-12-19
+37906,PL,Partido Liberal,523,PL,PL,2006-12-26,
+36887,PMB,Partido da Mulher Brasileira,567,PMB,PMB,2015-09-29,
+36801,PMN,Partido da Mobilização Nacional,90,PMN,PMN,1984-04-21,
+36802,PMR,Partido Municipalista Renovador,519,PMR,PMR,2005-08-25,
+36896,PODE,Podemos,577,PODEMOS,PODEMOS,2017-05-16,
+36809,PP,Partido Progressista,418,PP,PP,2003-02-26,
+37903,PP,Progressistas,418,PP,PP,2003-02-26,
+36811,PPB,Partido Progressista Brasileiro,39,PPB,PPB,1995-09-01,2003-06-02
+36762,PPL,Partido Pátria Livre,560,PPL,PPL,2012-10-17,
+36813,PPS,Partido Popular Socialista,41,CIDADANIA,CIDADANIA,1992-01-01,
+36814,PR,Partido da República,523,PL,PL,2006-12-26,
+36815,PRB,Partido Republicano Brasileiro,521,REPUBLICANOS,REPUBLICANOS,2006-04-04,
+38010,PRD,Partido Renovação Democrática,583,PRD,PRD,2023-11-09,
+36823,PRONA,Partido de Reedificação da Ordem Nacional,152,PRONA,PRONA,1989-06-20,
+36763,PROS,Partido Republicano da Ordem Social,562,PROS,PROS,2013-09-24,2023-02-14
+36824,PRP,Partido Republicano Progressista,93,PRP,PRP,1988-06-01,
+36829,PRTB,Partido Renovador Trabalhista Brasileiro,154,PRTB,PRTB,1997-02-18,
+36832,PSB,Partido Socialista Brasileiro,63,PSB,PSB,1985-07-01,
+36833,PSC,Partido Social Cristão,88,PSC,PSC,1985-07-01,2023-06-15
+36834,PSD,Partido Social Democrático,89,PSD,PSD,1987-10-22,2003-02-20
+38000,PSD,Partido Social Democrático,557,PSD,PSD,2011-10-19,
+36835,PSDB,Partido da Social Democracia Brasileira,66,PSDB,PSDB,1988-06-01,
+36836,PSDC,Partido Social Democrata Cristão,156,PSDC,PSDC,1997-08-05,2018-05-17
+36837,PSL,Partido Social Liberal,85,PSL,PSL,1995-12-15,
+36839,PSOL,Partido Socialismo e Liberdade,458,PSOL,PSOL,2004-08-04,
+36842,PST,Partido Social Trabalhista,158,PST,PST,1996-08-28,2003-09-17
+36844,PT,Partido dos Trabalhadores,71,PT,PT,1980-02-10,
+36845,PTB,Partido Trabalhista Brasileiro,72,PTB,PTB,1980-01-01,2023-11-09
+36846,PTC,Partido Trabalhista Cristão,556,PTC,PTC,2001-06-08,
+36847,PTdoB,Partido Trabalhista do Brasil,159,PTdoB,PTdoB,1989-11-01,
+36848,PTN,Partido Trabalhista Nacional,160,PTN,PTN,1985-06-01,2017-05-18
+36851,PV,Partido Verde,91,PV,PV,1987-01-18,
+36886,REDE,Rede Sustentabilidade,565,REDE,REDE,2015-09-22,
+37908,REPUBLICANOS,Republicanos,521,REPUBLICANOS,REPUBLICANOS,2006-04-04,
+36765,SD,Solidariedade,561,SOLIDARIEDADE,SOLIDARIEDADE,2013-09-24,
+36764,SDD,Solidariedade,561,SOLIDARIEDADE,SOLIDARIEDADE,2013-09-24,
+36852,Sem Partido,Sem Partido,163,S/Partido,Sem Partido,1900-01-01,
+37904,SOLIDARIEDADE,Solidariedade,561,SOLIDARIEDADE,SOLIDARIEDADE,2013-09-24,
+38009,UNIÃO,União Brasil,582,UNIÃO,UNIÃO,2022-02-08,
